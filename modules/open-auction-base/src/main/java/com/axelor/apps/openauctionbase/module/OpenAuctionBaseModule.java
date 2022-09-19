@@ -9,8 +9,12 @@ import com.axelor.apps.openauctionbase.service.ActivityManagement;
 import com.axelor.apps.openauctionbase.service.ActivityManagementImpl;
 import com.axelor.apps.openauctionbase.service.AuctionManagement;
 import com.axelor.apps.openauctionbase.service.AuctionManagementImpl;
+import com.axelor.apps.openauctionbase.service.ContactLotManagement;
+import com.axelor.apps.openauctionbase.service.ContactLotManagementImpl;
 import com.axelor.apps.openauctionbase.service.MissionManagement;
 import com.axelor.apps.openauctionbase.service.MissionManagementImpl;
+import com.axelor.apps.openauctionbase.service.MissionServicePriceManagement;
+import com.axelor.apps.openauctionbase.service.MissionServicePriceManagementImpl;
 import com.axelor.apps.openauctionbase.service.MissionTemplateManagement;
 import com.axelor.apps.openauctionbase.service.MissionTemplateManagementImpl;
 
@@ -25,5 +29,7 @@ public class OpenAuctionBaseModule extends AxelorModule {
     bind(ActivityManagement.class).to(ActivityManagementImpl.class);
     bind(AuctionManagement.class).to(AuctionManagementImpl.class);
     bind(MissionManagement.class).to(MissionManagementImpl.class);
+    bind(MissionServicePriceManagement.class).to(MissionServicePriceManagementImpl.class);
+    bind(ContactLotManagement.class).to(ContactLotManagementImpl.class);
   }
 }
