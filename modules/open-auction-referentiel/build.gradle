@@ -12,5 +12,6 @@ dependencies {
 	api "com.axelor.apps:axelor-admin:${aosVersion}"
 	api "com.axelor.apps:axelor-crm:${aosVersion}"
 	api "com.axelor.apps:axelor-supplychain:${aosVersion}"
+	api "com.axelor.apps:axelor-bank-payment:${aosVersion}"
 	api project(":modules:open-auction-pricing")	
 }
