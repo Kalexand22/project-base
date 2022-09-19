@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<domain-models xmlns="http://axelor.com/xml/ns/domain-models"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/domain-models http://axelor.com/xml/ns/domain-models/domain-models_5.4.xsd">
+  <module name="openauction" package="com.axelor.apps.openauction.db"/>
+  <entity name="LotNature">
+    <string name="lotNature" title="Nature lot"/>
+    <many-to-one name="sectorCode" title="Code secteur"
+      ref="com.axelor.apps.openauction.db.Sector"/>
+    <many-to-one name="specializingCode" title="Code spécialité"
+      ref="com.axelor.apps.openauction.db.Specializing"/>
+    <many-to-one name="defaultExpert" title="Expert par défaut"
+      ref="com.axelor.apps.base.db.Partner"/>
+    <integer name="auctionAverageTime" title="Temps moyen vente (sec)"/>
+    <integer name="averageCatalogPages" title="Nombre moyen de pages catalogue"/>
+    <boolean name="valueSearch" title="Recherche valeur"/>
+    <string name="searchMethod" title="Mode recherche"/>
+    <string name="description" title="Désignation" namecolumn="true"/>
+    <string name="lotCardFormName" title="Nom formulaire fiche lot"/>
+    <string name="lotTemplCardFormName" title="Nom formulaire fiche modèle de lot"/>
+    <string name="inputJournalFormName" title="Nom formulaire saisie lot"/>
+    <boolean name="automotive" title="Automobile"/>
+    <boolean name="equipment" title="Matériel"/>
+    <boolean name="artObject" title="Objets d'art"/>
+    <boolean name="wine" title="Vin"/>
+  </entity>
+</domain-models>

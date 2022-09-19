@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<domain-models xmlns="http://axelor.com/xml/ns/domain-models"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/domain-models http://axelor.com/xml/ns/domain-models/domain-models_5.4.xsd">
+  <module name="openauction" package="com.axelor.apps.openauction.db"/>
+  <entity name="TariffDetailLine">
+    <many-to-one name="itemNo" title="N° article" ref="com.axelor.apps.base.db.Product"/>
+    <boolean name="unitPriceItemCard" title="Prix fiche article"/>
+    <string name="transactionType" title="Type de transaction"
+      selection="openauction.transactionType.select.tariff"/>
+    <string name="documentType" title="Type document"
+      selection="openauction.documentType.select.tariff"/>
+    <string name="documentCode" title="Code document"/>
+    <string name="lotType" title="Type de lot" selection="openauction.lotType.select.tariff"/>
+    <string name="contactType" title="Type contact"
+      selection="openauction.contactType.select.tariff"/>
+    <many-to-one name="currencyCode" title="Code devise"
+      ref="com.axelor.apps.base.db.Currency"/>
+    <date name="startingDate" title="Date début"/>
+    <date name="endingDate" title="Date fin"/>
+    <string name="calculationType" title="Type calcul"
+      selection="openauction.calculationType.select.tariff"/>
+    <decimal name="unitPrice" title="Prix unitaire"/>
+    <decimal name="servicePercent" title="% prestation"/>
+    <many-to-one name="tariffScale" title="Barème tarification"
+      ref="com.axelor.apps.openauction.db.TariffScale"/>
+    <boolean name="priceIncludesVAT" title="Prix TTC"/>
+    <boolean name="allowInvoiceDisc" title="Remise facture autorisée"/>
+    <decimal name="minimumServiceAmount" title="Montant prestation minimum"/>
+    <decimal name="maximumServiceAmount" title="Montant prestation maximum"/>
+    <string name="commBaseCalc" title="Base calcul prestation"
+      selection="openauction.commBaseCalc.select.tariff"/>
+    <many-to-one name="tariffCode" title="Code"
+      ref="com.axelor.apps.openauction.db.TariffScale"/>
+    <decimal name="minBaseRate" title="Taux base minimum"/>
+    <decimal name="maxBaseRate" title="Taux de base maximum"/>
+    <decimal name="percentage" title="Poucentage"/>
+    <string name="scaleType" title="Type barème"
+      selection="openauction.scaleType.select.tariff"/>
+    <decimal name="minAmount" title="Montant minimum"/>
+    <decimal name="maxAmount" title="Montant maximum"/>
+    <decimal name="amount" title="Montant"/>
+    <boolean name="lineUse" title="Ligne utilisée"/>
+    <many-to-one name="responsibilityCenter" title="Centre de gestion"
+      ref="com.axelor.apps.base.db.TradingName"/>
+    <integer name="pricePriority" title="Priorité prix"/>
+    <extra-code>
+      <![CDATA[
+      //openauction.transactionType.select.tariff
+      public static final String TRANSACTION_TYPE_MISSION = "Mission0";
+      public static final String TRANSACTION_TYPE_AUCTION = "Auction1";
+      public static final String TRANSACTION_TYPE_SEGMENT = "Segment2";
+
+      //openauction.documentType.select.tariff
+      public static final String DOCUMENT_TYPE_ALL = "All0";
+      public static final String DOCUMENT_TYPE_TEMPLATE = "Template1";
+      public static final String DOCUMENT_TYPE_NO = "No2";
+
+      //openauction.lotType.select.tariff
+      public static final String LOT_TYPE_ALL_LOT = "AllLot0";
+      public static final String LOT_TYPE_LOT_PRICE_GROUP = "LotPriceGroup1";
+      public static final String LOT_TYPE_LOT = "Lot2";
+
+      //openauction.contactType.select.tariff
+      public static final String CONTACT_TYPE_ALL_CONTACT = "AllContact0";
+      public static final String CONTACT_TYPE_CONTACT_PRICE_GROUP = "ContactPriceGroup1";
+      public static final String CONTACT_TYPE_CONTACT = "Contact2";
+
+      //openauction.calculationType.select.tariff
+      public static final String CALCULATION_TYPE_UNIT_PRICE = "UnitPrice0";
+      public static final String CALCULATION_TYPE_SERVICE = "Service1";
+      public static final String CALCULATION_TYPE_COMMISSION_SCALE = "CommissionScale2";
+
+      //openauction.commBaseCalc.select.tariff
+      public static final String COMM_BASE_CALC_EMPTY = "Empty0";
+      public static final String COMM_BASE_CALC_RESERVE_PRICE = "ReservePrice1";
+      public static final String COMM_BASE_CALC_ESTIMATED_VALUE_MIN = "EstimatedValueMin2";
+      public static final String COMM_BASE_CALC_ESTIMATED_VALUE_MAX = "EstimatedValueMax3";
+
+      ]]>
+    </extra-code>
+  </entity>
+
+</domain-models>

@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<domain-models xmlns="http://axelor.com/xml/ns/domain-models"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/domain-models http://axelor.com/xml/ns/domain-models/domain-models_5.4.xsd">
+  <module name="openauction" package="com.axelor.apps.openauction.db"/>
+  <entity name="MissionLine">
+    <many-to-one name="missionNo" title="N° mission"
+      ref="com.axelor.apps.openauction.db.MissionHeader"/>
+    <integer name="lineNo" title="N° ligne"/>
+    <integer name="lotNoMission" title="N° lot/mission"/>
+    <boolean name="auctionMission" title="Mission de vente"/>
+
+    <string name="priority" title="Priorité" selection="openauction.priority.select"/>
+    <string name="lotStatus" title="Statut lot" selection="openauction.lotStatus.select"/>
+    <string name="missionLotOpStatus" title="Statut opérationnel"
+      selection="openauction.missionLotOpStatus.select"/>
+    <string name="missionLotDocumentStatus" title="Statut administratif"
+      selection="openauction.missionLotDocumentStatus.select"/>
+    <boolean name="toBeValuated" title="A estimer"/>
+    <string name="lotType" title="Type lot" selection="openauction.lotType.select"/>
+    <boolean name="canceled" title="Refusé"/>
+    <string name="canceledReason" title="Motif Refus"/>
+    <boolean name="consignmentPrint" title="Edition Mandat"/>
+    <date name="consignmentPrintDate" title="Date édition mandat"/>
+    <boolean name="consigAgreementAccepted" title="Mandat vente accepté"/>
+    <boolean name="consigAgreementRefused" title="Mandat vente refusé"/>
+    <boolean name="consigAgreementComment" title="Commentaire mandat de vente"/>
+    <many-to-one name="auctionMissionNo" title="N° mission vente"
+      ref="com.axelor.apps.openauction.db.MissionHeader"/>
+    <string name="bidInvoicingStatus" title="Statut facturation adjudication"
+      selection="openauction.bidInvoicingStatus.select"/>
+    <string name="bidInvoiceNo" title="N° facture adjudication"/>
+    <decimal name="volInvLowEstimate" title="Estimation basse"/>
+    <decimal name="volInvHighEstimate" title="Estimation haute"/>
+    <one-to-one name="lot" title="Lot" ref="com.axelor.apps.openauction.db.Lot"
+      mappedBy="missionLine"/>
+  </entity>
+</domain-models>

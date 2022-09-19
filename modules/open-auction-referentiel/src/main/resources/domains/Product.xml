@@ -1,0 +1,134 @@
+<?xml version="1.0"?>
+<domain-models xmlns="http://axelor.com/xml/ns/domain-models"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/domain-models http://axelor.com/xml/ns/domain-models/domain-models_5.4.xsd">
+  <module name="openauction" package="com.axelor.apps.base.db"/>
+  <entity name="Product">
+    <boolean name="purchasePreInvoicing" title="Pré-facture achat"/>
+    <string name="invoicingType" title="Type facturation"
+      selection="openauction.invoicingType.select"/>
+    <string name="commissionType" title="Type honoraire"
+      selection="openauction.commissionType.select"/>
+    <string name="contactImputationType" title="Type imputation contact"
+      selection="openauction.contactImputationType.select"/>
+    <string name="lotImputationType" title="Type imputation lot"
+      selection="openauction.lotImputationType.select"/>
+    <string name="serviceType" title="Type prestation"
+      selection="openauction.serviceType.select"/>
+    <string name="transactionType" title="Type transaction"
+      selection="openauction.transactionType.select"/>
+    <string name="imputationBase" title="Base Imputation"
+      selection="openauction.imputationBase.select"/>
+    <boolean name="printPercentage" title="Edition pourcentage"/>
+    <many-to-one name="verificationSubstItemNo"
+      title="N° article substitution récolement" ref="com.axelor.apps.base.db.Product"/>
+    <decimal name="minimumChargeAmount" title="Montant minimum"/>
+    <decimal name="maximumChargeAmount" title="Montant maximum"/>
+    <boolean name="storageTimeUsage" title="Utiliser délai de stockage"/>
+    <boolean name="resaleRights" title="Droits de suite"/>
+    <many-to-one name="affiliatedGeneralAccount" title="Compte général affilié"
+      ref="com.axelor.apps.account.db.Account"/>
+    <decimal name="servicePercent" title="% prestation"/>
+    <boolean name="valueAddedItem" title="Plus-value"/>
+    <many-to-one name="tariffScale" title="Code barème"
+      ref="com.axelor.apps.openauction.db.TariffScale"/>
+    <string name="baseCalcBeforeAuction" title="Base calcul avant vente"
+      selection="openauction.baseCalcBeforeAuction.select"/>
+    <string name="baseCalcAfterAuction" title="Base calcul après vente"
+      selection="openauction.baseCalcAfterAuction.select"/>
+    <boolean name="authorizedZeroBudgetedCost" title="Coût budget à zéro autorisé"/>
+    <boolean name="invoiceServiceDetail" title="Détail prestation sur bordereau"/>
+    <boolean name="advanceOnSale" title="Avance sur vente"/>
+    <boolean name="partialBillingAllowed" title="Autoriser facturation partielle"/>
+    <string name="checkChargeAmountRange" title="Contrôle montant min/max"
+      selection="openauction.checkChargeAmountRange.select"/>
+    <boolean name="allowLineDisc" title="Autoriser remise ligne"/>
+    <string name="quantityEvaluation" title="Evaluation quantité"
+      selection="openauction.quantityEvaluation.select"/>
+    <boolean name="detailledSellerGLPosting" title="Comptabilisation détaillée mission"/>
+    <boolean name="displayInPayment" title="Affichage en règlement"/>
+    <many-to-one name="inventoryCategoryItem" title="Catégorie article inventaire"
+      ref="com.axelor.apps.openauction.db.Code"/>
+    <string name="inventoryItemDescription" title="Désignation article inventaire"/>
+    <integer name="invMissionAssOrderPriority" title="Ordre priorité demande évaluation"/>
+    <string name="servicePriceSystem" title="Système de tarification"
+      selection="openauction.servicePriceSystem.select"/>
+    <extra-code>
+            <![CDATA[
+
+              //openauction.invoicingType.select.product
+                public static final String INVOICINGTYPE_SELECT_BILLABLE = "Billable0";
+                public static final String INVOICINGTYPE_SELECT_BILLABLEONBID = "BillableonBid1";
+                public static final String INVOICINGTYPE_SELECT_UNBILLABLE = "Unbillable2";
+
+              //openauction.commissionType.select.product
+                public static final String COMMISSIONTYPE_SELECT_GENERAL = "General0";
+                public static final String COMMISSIONTYPE_SELECT_SPECIFIC = "Specific1";
+
+
+              //openauction.contactImputationType.select.product
+                public static final String CONTACTIMPUTATIONTYPE_SELECT_SELLER = "Seller0";
+                public static final String CONTACTIMPUTATIONTYPE_SELECT_BUYER = "Buyer1";
+                public static final String CONTACTIMPUTATIONTYPE_SELECT_NONE = "None2";
+
+              //openauction.lotImputationType.select.product
+                public static final String LOTIMPUTATIONTYPE_SELECT_DIRECT = "Direct0";
+                public static final String LOTIMPUTATIONTYPE_SELECT_INDIRECT = "Indirect1";
+                public static final String LOTIMPUTATIONTYPE_SELECT_NONE = "None2";
+
+                //openauction.serviceType.select.product
+                public static final String SERVICETYPE_SELECT_COMMISSION = "Commission0";
+                public static final String SERVICETYPE_SELECT_EXPENSES = "Expenses1";
+                public static final String SERVICETYPE_SELECT_AUCTIONBID = "AuctionBid2";
+
+                //openauction.transactionType.select.product
+                public static final String TRANSACTIONTYPE_SELECT_AUCTION = "Auction0";
+                public static final String TRANSACTIONTYPE_SELECT_MISSION = "Mission1";
+                public static final String TRANSACTIONTYPE_SELECT_SEGMENT = "Segment2";
+
+                //openauction.imputationBase.select.product
+                public static final String IMPUTATIONBASE_SELECT_QUANTITY = "Quantity0";
+                public static final String IMPUTATIONBASE_SELECT_BIDPRICE = "BidPrice1";
+
+
+
+                //openauction.baseCalcBeforeAuction.select.product
+                public static final String BASECALCBEFOREAUCTION_SELECT_RESERVEPRICE = "ReservePrice0";
+                public static final String BASECALCBEFOREAUCTION_SELECT_ESTIMATEDVALUEMIN = "EstimatedValueMin1";
+                public static final String BASECALCBEFOREAUCTION_SELECT_ESTIMATEDVALUEMAX = "EstimatedValueMax2";
+                public static final String BASECALCBEFOREAUCTION_SELECT_MISSIONVALUE = "MissionValue3";
+                public static final String BASECALCBEFOREAUCTION_SELECT_MISSIONADJUST = "MissionAdjust4";
+                public static final String BASECALCBEFOREAUCTION_SELECT_MISSIONINITVALUE = "MissionInitValue5";
+                public static final String BASECALCBEFOREAUCTION_SELECT_POPULARLINESONOPERATING = "PopularLinesOnOperating6";
+                public static final String BASECALCBEFOREAUCTION_SELECT_POPULARLINESMIDOPERATINGREALIZATION = "PopularLinesMidOperatingRealization7";
+                public static final String BASECALCBEFOREAUCTION_SELECT_POPULARLINESONREALIZATION = "PopularLinesOnRealization8";
+                public static final String BASECALCBEFOREAUCTION_SELECT_POPULARLINESMID2 = "PopularLinesMid29";
+                public static final String BASECALCBEFOREAUCTION_SELECT_POPULARLINESONREALIZATION2 = "PopularLinesOnRealization210";
+
+
+                //openauction.baseCalcAfterAuction.select.product
+                public static final String BASECALCAFTERAUCTION_SELECT_BIDPRICE = "BidPrice0";
+                public static final String BASECALCAFTERAUCTION_SELECT_BIDPRICEEXCLVAT = "BidPriceExclVAT1";
+                public static final String BASECALCAFTERAUCTION_SELECT_RESERVEPRICE = "ReservePrice2";
+                public static final String BASECALCAFTERAUCTION_SELECT_BIDPRICEINCLVAT = "BidPriceInclVAT3";
+
+
+                //openauction.checkChargeAmountRange.select.product
+                public static final String CHECKCHARGEAMOUNTRANGE_SELECT_AFTERBIDDING = "AfterBidding0";
+                public static final String CHECKCHARGEAMOUNTRANGE_SELECT_BEFOREBIDDING = "BeforeBidding1";
+                public static final String CHECKCHARGEAMOUNTRANGE_SELECT_ALWAYS = "Always2";
+
+
+                //openauction.quantityEvaluation.select.product
+                public static final String QUANTITYEVALUATION_SELECT_EMPTY = "Empty0";
+                public static final String QUANTITYEVALUATION_SELECT_JUDGMENTAUCTIONDELAY = "JudgmentAuctionDelay1";
+
+                //openauction.servicePriceSystem.select.product
+                public static final String SERVICEPRICESYSTEM_SELECT_STANDARD = "Standard0";
+                public static final String SERVICEPRICESYSTEM_SELECT_TRANSPORT = "Transport1";
+                public static final String SERVICEPRICESYSTEM_SELECT_CARETAKER = "Caretaker2";
+                public static final String SERVICEPRICESYSTEM_SELECT_UNROADWORTHY = "Unroadworthy3";
+            ]]>
+    </extra-code>
+  </entity>
+</domain-models>

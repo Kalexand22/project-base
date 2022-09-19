@@ -1,0 +1,210 @@
+<?xml version="1.0"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.4.xsd">
+  <grid name="mission-header-grid" title="Liste des missions" canNew="false"
+    model="com.axelor.apps.openauction.db.MissionHeader">
+    <toolbar>
+      <button name="newMission" title="Créer une mission" onClick="mission.template.wizard"/>
+    </toolbar>
+    <field name="no"/>
+    <field name="description"/>
+    <field name="masterContactNo"/>
+    <field name="missionManagerCode"/>
+    <field name="responsibilityCenter"/>
+    <field name="masterContactNo.mainAddress"/>
+    <field name="masterContactNo.mobilePhone"/>
+    <field name="masterContactNo.emailAddress"/>
+    <field name="masterContactNo.fixedPhone"/>
+  </grid>
+  <form name="mission-header-form" title="Mission"
+    model="com.axelor.apps.openauction.db.MissionHeader" width="large" canNew="false">
+    <toolbar>
+      <button name="newMission" title="Créer une mission" onClick="mission.template.wizard"/>
+      <button name="saisie" title="Saisie des lots" onClick="save,mission.journal.input.all"/>
+      <button name="valider" title="Créer une mission de vente"
+        onClick="save,mission.create.auction.mission"/>
+    </toolbar>
+    <panel name="MainPanel">
+      <field name="missionStatus" showTitle="false" colSpan="12" widget="NavSelect"/>
+      <panel colSpan="2" itemSpan="12"/>
+      <panel colSpan="3" itemSpan="12">
+        <panel itemSpan="12">
+          <field name="masterContactNo" colSpan="12" canNew="true"
+            domain="self.isContact = false" formview="partner-supplier-form"/>
+          <field name="description" title="Titre de la mission"/>
+          <field name="responsibilityCenter"/>
+        </panel>
+      </panel>
+      <panel colSpan="3" itemSpan="12">
+        <panel itemSpan="12">
+          <field name="auctionnerCode"/>
+          <field name="missionManagerCode" title="Responsable mission"/>
+          <field name="managerEntryCode" title="Responsable saisie"/>
+        </panel>
+      </panel>
+      <panel colSpan="3" itemSpan="12">
+        <panel itemSpan="12">
+          <field name="missionTemplateCode"/>
+          <field name="printConsignmentAgreement" colSpan="6"/>
+          <field name="reqConsignmentAgreement" colSpan="6"/>
+          <field name="globalConsAgreemAccepted" colSpan="6"/>
+        </panel>
+      </panel>
+    </panel>
+    <panel-tabs name="panelTab1">
+
+      <panel-related title="Liste des lignes de missions" field="missionLineList"
+        editable="true" canNew="false">
+        <field name="lotNoMission"/>
+        <field name="lot.description"/>
+        <field name="priority"/>
+        <field name="lotStatus"/>
+        <field name="lot.minimumValue" title="Estimation basse"/>
+        <field name="lot.maximumValue" title="Estimation haute"/>
+        <field name="lot.auctionNo"/>
+        <field name="canceled"/>
+        <field name="canceledReason"/>
+
+      </panel-related>
+      <panel-related title="Liste des lignes des prestations"
+        field="missionServiceLineList" editable="false" canNew="false">
+        <field name="lotNo"/>
+        <field name="transactionType"/>
+        <field name="type"/>
+        <field name="priceDate"/>
+        <field name="invoicingType"/>
+      </panel-related>
+      <panel-related title="Liste des actions" field="taskList" onNew="team.tasks.all"/>
+      <panel name="general" title="Général" itemSpan="4">
+        <panel itemSpan="12">
+          <field name="no"/>
+          <field name="auctionnerCode"/>
+          <field name="missionManagerCode" title="Responsable mission"/>
+          <field name="managerEntryCode" title="Responsable saisie"/>
+          <field name="salespersonCode" title="Intervenant"/>
+          <field name="activityCodeToHeader" title="Activité d'en-tête"/>
+          <field name="sortingMethod"/>
+          <field name="genBusPostingGroup"/>
+          <field name="vATBusinessPostingGroup"/>
+        </panel>
+        <panel itemSpan="12">
+          <field name="masterContactNo" domain="self.isContact = false"/>
+          <field name="masterContactName" title="Description"/>
+          <field name="masterContactNo.mainAddress"/>
+          <spacer/>
+          <field name="masterContactNo.mobilePhone"/>
+
+          <field name="masterContactNo.emailAddress"/>
+          <field name="masterContactNo.fixedPhone"/>
+        </panel>
+        <panel itemSpan="12">
+          <field name="missionTemplateCode"/>
+          <field name="responsibilityCenter"/>
+          <field name="printConsignmentAgreement"/>
+          <field name="reqConsignmentAgreement"/>
+          <field name="globalConsAgreemAccepted"/>
+          <field name="missionStatus"/>
+          <spacer/>
+          <spacer/>
+          <field name="lawyerBusNo"/>
+        </panel>
+      </panel>
+      <panel name="finance" title="Finance" itemSpan="4">
+        <panel itemSpan="12">
+          <field name="sellerInvStatementUnit"/>
+          <field name="sellerInvStatementPeriod"/>
+          <field name="specificAuctPricingPolicy"/>
+          <field name="nonChargeable"/>
+          <field name="evaluetedCommissionDemand"/>
+          <field name="blockInvoicing"/>
+        </panel>
+        <panel itemSpan="12">
+          <field name="marginBasedVAT"/>
+          <field name="missionComContactGroup"/>
+          <field name="currencyCode"/>
+          <field name="centralizedCustomerNo"/>
+          <field name="centralizedVendorNo"/>
+        </panel>
+        <panel itemSpan="12">
+          <field name="budgetedPrepaymentTotal"/>
+          <field name="bankedPrepaymentTotal"/>
+          <field name="profitLossOverheads"/>
+          <field name="profitLossOverStandCost"/>
+        </panel>
+      </panel>
+      <panel name="contact" title="Contact">
+        <panel-related name="contactPartnerSetPanel"
+          title="Liste des contacts de la mission" field="masterContactNo.contactPartnerSet"
+          form-view="partner-contact-form" grid-view="partner-contact-grid" colSpan="12"
+          domain="self.isContact = 'true' AND self in (SELECT p FROM Partner p join p.companySet c where c in :companySet)"/>
+        <panel-related title="Liste des contacts complémentaires" field="contactList"
+          form-view="partner-contact-form" grid-view="partner-contact-grid" colSpan="12">
+        </panel-related>
+      </panel>
+      <panel name="divers" title="Divers" itemSpan="4">
+        <panel itemSpan="12">
+          <field name="createDate" title="Date création" type="date"/>
+          <field name="createdBy"/>
+          <field name="lastModified" title="Dernière modification" type="date"/>
+          <field name="modifiedBy" title="Modifié par"/>
+          <spacer/>
+          <spacer/>
+          <field name="originExtNo"/>
+          <field name="destExtNo"/>
+        </panel>
+      </panel>
+    </panel-tabs>
+
+  </form>
+
+  <form name="auction-mission-card-form" title="Mission de vente"
+    model="com.axelor.apps.openauction.db.MissionHeader" width="large"
+    onNew="action-record-auction-mission-set-auctionMission">
+    <panel-include view="mission-card-form" from="openauction"/>
+  </form>
+
+  <form name="remittance-mission-card-form" title="Mission de remise de biens"
+    model="com.axelor.apps.openauction.db.MissionHeader" width="large"
+    onNew="action-record-remittance-mission-set-auctionMission">
+    <panel-include view="mission-card-form" from="openauction"/>
+  </form>
+
+
+  <action-record name="action-record-auction-mission-set-auctionMission"
+    model="com.axelor.apps.openauction.db.Lot">
+    <field name="auctionMission" expr="eval: true"/>
+  </action-record>
+
+  <action-record name="action-record-remittance-mission-set-auctionMission"
+    model="com.axelor.apps.openauction.db.Lot">
+    <field name="auctionMission" expr="eval: false"/>
+  </action-record>
+
+  <action-view name="mission.journal.input.all"
+    model="com.axelor.apps.openauction.db.Lot" title="Saisie des lignes de mission">
+    <view name="lot-input-journal-grid" type="grid"/>
+    <view name="lot-input-journal-form" type="form"/>
+    <view-param name="details-view" value="true"/>
+    <domain>self.currentMissionNo = :_missionRecord</domain>
+    <context name="_missionRecord" expr="eval: __this__"/>
+    <context name="_missionRecordId" expr="eval: __this__.id"/>
+  </action-view>
+
+  <action-view name="mission.template.wizard"
+    title="Créer une mission à partir d'un modèle" model="com.axelor.apps.base.db.Wizard">
+    <view name="mission-creation-wizard-form" type="form"/>
+    <view-param name="show-toolbar" value="false"/>
+    <view-param name="width" value="800"/>
+    <view-param name="popup" value="true"/>
+    <view-param name="show-confirm" value="false"/>
+    <view-param name="popup-save" value="false"/>
+    <view-param name="popup" value="reload"/>
+  </action-view>
+
+  <action-method name="mission.create.auction.mission">
+    <call class="com.axelor.apps.openauction.controller.LotInputJournalController"
+      method="createAuctionMission"/>
+  </action-method>
+
+</object-views>

@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<domain-models xmlns="http://axelor.com/xml/ns/domain-models"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/domain-models http://axelor.com/xml/ns/domain-models/domain-models_5.4.xsd">
+  <module name="openauction" package="com.axelor.apps.openauction.db"/>
+  <entity name="AuctionLine">
+    <many-to-one name="auctionNo" title="N° vente"
+      ref="com.axelor.apps.openauction.db.AuctionHeader"/>
+    <integer name="lineNo" title="N° ligne"/>
+    <string name="lotNo" title="N° lot"/>
+    <string name="lotDescription" title="Description lot" namecolumn="true"/>
+    <decimal name="quantity" title="Quantité"/>
+    <decimal name="bidPrice" title="Adjugé"/>
+    <decimal name="startPrice" title="Mise à prix"/>
+    <string name="lineStatus" title="Statut ligne" selection="openauction.lineStatus.select"/>
+    <many-to-one name="missionNo" title="N° mission"
+      ref="com.axelor.apps.openauction.db.MissionHeader"/>
+    <many-to-one name="missionLineNo" title="N° ligne mission"
+      ref="com.axelor.apps.openauction.db.MissionLine"/>
+    <boolean name="judicial" title="Judiciaire"/>
+    <many-to-one name="buyerContactNo" title="N° contact acheteur"
+      ref="com.axelor.apps.base.db.Partner"/>
+
+    <many-to-one name="previousBuyerContactNo" title="N° contact dernier enchérisseur"
+      ref="com.axelor.apps.base.db.Partner"/>
+    <string name="lotType" title="Type lot" selection="openauction.lotType.select"/>
+    <one-to-one name="sourceLotNo" title="N° lot origine"
+      ref="com.axelor.apps.openauction.db.Lot"/>
+    <boolean name="ungroupingAuthorization" title="Dégroupement autorisé"/>
+    <boolean name="groupingAuthorization" title="Groupement autorisé"/>
+    <string name="groupProcessType" title="Type de process regroupement"
+      selection="openauction.groupProcessType.select"/>
+    <boolean name="retired" title="Retiré"/>
+    <many-to-one name="retirementReason" title="Motif retrait"
+      ref="com.axelor.apps.openauction.db.Code"/>
+
+    <many-to-one name="bondPaymentMethod" title="Mode règlement caution"
+      ref="com.axelor.apps.account.db.PaymentMode"/>
+    <decimal name="bondAmount" title="Montant caution"/>
+    <many-to-one name="bondNo" title="N° caution"
+      ref="com.axelor.apps.openauction.db.AuctionBond"/>
+    <decimal name="vATBondNoteAmount" title="Montant TVA caution"/>
+    <boolean name="voidedCancelledBondNote" title="Caution annulée rendue"/>
+    <boolean name="voidedCancelledVATBondNote" title="Caution TVA annulée rendue"/>
+    <integer name="passingOrderNo" title="N° ordre"/>
+    <boolean name="isAuctionned" title="Adjugé"/>
+    <decimal name="biddedInterface" title="Montant adjugé"/>
+    <decimal name="retiredInterface" title="Montant retiré"/>
+
+    <many-to-one name="lotGroup" title="Groupement"
+      ref="com.axelor.apps.openauction.db.LotGrouping"/>
+  </entity>
+</domain-models>
