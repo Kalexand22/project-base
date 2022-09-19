@@ -25,7 +25,9 @@ hs_err_pid*
 # Gradle
 build
 .gradle
-.gradle\*
+*.bin
+*.lock
+*.MF
 
 # Eclispe
 bin

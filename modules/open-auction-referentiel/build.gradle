@@ -9,5 +9,8 @@ axelor {
 dependencies {
 	api "com.axelor.apps:axelor-base:${aosVersion}"
 	api "com.axelor.apps:axelor-account:${aosVersion}"
+	api "com.axelor.apps:axelor-admin:${aosVersion}"
+	api "com.axelor.apps:axelor-crm:${aosVersion}"
+	api "com.axelor.apps:axelor-supplychain:${aosVersion}"
 	api project(":modules:open-auction-pricing")	
 }
