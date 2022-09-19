@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<domain-models xmlns="http://axelor.com/xml/ns/domain-models"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/domain-models http://axelor.com/xml/ns/domain-models/domain-models_5.4.xsd">
+  <module name="openauction" package="com.axelor.apps.openauction.db"/>
+  <entity name="ActivityLine">
+    <many-to-one name="activityCode" title="Code activité"
+      ref="com.axelor.apps.openauction.db.ActivityHeader"/>
+    <integer name="lineNo" title="N° ligne"/>
+    <string name="toDoApplicableTo" title="Action applicable à"
+      selection="openauction.toDoApplicableTo.select"/>
+    <many-to-one name="lotTemplateFilter" title="Filtre modèle lot"
+      ref="com.axelor.apps.openauction.db.LotTemplate"/>
+    <many-to-one name="serviceTemplateCode" title="Code modèle prestation"
+      ref="com.axelor.apps.openauction.db.ServiceTemplate"/>
+    <string name="todoTemplateCode" title="Code modèle action"/>
+    <!--<many-to-one name="interactionTemplateCode" title="Code modèle interaction" ref="com.axelor.apps.openauction.db.APInteractionTemplate"
+      /> -->
+    <many-to-one name="responsibilityCenter" title="Centre de gestion"
+      ref="com.axelor.apps.base.db.TradingName"/>
+    <string name="todoCondition" title="Condition action"/>
+    <string name="todoStatusCondition" title="Condition statut action"
+      selection="openauction.todoStatusCondition.select"/>
+    <many-to-one name="activityCondition" title="Condition activité"
+      ref="com.axelor.apps.openauction.db.ActivityHeader"/>
+    <string name="defaultTodoStatus" title="Statut action par défaut"
+      selection="openauction.defaultTodoStatus.select"/>
+    <extra-code>
+      <![CDATA[
+      //toDoApplicableTo
+      public static final String TODOAPPLICABLETO_SELECT_SELLER = "Seller0";
+      public static final String TODOAPPLICABLETO_SELECT_BUYER = "Buyer1";
+      public static final String TODOAPPLICABLETO_SELECT_EMPTY = "Empty2";
+      ]]>
+    </extra-code>
+  </entity>
+</domain-models>

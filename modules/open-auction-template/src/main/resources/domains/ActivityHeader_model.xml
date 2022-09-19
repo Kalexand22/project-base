@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<domain-models xmlns="http://axelor.com/xml/ns/domain-models"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/domain-models http://axelor.com/xml/ns/domain-models/domain-models_5.4.xsd">
+  <module name="openauction" package="com.axelor.apps.openauction.db"/>
+  <entity name="ActivityHeader">
+    <string name="code" title="Code"/>
+    <string name="activityType" title="Type activité"
+      selection="openauction.activityType.select"/>
+    <string name="description" title="Désignation" namecolumn="true"/>
+    <string name="status" title="Statut" selection="openauction.status.select"/>
+    <date name="startingDate" title="Date début"/>
+    <date name="endingDate" title="Date fin"/>
+    <boolean name="invLotPositionRequested" title="Prise en compte stock lot"/>
+    <string name="applicableOn" title="Applicable sur"
+      selection="openauction.applicableOn.select"/>
+    <string name="noSeries" title="Souches de n°"/>
+    <many-to-one name="responsibilityCenter" title="Centre de gestion"
+      ref="com.axelor.apps.base.db.TradingName"/>
+    <many-to-one name="activityTemplateCode" title="Modèle de mission"
+      ref="com.axelor.apps.openauction.db.MissionTemplate"/>
+    <one-to-many ref="com.axelor.apps.openauction.db.ActivityLine"
+      name="activityLineList" mappedBy="activityCode"/>
+    <extra-code>
+      <![CDATA[
+      //ACTIVITYTYPE
+      public static final String ACTIVITYTYPE_SELECT_MISSION = "Mission1";
+      public static final String ACTIVITYTYPE_SELECT_AUCTION = "Auction0";
+
+      public static final String APPLICABLEON_SELECT_HEADER = "Header0";
+      public static final String APPLICABLEON_SELECT_LINE = "Line1";
+      ]]>
+    </extra-code>
+  </entity>
+</domain-models>
