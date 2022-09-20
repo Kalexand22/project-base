@@ -54,5 +54,4 @@ public class ContactTemplateServiceImpl implements ContactTemplateService {
     tmpPartner.setPreemptingAuthorized(contactTemplate.getPreemptingAuthorized());
     return tmpPartner;
   }
-  
 }
