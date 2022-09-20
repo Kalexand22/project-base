@@ -74,5 +74,5 @@ hs_err_pid*
 # JavaScript
 node_modules
 
-
+# Axelor
 src/main/resources/application.properties
