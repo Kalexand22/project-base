@@ -14,5 +14,4 @@ dependencies {
 	api "com.axelor.apps:axelor-purchase:${aosVersion}"	
 	api project(":modules:open-auction-referentiel")
 	api project(":modules:open-auction-template")
-	api project(":modules:open-auction-pricing")
 }
