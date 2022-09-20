@@ -46,6 +46,8 @@ atlassian-ide-plugin.xml
 
 #VS Code
 .vscode
+launch.json
+settings.json
 
 # NetBeans
 .nbattrs
