@@ -44,6 +44,9 @@ out
 *.iws
 atlassian-ide-plugin.xml
 
+#VS Code
+.vscode
+
 # NetBeans
 .nbattrs
 
