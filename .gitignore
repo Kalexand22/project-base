@@ -76,3 +76,4 @@ node_modules
 .gradle/5.6.4/fileHashes/fileHashes.bin
 .gradle/5.6.4/fileHashes/fileHashes.lock
 buildSrc/.gradle/buildOutputCleanup/buildOutputCleanup.lock
+src/main/resources/application.properties
