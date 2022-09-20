@@ -28,7 +28,7 @@ public class ContactTemplateServiceImpl implements ContactTemplateService {
   @Override
   @Transactional
   public Partner createContactFromTemplate(ContactTemplate contactTemplate, Partner tmpPartner) {
-    log.debug("Creation d'un contact depuis un modèle");
+    log.debug("Creation d'un contact depuis un modèle de contact");
     tmpPartner.setIsContact(true);
     tmpPartner.setIsCustomer(true);
     Set<Company> set = new HashSet<Company>(companyRepository.all().fetch());
