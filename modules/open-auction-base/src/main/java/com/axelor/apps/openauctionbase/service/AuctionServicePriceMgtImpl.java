@@ -23,9 +23,9 @@ public class AuctionServicePriceMgtImpl implements AuctionServicePriceMgt{
     }
 
     @Override
-    public void updateAuctionServicePrice(MissionServiceLine pMissionServiceLine, Boolean pEstimated) {
+    public MissionServiceLine updateAuctionServicePrice(MissionServiceLine pMissionServiceLine, Boolean pEstimated) {
         // TODO Auto-generated method stub
-        
+        return null;
     }
 
     @Override

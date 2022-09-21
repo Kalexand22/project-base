@@ -4,6 +4,7 @@ import com.axelor.apps.account.db.FiscalPosition;
 import com.axelor.apps.base.db.Partner;
 import com.axelor.apps.base.db.Product;
 import com.axelor.apps.base.db.Unit;
+import com.axelor.apps.base.db.repo.ProductRepository;
 import com.axelor.apps.base.service.app.AppBaseService;
 import com.axelor.apps.openauction.db.AuctionHeader;
 import com.axelor.apps.openauction.db.AuctionLine;
@@ -16,6 +17,9 @@ import com.axelor.apps.openauction.db.MissionServiceLine;
 import com.axelor.apps.openauction.db.repo.AuctionLineRepository;
 import com.axelor.apps.openauction.db.repo.AuctionSetupRepository;
 import com.axelor.apps.openauction.db.repo.MissionServiceLineRepository;
+import com.axelor.apps.openauctionbase.service.AuctionServicePriceMgt;
+import com.axelor.apps.openauctionbase.service.CaretakerServicePriceMgt;
+import com.axelor.apps.openauctionbase.service.MissionServicePriceManagement;
 import com.axelor.auth.AuthUtils;
 import com.axelor.exception.AxelorException;
 import com.axelor.exception.db.repo.TraceBackRepository;
@@ -426,8 +430,65 @@ public class MissionServiceLineValidate {
     return missionServiceLine;
   }
 
+  /*
+   * PROCEDURE UpdatePrice@1100281000();
+    VAR
+      lMissionPriceMgt@1100281000 : Codeunit 8011332;
+      lAuctionPriceMgt@1100281001 : Codeunit 8011331;
+    BEGIN
+      IF "Auction Bid" THEN EXIT;
+      CheckQuantity;
+      //<<ap36 isat.zw
+      GetItem;
+      CASE Item."Service Price System" OF
+        Item."Service Price System"::Standard : BEGIN
+          IF "Transaction Type" = "Transaction Type"::Mission THEN
+            MissionServicePriceMgt.FindMissionServicePrice(Rec,FALSE)
+          ELSE
+            AuctionServicePriceMgt.UpdateAuctionServicePrice(Rec,FALSE);
+        END;
+        Item."Service Price System"::Transport : BEGIN
+          ShippingAgentPriceMgt.FindTransportServPrice(Rec,FALSE);
+        END;
+        Item."Service Price System"::Caretaker : BEGIN
+          CaretakerServPriceMgt.FindMissionServicePrice(Rec,FALSE);
+        END;
+      END;
+      //<<ap36 isat.zw
+    END;
+   */
   private MissionServiceLine UpdatePrice(MissionServiceLine missionServiceLine) {
-    // TODO : UpdatePrice
+    MissionServicePriceManagement missionServicePriceManagement =
+        Beans.get(MissionServicePriceManagement.class);
+    AuctionServicePriceMgt auctionServicePriceMgt = Beans.get(AuctionServicePriceMgt.class);
+    //ShippingAgentPriceMgt shippingAgentPriceMgt = Beans.get(ShippingAgentPriceMgt.class);
+    //TODO ShippingAgentPriceMgt
+    CaretakerServicePriceMgt caretakerServPriceMgt = Beans.get(CaretakerServicePriceMgt.class);
+    if (missionServiceLine.getAuctionBid()) {
+      return missionServiceLine;
+    }
+    missionServiceLine = this.CheckQuantity(missionServiceLine);
+    switch (missionServiceLine.getProductNo().getServicePriceSystem()) {
+      case ProductRepository.SERVICEPRICESYSTEM_SELECT_STANDARD:
+        if (missionServiceLine.getTransactionType().equals(MissionServiceLineRepository.TRANSACTIONTYPE_SELECT_MISSION)) {
+          missionServiceLine =
+              missionServicePriceManagement.findMissionServicePrice(missionServiceLine, false);
+        } else {
+          missionServiceLine = auctionServicePriceMgt.updateAuctionServicePrice(missionServiceLine, false);
+        }
+        break;
+      case ProductRepository.SERVICEPRICESYSTEM_SELECT_TRANSPORT:
+        //missionServiceLine = shippingAgentPriceMgt.findTransportServPrice(missionServiceLine);
+        //TODO ShippingAgentPriceMgt
+        break;
+      case ProductRepository.SERVICEPRICESYSTEM_SELECT_CARETAKER:
+        missionServiceLine = caretakerServPriceMgt.findMissionServicePrice(missionServiceLine, false);
+        break;
+    }
+    return missionServiceLine;
+  }
+
+  private MissionServiceLine CheckQuantity(MissionServiceLine missionServiceLine) {
     return null;
   }
 

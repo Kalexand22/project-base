@@ -11,6 +11,8 @@ import com.axelor.apps.openauctionbase.service.AuctionLotValueManagement;
 import com.axelor.apps.openauctionbase.service.AuctionLotValueManagementImpl;
 import com.axelor.apps.openauctionbase.service.AuctionManagement;
 import com.axelor.apps.openauctionbase.service.AuctionManagementImpl;
+import com.axelor.apps.openauctionbase.service.AuctionServicePriceMgt;
+import com.axelor.apps.openauctionbase.service.AuctionServicePriceMgtImpl;
 import com.axelor.apps.openauctionbase.service.CaretakerServicePriceMgt;
 import com.axelor.apps.openauctionbase.service.CaretakerServicePriceMgtImpl;
 import com.axelor.apps.openauctionbase.service.ContactLotManagement;
@@ -37,5 +39,6 @@ public class OpenAuctionBaseModule extends AxelorModule {
     bind(ContactLotManagement.class).to(ContactLotManagementImpl.class);
     bind(AuctionLotValueManagement.class).to(AuctionLotValueManagementImpl.class);
     bind(CaretakerServicePriceMgt.class).to(CaretakerServicePriceMgtImpl.class);
+    bind(AuctionServicePriceMgt.class).to(AuctionServicePriceMgtImpl.class);
   }
 }

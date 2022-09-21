@@ -9,9 +9,9 @@ import com.ibm.icu.math.BigDecimal;
 public class CaretakerServicePriceMgtImpl implements CaretakerServicePriceMgt {
 
     @Override
-    public void findMissionServicePrice(MissionServiceLine pMissionServiceLine, Boolean pEstimated) {
+    public MissionServiceLine findMissionServicePrice(MissionServiceLine pMissionServiceLine, Boolean pEstimated) {
         // TODO Auto-generated method stub
-        
+        return null;
     }
 
     @Override
