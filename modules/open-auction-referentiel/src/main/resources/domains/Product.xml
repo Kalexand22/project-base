@@ -53,6 +53,7 @@
     <integer name="invMissionAssOrderPriority" title="Ordre priorité demande évaluation"/>
     <string name="servicePriceSystem" title="Système de tarification"
       selection="openauction.servicePriceSystem.select"/>
+    <boolean name="useProductFamilyLot" title="utiliser la famille produit du lot"/>
     <extra-code>
             <![CDATA[
 

@@ -17,9 +17,8 @@ import java.math.BigDecimal;
 
 public class LotQuickJournalInputValidateField {
 
-    AuctionLotValueManagement auctionLotValueManagement =
-        Beans.get(AuctionLotValueManagement.class);
-    ClassificationManagement classificationManagement = Beans.get(ClassificationManagement.class);
+  AuctionLotValueManagement auctionLotValueManagement = Beans.get(AuctionLotValueManagement.class);
+  ClassificationManagement classificationManagement = Beans.get(ClassificationManagement.class);
 
   /*
   * { 1   ;   ;Mission No.         ;Code20        ;TableRelation="Mission Header";
@@ -240,206 +239,205 @@ public class LotQuickJournalInputValidateField {
         .getLineType()
         .equals(LotQuickInputJournalRepository.LINETYPE_SELECT_EMPTY)) {
       lotQuickInputJournal.setGrossReservePrice(BigDecimal.ZERO);
-    }    
+    }
     auctionLotValueManagement.calcAuctionEstimByLotQuickJnl(lotQuickInputJournal);
     return lotQuickInputJournal;
-    
   }
-//Net_Reserve_Price Decimal
-   //OnValidateBEGIN
-   //IF "Line Type" <> "Line Type"::" " THEN BEGIN
-   //  "Net Reserve Price" := 0;
-   //END;
-   //AuctionLotValueMgt.CalcAuctionEstimByLotQuickJnl(Rec);//
+  // Net_Reserve_Price Decimal
+  // OnValidateBEGIN
+  // IF "Line Type" <> "Line Type"::" " THEN BEGIN
+  //  "Net Reserve Price" := 0;
+  // END;
+  // AuctionLotValueMgt.CalcAuctionEstimByLotQuickJnl(Rec);//
 
-    public LotQuickInputJournal validateFiedNetReservePrice(
-        LotQuickInputJournal lotQuickInputJournal, BigDecimal netReservePrice) {
-        lotQuickInputJournal.setNetReservePrice(netReservePrice);
-        if (!lotQuickInputJournal
-            .getLineType()
-            .equals(LotQuickInputJournalRepository.LINETYPE_SELECT_EMPTY)) {
-            lotQuickInputJournal.setNetReservePrice(BigDecimal.ZERO);
-        }
-        auctionLotValueManagement.calcAuctionEstimByLotQuickJnl(lotQuickInputJournal);
-        return lotQuickInputJournal;
+  public LotQuickInputJournal validateFiedNetReservePrice(
+      LotQuickInputJournal lotQuickInputJournal, BigDecimal netReservePrice) {
+    lotQuickInputJournal.setNetReservePrice(netReservePrice);
+    if (!lotQuickInputJournal
+        .getLineType()
+        .equals(LotQuickInputJournalRepository.LINETYPE_SELECT_EMPTY)) {
+      lotQuickInputJournal.setNetReservePrice(BigDecimal.ZERO);
     }
-    //Estimate_Value Decimal
-   //OnValidateBEGIN
-   //IF "Line Type" <> "Line Type"::" " THEN BEGIN
-   //  "Estimate Value" := 0;
-   //END;//
-    public LotQuickInputJournal validateFiedEstimateValue(
-        LotQuickInputJournal lotQuickInputJournal, BigDecimal estimateValue) {
-        lotQuickInputJournal.setEstimateValue(estimateValue);
-        if (!lotQuickInputJournal
-            .getLineType()
-            .equals(LotQuickInputJournalRepository.LINETYPE_SELECT_EMPTY)) {
-            lotQuickInputJournal.setEstimateValue(BigDecimal.ZERO);
-        }
-        return lotQuickInputJournal;
+    auctionLotValueManagement.calcAuctionEstimByLotQuickJnl(lotQuickInputJournal);
+    return lotQuickInputJournal;
+  }
+  // Estimate_Value Decimal
+  // OnValidateBEGIN
+  // IF "Line Type" <> "Line Type"::" " THEN BEGIN
+  //  "Estimate Value" := 0;
+  // END;//
+  public LotQuickInputJournal validateFiedEstimateValue(
+      LotQuickInputJournal lotQuickInputJournal, BigDecimal estimateValue) {
+    lotQuickInputJournal.setEstimateValue(estimateValue);
+    if (!lotQuickInputJournal
+        .getLineType()
+        .equals(LotQuickInputJournalRepository.LINETYPE_SELECT_EMPTY)) {
+      lotQuickInputJournal.setEstimateValue(BigDecimal.ZERO);
     }
+    return lotQuickInputJournal;
+  }
 
-    //Min_Estimate_Value Decimal
-   //OnValidateBEGIN
-   //IF "Line Type" <> "Line Type"::" " THEN BEGIN
-   //  "Min. Estimate Value" := 0;
-   //END;
-   //AuctionLotValueMgt.CalcAuctionEstimByLotQuickJnl(Rec);//
-    public LotQuickInputJournal validateFiedMinEstimateValue(
-        LotQuickInputJournal lotQuickInputJournal, BigDecimal minEstimateValue) {
-        lotQuickInputJournal.setMinEstimateValue(minEstimateValue);
-        if (!lotQuickInputJournal
-            .getLineType()
-            .equals(LotQuickInputJournalRepository.LINETYPE_SELECT_EMPTY)) {
-            lotQuickInputJournal.setMinEstimateValue(BigDecimal.ZERO);
-        }
-        auctionLotValueManagement.calcAuctionEstimByLotQuickJnl(lotQuickInputJournal);
-        return lotQuickInputJournal;
+  // Min_Estimate_Value Decimal
+  // OnValidateBEGIN
+  // IF "Line Type" <> "Line Type"::" " THEN BEGIN
+  //  "Min. Estimate Value" := 0;
+  // END;
+  // AuctionLotValueMgt.CalcAuctionEstimByLotQuickJnl(Rec);//
+  public LotQuickInputJournal validateFiedMinEstimateValue(
+      LotQuickInputJournal lotQuickInputJournal, BigDecimal minEstimateValue) {
+    lotQuickInputJournal.setMinEstimateValue(minEstimateValue);
+    if (!lotQuickInputJournal
+        .getLineType()
+        .equals(LotQuickInputJournalRepository.LINETYPE_SELECT_EMPTY)) {
+      lotQuickInputJournal.setMinEstimateValue(BigDecimal.ZERO);
     }
+    auctionLotValueManagement.calcAuctionEstimByLotQuickJnl(lotQuickInputJournal);
+    return lotQuickInputJournal;
+  }
 
-//Max_Estimate_Value Decimal
-   //OnValidateBEGIN
-   //IF "Line Type" <> "Line Type"::" " THEN BEGIN
-   //  "Max. Estimate Value" := 0;
-   //END;
-   //AuctionLotValueMgt.CalcAuctionEstimByLotQuickJnl(Rec);//
-    public LotQuickInputJournal validateFiedMaxEstimateValue(
-        LotQuickInputJournal lotQuickInputJournal, BigDecimal maxEstimateValue) {
-        lotQuickInputJournal.setMaxEstimateValue(maxEstimateValue);
-        if (!lotQuickInputJournal
-            .getLineType()
-            .equals(LotQuickInputJournalRepository.LINETYPE_SELECT_EMPTY)) {
-            lotQuickInputJournal.setMaxEstimateValue(BigDecimal.ZERO);
-        }
-        auctionLotValueManagement.calcAuctionEstimByLotQuickJnl(lotQuickInputJournal);
-        return lotQuickInputJournal;
+  // Max_Estimate_Value Decimal
+  // OnValidateBEGIN
+  // IF "Line Type" <> "Line Type"::" " THEN BEGIN
+  //  "Max. Estimate Value" := 0;
+  // END;
+  // AuctionLotValueMgt.CalcAuctionEstimByLotQuickJnl(Rec);//
+  public LotQuickInputJournal validateFiedMaxEstimateValue(
+      LotQuickInputJournal lotQuickInputJournal, BigDecimal maxEstimateValue) {
+    lotQuickInputJournal.setMaxEstimateValue(maxEstimateValue);
+    if (!lotQuickInputJournal
+        .getLineType()
+        .equals(LotQuickInputJournalRepository.LINETYPE_SELECT_EMPTY)) {
+      lotQuickInputJournal.setMaxEstimateValue(BigDecimal.ZERO);
     }
+    auctionLotValueManagement.calcAuctionEstimByLotQuickJnl(lotQuickInputJournal);
+    return lotQuickInputJournal;
+  }
 
+  // Lot_Categorie_1_Code Code10
+  // OnValidateBEGIN
+  // IF ("Lot Categorie 1 Code" <> xRec."Lot Categorie 1 Code") AND
+  //   ("Lot Categorie 1 Code" <> '')
+  // THEN BEGIN
+  //  ValidateCategorieCode(1,"Lot Categorie 1 Code");
+  // END;//
 
-//Lot_Categorie_1_Code Code10
-   //OnValidateBEGIN
-   //IF ("Lot Categorie 1 Code" <> xRec."Lot Categorie 1 Code") AND
-   //   ("Lot Categorie 1 Code" <> '')
-   //THEN BEGIN
-   //  ValidateCategorieCode(1,"Lot Categorie 1 Code");
-   //END;//
-
-    public LotQuickInputJournal validateFiedLotCategorie1Code(
-        LotQuickInputJournal lotQuickInputJournal, ClassificationMembers lotCategorie1Code) {
-        lotQuickInputJournal.setLotCategorie1Code(lotCategorie1Code);
-        if (!lotQuickInputJournal
+  public LotQuickInputJournal validateFiedLotCategorie1Code(
+      LotQuickInputJournal lotQuickInputJournal, ClassificationMembers lotCategorie1Code) {
+    lotQuickInputJournal.setLotCategorie1Code(lotCategorie1Code);
+    if (!lotQuickInputJournal
             .getLotCategorie1Code()
             .equals(lotQuickInputJournal.getLotCategorie1Code())
-            && !lotQuickInputJournal.getLotCategorie1Code().equals(null)) {
-            validateCategorieCode(lotQuickInputJournal, 1, lotQuickInputJournal.getLotCategorie1Code());
-        }
-        return lotQuickInputJournal;
+        && !lotQuickInputJournal.getLotCategorie1Code().equals(null)) {
+      validateCategorieCode(lotQuickInputJournal, 1, lotQuickInputJournal.getLotCategorie1Code());
     }
+    return lotQuickInputJournal;
+  }
 
-
-//Lot_Categorie_2_Code Code10
-   //OnValidateBEGIN
-   //IF ("Lot Categorie 2 Code" <> xRec."Lot Categorie 2 Code") AND
-   //   ("Lot Categorie 2 Code" <> '')
-   //THEN BEGIN
-   //  ValidateCategorieCode(2,"Lot Categorie 2 Code");
-   //END;//
-    public LotQuickInputJournal validateFiedLotCategorie2Code(
-        LotQuickInputJournal lotQuickInputJournal, ClassificationMembers lotCategorie2Code) {
-        lotQuickInputJournal.setLotCategorie2Code(lotQuickInputJournal.getLotCategorie2Code());
-        if (!lotQuickInputJournal
+  // Lot_Categorie_2_Code Code10
+  // OnValidateBEGIN
+  // IF ("Lot Categorie 2 Code" <> xRec."Lot Categorie 2 Code") AND
+  //   ("Lot Categorie 2 Code" <> '')
+  // THEN BEGIN
+  //  ValidateCategorieCode(2,"Lot Categorie 2 Code");
+  // END;//
+  public LotQuickInputJournal validateFiedLotCategorie2Code(
+      LotQuickInputJournal lotQuickInputJournal, ClassificationMembers lotCategorie2Code) {
+    lotQuickInputJournal.setLotCategorie2Code(lotQuickInputJournal.getLotCategorie2Code());
+    if (!lotQuickInputJournal
             .getLotCategorie2Code()
             .equals(lotQuickInputJournal.getLotCategorie2Code())
-            && !lotQuickInputJournal.getLotCategorie2Code().equals(null)) {
-            validateCategorieCode(lotQuickInputJournal, 2, lotQuickInputJournal.getLotCategorie2Code());
-        }
-        return lotQuickInputJournal;
+        && !lotQuickInputJournal.getLotCategorie2Code().equals(null)) {
+      validateCategorieCode(lotQuickInputJournal, 2, lotQuickInputJournal.getLotCategorie2Code());
     }
+    return lotQuickInputJournal;
+  }
 
-//Lot_Categorie_3_Code Code10
-   //OnValidateBEGIN
-   //IF ("Lot Categorie 3 Code" <> xRec."Lot Categorie 3 Code") AND
-   //   ("Lot Categorie 3 Code" <> '')
-   //THEN BEGIN
-   //  ValidateCategorieCode(3,"Lot Categorie 3 Code");
-   //END;//
-    public LotQuickInputJournal validateFiedLotCategorie3Code(
-        LotQuickInputJournal lotQuickInputJournal, ClassificationMembers lotCategorie3Code) {
-        lotQuickInputJournal.setLotCategorie3Code(lotQuickInputJournal.getLotCategorie3Code());
-        if (!lotQuickInputJournal
+  // Lot_Categorie_3_Code Code10
+  // OnValidateBEGIN
+  // IF ("Lot Categorie 3 Code" <> xRec."Lot Categorie 3 Code") AND
+  //   ("Lot Categorie 3 Code" <> '')
+  // THEN BEGIN
+  //  ValidateCategorieCode(3,"Lot Categorie 3 Code");
+  // END;//
+  public LotQuickInputJournal validateFiedLotCategorie3Code(
+      LotQuickInputJournal lotQuickInputJournal, ClassificationMembers lotCategorie3Code) {
+    lotQuickInputJournal.setLotCategorie3Code(lotQuickInputJournal.getLotCategorie3Code());
+    if (!lotQuickInputJournal
             .getLotCategorie3Code()
             .equals(lotQuickInputJournal.getLotCategorie3Code())
-            && !lotQuickInputJournal.getLotCategorie3Code().equals(null)) {
-            validateCategorieCode(lotQuickInputJournal, 3, lotQuickInputJournal.getLotCategorie3Code());
-        }
-        return lotQuickInputJournal;
+        && !lotQuickInputJournal.getLotCategorie3Code().equals(null)) {
+      validateCategorieCode(lotQuickInputJournal, 3, lotQuickInputJournal.getLotCategorie3Code());
     }
+    return lotQuickInputJournal;
+  }
 
-//Lot_Categorie_4_Code Code10
-   //OnValidateBEGIN
-   //IF ("Lot Categorie 4 Code" <> xRec."Lot Categorie 4 Code") AND
-   //   ("Lot Categorie 4 Code" <> '')
-   //THEN BEGIN
-   //  ValidateCategorieCode(4,"Lot Categorie 4 Code");
-   //END;//
-    public LotQuickInputJournal validateFiedLotCategorie4Code(
-        LotQuickInputJournal lotQuickInputJournal, ClassificationMembers lotCategorie4Code) {
-        lotQuickInputJournal.setLotCategorie4Code(lotQuickInputJournal.getLotCategorie4Code());
-        if (!lotQuickInputJournal
+  // Lot_Categorie_4_Code Code10
+  // OnValidateBEGIN
+  // IF ("Lot Categorie 4 Code" <> xRec."Lot Categorie 4 Code") AND
+  //   ("Lot Categorie 4 Code" <> '')
+  // THEN BEGIN
+  //  ValidateCategorieCode(4,"Lot Categorie 4 Code");
+  // END;//
+  public LotQuickInputJournal validateFiedLotCategorie4Code(
+      LotQuickInputJournal lotQuickInputJournal, ClassificationMembers lotCategorie4Code) {
+    lotQuickInputJournal.setLotCategorie4Code(lotQuickInputJournal.getLotCategorie4Code());
+    if (!lotQuickInputJournal
             .getLotCategorie4Code()
             .equals(lotQuickInputJournal.getLotCategorie4Code())
-            && !lotQuickInputJournal.getLotCategorie4Code().equals(null)) {
-            validateCategorieCode(lotQuickInputJournal, 4, lotQuickInputJournal.getLotCategorie4Code());
-        }
-        return lotQuickInputJournal;
+        && !lotQuickInputJournal.getLotCategorie4Code().equals(null)) {
+      validateCategorieCode(lotQuickInputJournal, 4, lotQuickInputJournal.getLotCategorie4Code());
     }
+    return lotQuickInputJournal;
+  }
 
+  // Value_Type Option
+  // OnValidateBEGIN
+  // GetDefaultExpert;//AP02.ISAT.ST//
 
-
-   //Value_Type Option
-      //OnValidateBEGIN
-      //GetDefaultExpert;//AP02.ISAT.ST//
-
-   
-   //Expert_Contact_No Code20
-      //OnValidateBEGIN
-      //IF "Expert Contact No." <> '' THEN
-      //  TESTFIELD("Value Type","Value Type"::Appraisal);//
-    public LotQuickInputJournal validateFiedExpertContactNo (
-        LotQuickInputJournal lotQuickInputJournal, Partner expertContactNo) throws AxelorException{
-        lotQuickInputJournal.setExpertContactNo(expertContactNo);
-        if (!lotQuickInputJournal.getExpertContactNo().equals(null)) {
-            if(!lotQuickInputJournal.getValueType().equals(LotQuickInputJournalRepository.VALUE_TYPE_SELECT_APPRAISAL)) {
-                throw new AxelorException(
-                        TraceBackRepository.CATEGORY_INCONSISTENCY,
-                        "Value type must be appraisal",
-                        lotQuickInputJournal.getValueType());
-            }
-        }
-        return lotQuickInputJournal;
-    }
-
-      /*
-       * LOCAL PROCEDURE ValidateCategorieCode@1000000002(CategorieNo@1000000000 : Integer;CategorieCode@1000000001 : Code[10]);
-    VAR
-      lLotTemplate@1000000003 : Record 8011411;
-      lClassMgt@1000000002 : Codeunit 8011371;
-    BEGIN
-      TESTFIELD("Lot Template Code");
-      IF NOT lLotTemplate.GET("Lot Template Code") THEN BEGIN
-        lLotTemplate.INIT;
-      END;
-      lClassMgt.ValidateLotClassCode(lLotTemplate."Sector Code",CategorieNo,CategorieCode);
-    END;
-       */
-      private void validateCategorieCode(LotQuickInputJournal lotQuickInputJournal, Integer categorieNo, ClassificationMembers categorieCode) {
-          //TODO
-            LotTemplate lLotTemplate = lotQuickInputJournal.getLotTemplateCode();
-            if (lLotTemplate == null) {
-                lLotTemplate = new LotTemplate();
-            } 
-            
-            classificationManagement.validateLotClassCode(lLotTemplate.getSectorCode(), categorieNo, categorieCode);
+  // Expert_Contact_No Code20
+  // OnValidateBEGIN
+  // IF "Expert Contact No." <> '' THEN
+  //  TESTFIELD("Value Type","Value Type"::Appraisal);//
+  public LotQuickInputJournal validateFiedExpertContactNo(
+      LotQuickInputJournal lotQuickInputJournal, Partner expertContactNo) throws AxelorException {
+    lotQuickInputJournal.setExpertContactNo(expertContactNo);
+    if (!lotQuickInputJournal.getExpertContactNo().equals(null)) {
+      if (!lotQuickInputJournal
+          .getValueType()
+          .equals(LotQuickInputJournalRepository.VALUE_TYPE_SELECT_APPRAISAL)) {
+        throw new AxelorException(
+            TraceBackRepository.CATEGORY_INCONSISTENCY,
+            "Value type must be appraisal",
+            lotQuickInputJournal.getValueType());
       }
-   
+    }
+    return lotQuickInputJournal;
+  }
+
+  /*
+     * LOCAL PROCEDURE ValidateCategorieCode@1000000002(CategorieNo@1000000000 : Integer;CategorieCode@1000000001 : Code[10]);
+  VAR
+    lLotTemplate@1000000003 : Record 8011411;
+    lClassMgt@1000000002 : Codeunit 8011371;
+  BEGIN
+    TESTFIELD("Lot Template Code");
+    IF NOT lLotTemplate.GET("Lot Template Code") THEN BEGIN
+      lLotTemplate.INIT;
+    END;
+    lClassMgt.ValidateLotClassCode(lLotTemplate."Sector Code",CategorieNo,CategorieCode);
+  END;
+     */
+  private void validateCategorieCode(
+      LotQuickInputJournal lotQuickInputJournal,
+      Integer categorieNo,
+      ClassificationMembers categorieCode) {
+    // TODO
+    LotTemplate lLotTemplate = lotQuickInputJournal.getLotTemplateCode();
+    if (lLotTemplate == null) {
+      lLotTemplate = new LotTemplate();
+    }
+
+    classificationManagement.validateLotClassCode(
+        lLotTemplate.getSectorCode(), categorieNo, categorieCode);
+  }
 }

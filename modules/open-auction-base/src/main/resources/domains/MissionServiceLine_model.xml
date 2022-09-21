@@ -22,10 +22,15 @@
     <decimal name="invoicedQuantity" title="Quantité facturée"/>
     <decimal name="outstandingQuantity" title="Quantité restante"/>
     <boolean name="auctionBid" title="Adjudication"/>
-    <many-to-one name="lotPriceGroup" title="Groupe prix lot" ref="com.axelor.apps.openauction.db.MissionLotPriceGroup"/>
-    <many-to-one name="auctionLotPriceGroup" title="Groupe prix lot" ref="com.axelor.apps.openauction.db.AuctionLotPriceGroup"/>
-    <many-to-one name="contactPriceGroup" title="Groupe prix contact" ref="com.axelor.apps.openauction.db.MissionContactPriceGroup"/>
-    <many-to-one name="chargeableContactNo" title="N° contact facturable" ref="com.axelor.apps.base.db.Partner"/>/>
+    <many-to-one name="lotPriceGroup" title="Groupe prix lot"
+      ref="com.axelor.apps.openauction.db.MissionLotPriceGroup"/>
+    <many-to-one name="auctionLotPriceGroup" title="Groupe prix lot"
+      ref="com.axelor.apps.openauction.db.AuctionLotPriceGroup"/>
+    <many-to-one name="contactPriceGroup" title="Groupe prix contact"
+      ref="com.axelor.apps.openauction.db.MissionContactPriceGroup"/>
+    <many-to-one name="chargeableContactNo" title="N° contact facturable"
+      ref="com.axelor.apps.base.db.Partner"/>
+    />
     <date name="priceDate" title="Date tarif"/>
     <decimal name="unitPrice" title="Prix unitaire"/>
     <decimal name="amount" title="Montant HT"/>
@@ -105,9 +110,7 @@
     <extra-code>
       <![CDATA[
 
-      //openauction.transactionType.select
-      public static final String TRANSACTIONTYPE_SELECT_MISSION = "Mission0";
-      public static final String TRANSACTIONTYPE_SELECT_VENTE = "Auction1";
+
 
       //openauction.invoicingType.select.missionserviceline
       public static final String INVOICINGTYPE_SELECT_BILLABLE = "Billable";
@@ -118,6 +121,12 @@
       //openauction.transactionType.select
       public static final String TRANSACTIONTYPE_SELECT_MISSION = "Mission0";
       public static final String TRANSACTIONTYPE_SELECT_VENTE = "Auction1";
+
+
+      //openauction.contactImputationType.select
+      public static final String CONTACTIMPUTATIONTYPE_SELECT_SELLER = "Seller0";
+      public static final String CONTACTIMPUTATIONTYPE_SELECT_BUYER = "Buyer1";
+      public static final String CONTACTIMPUTATIONTYPE_SELECT_NONE = "None2";
       ]]>
     </extra-code>
   </entity>

@@ -246,7 +246,8 @@ public class LotTemplateManagementImpl implements LotTemplateManagement {
       throws AxelorException {
     if (pLotInputJournal.getLotTemplateCode() == null) {
       throw new AxelorException(
-        TraceBackRepository.CATEGORY_INCONSISTENCY, "Vous devez spécifier le modèle de lot pour calculer le prix de réserve");
+          TraceBackRepository.CATEGORY_INCONSISTENCY,
+          "Vous devez spécifier le modèle de lot pour calculer le prix de réserve");
     }
     if (pLotInputJournal.getNetReservePrice() != BigDecimal.ZERO) {
       BigDecimal reserveGrossPrice = pLotInputJournal.getNetReservePrice();
@@ -265,7 +266,8 @@ public class LotTemplateManagementImpl implements LotTemplateManagement {
       throws AxelorException {
     if (pLotInputJournal.getLotTemplateCode() == null) {
       throw new AxelorException(
-        TraceBackRepository.CATEGORY_INCONSISTENCY, "Vous devez spécifier le modèle de lot pour calculer le prix de réserve");
+          TraceBackRepository.CATEGORY_INCONSISTENCY,
+          "Vous devez spécifier le modèle de lot pour calculer le prix de réserve");
     }
     if (pLotInputJournal.getGrossReservePrice() != BigDecimal.ZERO) {
       BigDecimal reserveNetPrice = pLotInputJournal.getGrossReservePrice();
