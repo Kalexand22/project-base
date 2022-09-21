@@ -17,6 +17,7 @@ import com.axelor.apps.openauction.db.repo.LotRepository;
 import com.axelor.apps.openauctionbase.repository.LotExt;
 import com.axelor.apps.openauctionbase.util.TransferFields;
 import com.axelor.exception.AxelorException;
+import com.axelor.exception.db.repo.TraceBackRepository;
 import com.axelor.inject.Beans;
 import com.google.inject.Inject;
 import java.math.BigDecimal;
@@ -245,7 +246,7 @@ public class LotTemplateManagementImpl implements LotTemplateManagement {
       throws AxelorException {
     if (pLotInputJournal.getLotTemplateCode() == null) {
       throw new AxelorException(
-          0, "Vous devez spécifier le modèle de lot pour calculer le prix de réserve");
+        TraceBackRepository.CATEGORY_INCONSISTENCY, "Vous devez spécifier le modèle de lot pour calculer le prix de réserve");
     }
     if (pLotInputJournal.getNetReservePrice() != BigDecimal.ZERO) {
       BigDecimal reserveGrossPrice = pLotInputJournal.getNetReservePrice();
@@ -264,7 +265,7 @@ public class LotTemplateManagementImpl implements LotTemplateManagement {
       throws AxelorException {
     if (pLotInputJournal.getLotTemplateCode() == null) {
       throw new AxelorException(
-          0, "Vous devez spécifier le modèle de lot pour calculer le prix de réserve");
+        TraceBackRepository.CATEGORY_INCONSISTENCY, "Vous devez spécifier le modèle de lot pour calculer le prix de réserve");
     }
     if (pLotInputJournal.getGrossReservePrice() != BigDecimal.ZERO) {
       BigDecimal reserveNetPrice = pLotInputJournal.getGrossReservePrice();

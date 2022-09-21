@@ -10,6 +10,7 @@
     <many-to-one name="auctionNo" title="N° vente"
       ref="com.axelor.apps.openauction.db.AuctionHeader"/>
     <many-to-one name="lotNo" title="N° lot" ref="com.axelor.apps.openauction.db.Lot"/>
+    <many-to-one name="productNo" title="N° lot" ref="com.axelor.apps.base.db.Product"/>
     <string name="transactionType" title="Type de transaction"
       selection="openauction.transactionType.select"/>
     <long name="documentNo" title="N° de document"/>
@@ -21,9 +22,10 @@
     <decimal name="invoicedQuantity" title="Quantité facturée"/>
     <decimal name="outstandingQuantity" title="Quantité restante"/>
     <boolean name="auctionBid" title="Adjudication"/>
-    <string name="lotPriceGroup" title="Groupe prix lot"/>
-    <string name="contactPriceGroup" title="Groupe prix contact"/>
-    <string name="chargeableContactNo" title="N° contact facturable"/>
+    <many-to-one name="lotPriceGroup" title="Groupe prix lot" ref="com.axelor.apps.openauction.db.MissionLotPriceGroup"/>
+    <many-to-one name="auctionLotPriceGroup" title="Groupe prix lot" ref="com.axelor.apps.openauction.db.AuctionLotPriceGroup"/>
+    <many-to-one name="contactPriceGroup" title="Groupe prix contact" ref="com.axelor.apps.openauction.db.MissionContactPriceGroup"/>
+    <many-to-one name="chargeableContactNo" title="N° contact facturable" ref="com.axelor.apps.base.db.Partner"/>/>
     <date name="priceDate" title="Date tarif"/>
     <decimal name="unitPrice" title="Prix unitaire"/>
     <decimal name="amount" title="Montant HT"/>
@@ -111,6 +113,11 @@
       public static final String INVOICINGTYPE_SELECT_BILLABLE = "Billable";
       public static final String INVOICINGTYPE_SELECT_BILLABLEONBID = "BillableOnBid";
       public static final String INVOICINGTYPE_SELECT_UNBILLABLE = "Unbillable";
+
+
+      //openauction.transactionType.select
+      public static final String TRANSACTIONTYPE_SELECT_MISSION = "Mission0";
+      public static final String TRANSACTIONTYPE_SELECT_VENTE = "Auction1";
       ]]>
     </extra-code>
   </entity>

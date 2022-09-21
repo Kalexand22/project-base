@@ -44,13 +44,13 @@
     <boolean name="groupingAuthorization" title="Regroupement autorisé"/>
     <boolean name="ungroupingAuthorization" title="Dégroupement autorisé"/>
     <many-to-one name="lotCategorie1Code1" title="Code catégorie 1"
-      ref="com.axelor.apps.openauction.db.ClassificationMembers1"/>
+      ref="com.axelor.apps.openauction.db.ClassificationMembers"/>
     <many-to-one name="lotCategorie2Code1" title="Code catégorie 2"
-      ref="com.axelor.apps.openauction.db.ClassificationMembers2"/>
+      ref="com.axelor.apps.openauction.db.ClassificationMembers"/>
     <many-to-one name="lotCategorie3Code1" title="Code catégorie 3"
-      ref="com.axelor.apps.openauction.db.ClassificationMembers3"/>
+      ref="com.axelor.apps.openauction.db.ClassificationMembers"/>
     <many-to-one name="lotCategorie4Code1" title="Code catégorie 4"
-      ref="com.axelor.apps.openauction.db.ClassificationMembers4"/>
+      ref="com.axelor.apps.openauction.db.ClassificationMembers"/>
     <many-to-one name="auctionProductFamily"
       title="Famille comptable de produit adjudication" ref="com.axelor.apps.base.db.ProductFamily"/>
     <many-to-one name="lotMissionPriceGroup" title="Groupe tarif mission lot"
