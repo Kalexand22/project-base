@@ -28,6 +28,8 @@
       ref="com.axelor.apps.openauction.db.AuctionLotPriceGroup"/>
     <many-to-one name="contactPriceGroup" title="Groupe prix contact"
       ref="com.axelor.apps.openauction.db.MissionContactPriceGroup"/>
+    <many-to-one name="auctionContactPriceGroup" title="Groupe prix contact"
+      ref="com.axelor.apps.openauction.db.AuctionContactPriceGroup"/>
     <many-to-one name="chargeableContactNo" title="N° contact facturable"
       ref="com.axelor.apps.base.db.Partner"/>
     />
@@ -51,7 +53,7 @@
     <string name="lotImputationType" title="Type imputation lot"
       selection="openauction.lotImputationType.select"/>
     <string name="serviceType" title="Type prestation"
-      selection="openauction.serviceType.select"/>
+      selection="openauction.serviceType.select.missionserviceline"/>
     <string name="imputationBase" title="Base Imputation"
       selection="openauction.imputationBase.select"/>
     <boolean name="chargeable" title="Facturable"/>
@@ -127,6 +129,12 @@
       public static final String CONTACTIMPUTATIONTYPE_SELECT_SELLER = "Seller0";
       public static final String CONTACTIMPUTATIONTYPE_SELECT_BUYER = "Buyer1";
       public static final String CONTACTIMPUTATIONTYPE_SELECT_NONE = "None2";
+
+
+      //openauction.serviceType.select.missionserviceline
+      public static final String SERVICETYPE_SELECT_COMMISSION = "Commission0";
+      public static final String SERVICETYPE_SELECT_EXPENSE = "Expense1";
+      public static final String SERVICETYPE_SELECT_AUCTIONBID = "AuctionBid2";
       ]]>
     </extra-code>
   </entity>

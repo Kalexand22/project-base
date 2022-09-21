@@ -911,6 +911,11 @@
     <option value="Mission1">Mission</option>
     <option value="Segment2">Segment</option>
   </selection>
+  <selection name="openauction.serviceType.select.missionserviceline">
+    <option value="Commission">Honoraire</option>
+    <option value="Expense">Débours</option>
+    <option value="AuctionBid">Adjudication</option>
+  </selection>
   <selection name="openauction.notificationType.select">
     <option value="Signed0">Signé</option>
     <option value="Attributedto1">Attribué à</option>

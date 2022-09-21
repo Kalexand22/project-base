@@ -26,7 +26,7 @@ public class ContactTemplateServiceImpl implements ContactTemplateService {
   }
 
   @Override
-  @Transactional
+  @Transactional(rollbackOn = {Exception.class})
   public Partner createContactFromTemplate(ContactTemplate contactTemplate, Partner tmpPartner) {
     log.debug("Creation d'un contact depuis un modèle");
     tmpPartner.setIsContact(true);
