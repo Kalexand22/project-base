@@ -1,4 +1,4 @@
-package com.axelor.apps.openauctionbase.validatefield;
+package com.axelor.apps.openauctionbase.validate;
 
 import com.axelor.apps.account.db.FiscalPosition;
 import com.axelor.apps.base.db.Partner;
@@ -7,11 +7,14 @@ import com.axelor.apps.base.db.Unit;
 import com.axelor.apps.base.service.app.AppBaseService;
 import com.axelor.apps.openauction.db.AuctionHeader;
 import com.axelor.apps.openauction.db.AuctionLine;
+import com.axelor.apps.openauction.db.AuctionSetup;
 import com.axelor.apps.openauction.db.Lot;
 import com.axelor.apps.openauction.db.MissionContactPriceGroup;
 import com.axelor.apps.openauction.db.MissionHeader;
 import com.axelor.apps.openauction.db.MissionLotPriceGroup;
 import com.axelor.apps.openauction.db.MissionServiceLine;
+import com.axelor.apps.openauction.db.repo.AuctionLineRepository;
+import com.axelor.apps.openauction.db.repo.AuctionSetupRepository;
 import com.axelor.apps.openauction.db.repo.MissionServiceLineRepository;
 import com.axelor.auth.AuthUtils;
 import com.axelor.exception.AxelorException;
@@ -21,9 +24,10 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 
-public class MissionServiceLineValidatefield {
+public class MissionServiceLineValidate {
 
   private Boolean skipChangeCheck = false;
+  AuctionLine auctionLine = null;
   /*
   // Mission_No Code20
   // OnValidateBEGIN
@@ -45,7 +49,7 @@ public class MissionServiceLineValidatefield {
   //  "Responsibility Center" := MissionHeader."Responsibility Center"; // AP11 isat.sf
 
   //// ChangeDocumentNo; //ap46 isat.zw//*/
-  public MissionServiceLine validateFieldMissionNo(
+  public MissionServiceLine validateMissionNo(
       MissionServiceLine missionServiceLine, MissionHeader missionNo) throws AxelorException {
     missionServiceLine.setMissionNo(missionNo);
     missionServiceLine.setMissionTemplateCode(missionNo.getMissionTemplateCode());
@@ -56,7 +60,7 @@ public class MissionServiceLineValidatefield {
     missionServiceLine = this.GetMissVATBus(missionServiceLine);
     if (missionServiceLine.getProductNo() != null) {
       missionServiceLine =
-          this.validateFieldContactImputationType(
+          this.validateContactImputationType(
               missionServiceLine, missionServiceLine.getContactImputationType());
     }
 
@@ -83,7 +87,7 @@ public class MissionServiceLineValidatefield {
     }
     if (fiscalPosition != missionServiceLine.getSellerFiscalPosition()) {
       missionServiceLine =
-          this.validateFieldSellerFiscalePosition(missionServiceLine, fiscalPosition);
+          this.validateSellerFiscalePosition(missionServiceLine, fiscalPosition);
     }
 
     return missionServiceLine;
@@ -114,7 +118,7 @@ public class MissionServiceLineValidatefield {
   //// >>AP24.ST
   // END;
   //// >> AP19 isat.SF//*/
-  public MissionServiceLine validateFieldAuctionNo(
+  public MissionServiceLine validateAuctionNo(
       MissionServiceLine missionServiceLine, AuctionHeader auctionNo) throws AxelorException {
     missionServiceLine.setAuctionNo(auctionNo);
     missionServiceLine.setAuctionTemplateCode(auctionNo.getAuctionTemplate());
@@ -124,7 +128,7 @@ public class MissionServiceLineValidatefield {
             .equals(MissionServiceLineRepository.TRANSACTIONTYPE_SELECT_VENTE)
         && missionServiceLine.getPriceDate() != auctionNo.getAuctionDate()) {
       missionServiceLine =
-          this.validateFieldPriceDate(missionServiceLine, auctionNo.getAuctionDate());
+          this.validatePriceDate(missionServiceLine, auctionNo.getAuctionDate());
     } else {
       missionServiceLine.setAuctionTemplateCode(null);
       missionServiceLine.setAuctionInclVAT(false);
@@ -162,7 +166,7 @@ public class MissionServiceLineValidatefield {
   // IF "No." <> '' THEN
   //  VALIDATE("No.");
   //// >>AP03.ISAT.ST//*/
-  public MissionServiceLine validateFieldLotNo(MissionServiceLine missionServiceLine, Lot lot)
+  public MissionServiceLine validateLotNo(MissionServiceLine missionServiceLine, Lot lot)
       throws AxelorException {
     missionServiceLine.setLotNo(lot);
     missionServiceLine.setLotTemplateCode(lot.getLotTemplateCode());
@@ -180,7 +184,7 @@ public class MissionServiceLineValidatefield {
     }
     if (missionServiceLine.getProductNo() != null) {
       missionServiceLine =
-          this.validateFieldNo(missionServiceLine, missionServiceLine.getProductNo());
+          this.validateNo(missionServiceLine, missionServiceLine.getProductNo());
     }
     return missionServiceLine;
   }
@@ -206,7 +210,7 @@ public class MissionServiceLineValidatefield {
   //  END;
   // END;
   // VALIDATE("VAT Prod. Posting Group");//*/
-  public MissionServiceLine validateFieldNo(
+  public MissionServiceLine validateNo(
       MissionServiceLine missionServiceLine, Product productNo) throws AxelorException {
     missionServiceLine.setProductNo(productNo);
     missionServiceLine.setDescription(productNo.getDescription());
@@ -226,19 +230,19 @@ public class MissionServiceLineValidatefield {
     }
     missionServiceLine.setCommissionType(productNo.getCommissionType());
     missionServiceLine =
-        this.validateFieldContactImputationType(
+        this.validateContactImputationType(
             missionServiceLine, productNo.getContactImputationType());
     missionServiceLine.setServiceType(productNo.getServiceType());
     missionServiceLine.setImputationBase(productNo.getImputationBase());
     missionServiceLine.setAppreciation(productNo.getValueAddedItem());
     missionServiceLine =
-        this.validateFieldUnitOfMeasureCode(missionServiceLine, productNo.getSalesUnit());
-    missionServiceLine = this.validateFieldUnitCost(missionServiceLine, productNo.getCostPrice());
+        this.validateUnitOfMeasureCode(missionServiceLine, productNo.getSalesUnit());
+    missionServiceLine = this.validateUnitCost(missionServiceLine, productNo.getCostPrice());
 
     return missionServiceLine;
   }
 
-  private MissionServiceLine validateFieldSellerFiscalePosition(
+  private MissionServiceLine validateSellerFiscalePosition(
       MissionServiceLine missionServiceLine, FiscalPosition fiscalPosition) {
     return null;
   }
@@ -266,7 +270,7 @@ public class MissionServiceLineValidatefield {
    //VALIDATE("Qty. to Invoice", "Outstanding Quantity");
    //CalcAmounts;
    //"Cost Amount" := "Unit Cost" * Quantity;//*/
-  public MissionServiceLine validateFieldQuantity(
+  public MissionServiceLine validateQuantity(
       MissionServiceLine missionServiceLine, BigDecimal quantity) throws AxelorException {
 
     if (missionServiceLine.getQuantity().compareTo(quantity) != 0) {
@@ -287,7 +291,7 @@ public class MissionServiceLineValidatefield {
     }
     missionServiceLine = this.InitOutstanding(missionServiceLine);
     missionServiceLine =
-        this.validateFieldQtyToInvoice(
+        this.validateQtyToInvoice(
             missionServiceLine, missionServiceLine.getOutstandingQuantity());
     missionServiceLine = this.CalcAmounts(missionServiceLine);
     missionServiceLine.setCostAmount(missionServiceLine.getUnitCost().multiply(quantity));
@@ -315,7 +319,7 @@ public class MissionServiceLineValidatefield {
    //  "Amount To Invoice Incl. VAT" := "Amount Incl. VAT" * ("Qty. to Invoice"/Quantity);
    ////>>AP26.ST//
    */
-  public MissionServiceLine validateFieldQtyToInvoice(
+  public MissionServiceLine validateQtyToInvoice(
       MissionServiceLine missionServiceLine, BigDecimal qtyToInvoice) throws AxelorException {
     missionServiceLine.setQtytoInvoice(qtyToInvoice);
     if (qtyToInvoice.multiply(missionServiceLine.getQuantity()).compareTo(BigDecimal.ZERO) < 0
@@ -338,14 +342,14 @@ public class MissionServiceLineValidatefield {
   // Invoiced_Quantity Decimal
   // OnValidateBEGIN
   // InitOutstanding; //AP26.ST//
-  public MissionServiceLine validateFieldInvoicedQuantity(
+  public MissionServiceLine validateInvoicedQuantity(
       MissionServiceLine missionServiceLine, BigDecimal invoicedQuantity) {
     missionServiceLine.setInvoicedQuantity(invoicedQuantity);
     missionServiceLine = this.InitOutstanding(missionServiceLine);
     return missionServiceLine;
   }
 
-  private MissionServiceLine validateFieldAcceptToInvoice(
+  private MissionServiceLine validateAcceptToInvoice(
       MissionServiceLine missionServiceLine, boolean b) {
     return null;
   }
@@ -372,7 +376,7 @@ public class MissionServiceLineValidatefield {
   //    VALIDATE("Accept To Invoice", TRUE);
   ////>>AP26.ST//
     */
-  public MissionServiceLine validateFieldOutstandingQuantity(
+  public MissionServiceLine validateOutstandingQuantity(
       MissionServiceLine missionServiceLine, BigDecimal outstandingQuantity) {
     missionServiceLine.setOutstandingQuantity(outstandingQuantity);
     if (outstandingQuantity.compareTo(missionServiceLine.getQuantity()) == 0) {
@@ -389,16 +393,16 @@ public class MissionServiceLineValidatefield {
     }
     missionServiceLine.setCompletelyInvoiced(outstandingQuantity.compareTo(BigDecimal.ZERO) == 0);
     if (outstandingQuantity.compareTo(BigDecimal.ZERO) == 0) {
-      missionServiceLine = this.validateFieldAcceptToInvoice(missionServiceLine, false);
+      missionServiceLine = this.validateAcceptToInvoice(missionServiceLine, false);
     } else {
       if (missionServiceLine.getChargeable()) {
-        missionServiceLine = this.validateFieldAcceptToInvoice(missionServiceLine, true);
+        missionServiceLine = this.validateAcceptToInvoice(missionServiceLine, true);
       }
     }
     return missionServiceLine;
   }
 
-  private MissionServiceLine validateFieldServiceType(
+  private MissionServiceLine validateServiceType(
       MissionServiceLine missionServiceLine, String servicetypeSelectAuctionbid) {
     return null;
   }
@@ -410,12 +414,12 @@ public class MissionServiceLineValidatefield {
   //  "Price Includes VAT" := "Auction Incl. VAT";
   //END;//
   */
-  public MissionServiceLine validateFieldAuctionBid(
+  public MissionServiceLine validateAuctionBid(
       MissionServiceLine missionServiceLine, boolean auctionBid) {
     missionServiceLine.setAuctionBid(auctionBid);
     if (auctionBid) {
       missionServiceLine =
-          this.validateFieldServiceType(
+          this.validateServiceType(
               missionServiceLine, MissionServiceLineRepository.SERVICETYPE_SELECT_AUCTIONBID);
       missionServiceLine.setPriceIncludesVAT(missionServiceLine.getAuctionInclVAT());
     }
@@ -430,7 +434,7 @@ public class MissionServiceLineValidatefield {
   // Lot_Price_Group Code10
   // OnValidateBEGIN
   // UpdatePrice; //AP23.ST//
-  public MissionServiceLine validateFieldLotPriceGroup(
+  public MissionServiceLine validateLotPriceGroup(
       MissionServiceLine missionServiceLine, MissionLotPriceGroup lotPriceGroup) {
     missionServiceLine.setLotPriceGroup(lotPriceGroup);
     missionServiceLine = this.UpdatePrice(missionServiceLine);
@@ -441,7 +445,7 @@ public class MissionServiceLineValidatefield {
     //OnValidateBEGIN
     //UpdatePrice; //AP23.ST//
   */
-  public MissionServiceLine validateFieldContactPriceGroup(
+  public MissionServiceLine validateContactPriceGroup(
       MissionServiceLine missionServiceLine, MissionContactPriceGroup contactPriceGroup) {
     missionServiceLine.setContactPriceGroup(contactPriceGroup);
     missionServiceLine = this.UpdatePrice(missionServiceLine);
@@ -475,7 +479,7 @@ public class MissionServiceLineValidatefield {
   //  END;
   //END; // CASE//
    */
-  public MissionServiceLine validateFieldChargeableContactNo(
+  public MissionServiceLine validateChargeableContactNo(
       MissionServiceLine missionServiceLine, Partner chargeableContactNo) throws AxelorException {
 
     if (!missionServiceLine.getChargeableContactNo().equals(chargeableContactNo)) {
@@ -512,7 +516,7 @@ public class MissionServiceLineValidatefield {
         }
       } else {
         missionServiceLine =
-            this.validateFieldMissionNo(missionServiceLine, missionServiceLine.getMissionNo());
+            this.validateMissionNo(missionServiceLine, missionServiceLine.getMissionNo());
       }
     }
     return missionServiceLine;
@@ -523,7 +527,7 @@ public class MissionServiceLineValidatefield {
   //IF (CurrFieldNo = FIELDNO("Price Date")) AND ("Transaction Type" = "Transaction Type"::Auction) THEN
   //  ERROR(Text8011405);
   //UpdatePrice;// */
-  public MissionServiceLine validateFieldPriceDate(
+  public MissionServiceLine validatePriceDate(
       MissionServiceLine missionServiceLine, LocalDate priceDate) throws AxelorException {
     if (missionServiceLine
         .getTransactionType()
@@ -556,7 +560,7 @@ public class MissionServiceLineValidatefield {
   //      //VALIDATE("Fixed Amount",TRUE);
   //      TESTFIELD("Fixed Amount",TRUE); // AP41 isat.sf//
   */
-  public MissionServiceLine validateFieldUnitPrice(
+  public MissionServiceLine validateUnitPrice(
       MissionServiceLine missionServiceLine, BigDecimal unitPrice) throws AxelorException {
     missionServiceLine.setUnitPrice(unitPrice);
     missionServiceLine = this.checkIfInvoiced(missionServiceLine);
@@ -585,7 +589,7 @@ public class MissionServiceLineValidatefield {
   /*//Amount Decimal
   //OnValidateBEGIN
   //CalcAmounts;// */
-  public MissionServiceLine validateFieldAmount(
+  public MissionServiceLine validateAmount(
       MissionServiceLine missionServiceLine, BigDecimal amount) throws AxelorException {
     missionServiceLine.setAmount(amount);
     missionServiceLine = this.CalcAmounts(missionServiceLine);
@@ -601,14 +605,14 @@ public class MissionServiceLineValidatefield {
   //    VALIDATE("Unit Price", "Unit Cost" * (1+(Item."Profit %"/100)));
   //END;
   ////>>AP30.ST// */
-  public MissionServiceLine validateFieldUnitCost(
+  public MissionServiceLine validateUnitCost(
       MissionServiceLine missionServiceLine, BigDecimal unitCost) throws AxelorException {
     missionServiceLine.setUnitCost(unitCost);
     missionServiceLine.setCostAmount(
         missionServiceLine.getUnitCost().multiply(missionServiceLine.getQuantity()));
     if (missionServiceLine.getUnitCost().compareTo(BigDecimal.ZERO) != 0) {
       missionServiceLine =
-          this.validateFieldUnitPrice(
+          this.validateUnitPrice(
               missionServiceLine,
               missionServiceLine
                   .getUnitCost()
@@ -625,7 +629,7 @@ public class MissionServiceLineValidatefield {
   /*//Unit_of_Measure_Code Code10
   //OnValidateBEGIN
   //GetQtyPerUnit;// */
-  public MissionServiceLine validateFieldUnitOfMeasureCode(
+  public MissionServiceLine validateUnitOfMeasureCode(
       MissionServiceLine missionServiceLine, Unit unitOfMeasureCode) throws AxelorException {
     missionServiceLine.setUnitofMeasureCode(unitOfMeasureCode);
     missionServiceLine = this.getQtyPerUnit(missionServiceLine);
@@ -656,7 +660,7 @@ public class MissionServiceLineValidatefield {
   //END; // CASE
   //IF NewContactNo <> "Chargeable Contact No." THEN
   //  VALIDATE("Chargeable Contact No.", NewContactNo);// */
-  public MissionServiceLine validateFieldContactImputationType(
+  public MissionServiceLine validateContactImputationType(
       MissionServiceLine missionServiceLine, String contactImputationType) throws AxelorException {
     missionServiceLine.setContactImputationType(contactImputationType);
     Partner newContactNo = new Partner();
@@ -681,14 +685,50 @@ public class MissionServiceLineValidatefield {
         break;
     }
     if (!newContactNo.equals(missionServiceLine.getChargeableContactNo())) {
-      missionServiceLine = this.validateFieldChargeableContactNo(missionServiceLine, newContactNo);
+      missionServiceLine = this.validateChargeableContactNo(missionServiceLine, newContactNo);
     }
     return missionServiceLine;
   }
 
+  /*
+   * LOCAL PROCEDURE GetAuctionLine@1000000010() : Boolean;
+    BEGIN
+      //AP02.ISAT.ST
+      IF ("Auction No." = '') OR ("Lot No." = '') OR ("Transaction Line No." = 0) THEN BEGIN
+        CLEAR(AuctionLine);
+        EXIT(FALSE);
+      END;
+
+      IF (AuctionLine."Auction No." = "Auction No.") AND (AuctionLine."Lot No." = "Lot No.") AND
+         (AuctionLine."Line No." = "Transaction Line No.") THEN
+        EXIT(TRUE);
+
+      AuctionLine.SETRANGE("Auction No.","Auction No.");
+      AuctionLine.SETRANGE("Line No.","Transaction Line No."); // isat.sf
+      AuctionLine.SETRANGE("Lot No.","Lot No.");
+      IF AuctionLine.FINDFIRST THEN
+        EXIT(TRUE)
+      ELSE BEGIN
+        CLEAR(AuctionLine);
+        EXIT(FALSE);
+      END;
+    END;
+   */
   private AuctionLine getAuctionLine(MissionServiceLine missionServiceLine) {
-    // TODO getAuctionLine
-    return null;
+    if(missionServiceLine.getAuctionNo() == null || missionServiceLine.getLotNo() == null || missionServiceLine.getTransactionLineNo() == 0)  {
+      return null;
+    }
+    if(auctionLine != null && auctionLine.getAuctionNo().equals(missionServiceLine.getAuctionNo()) && 
+      auctionLine.getLotNo().equals(missionServiceLine.getLotNo()) && auctionLine.getLineNo() == missionServiceLine.getTransactionLineNo()) {
+      return auctionLine;
+    }
+
+    auctionLine = Beans.get(AuctionLineRepository.class)
+                        .all()
+                          .filter("self.auctionNo = ?1 AND self.lotNo = ?2 AND self.lineNo = ?3", 
+                          missionServiceLine.getAuctionNo(), missionServiceLine.getLotNo(), missionServiceLine.getTransactionLineNo())
+                          .fetchOne();
+    return auctionLine;
   }
   /*//Chargeable Boolean
   //OnValidateBEGIN
@@ -699,16 +739,16 @@ public class MissionServiceLineValidatefield {
   //  ELSE
   //    VALIDATE("Accept To Invoice", FALSE);
   //END;// */
-  public MissionServiceLine validateFieldChargeable(
+  public MissionServiceLine validateChargeable(
       MissionServiceLine missionServiceLine, Boolean chargeable) throws AxelorException {
     missionServiceLine.setChargeable(chargeable);
     if (missionServiceLine.getAcceptToInvoice() != missionServiceLine.getChargeable()) {
       if (missionServiceLine.getOutstandingQuantity().compareTo(BigDecimal.ZERO) != 0) {
         missionServiceLine =
-            this.validateFieldAcceptToInvoice(
+            this.validateAcceptToInvoice(
                 missionServiceLine, missionServiceLine.getChargeable());
       } else {
-        missionServiceLine = this.validateFieldAcceptToInvoice(missionServiceLine, false);
+        missionServiceLine = this.validateAcceptToInvoice(missionServiceLine, false);
       }
     }
     return missionServiceLine;
@@ -738,20 +778,20 @@ public class MissionServiceLineValidatefield {
   //    TESTFIELD("Fixed Amount",TRUE); // AP41 isat.sf
   ////>> AP44 isat.sf//
   */
-  public MissionServiceLine validateFieldPriceIncludesVAT(
+  public MissionServiceLine validatePriceIncludesVAT(
       MissionServiceLine missionServiceLine, Boolean priceIncludesVAT) throws AxelorException {
     missionServiceLine.setPriceIncludesVAT(priceIncludesVAT);
     if (missionServiceLine.getQuantity().compareTo(BigDecimal.ZERO) != 0) {
       if (missionServiceLine.getPriceIncludesVAT()) {
         missionServiceLine =
-            this.validateFieldUnitPrice(
+            this.validateUnitPrice(
                 missionServiceLine,
                 missionServiceLine
                     .getAmountInclVAT()
                     .divide(missionServiceLine.getQuantity(), 2, RoundingMode.HALF_UP));
       } else {
         missionServiceLine =
-            this.validateFieldUnitPrice(
+            this.validateUnitPrice(
                 missionServiceLine,
                 missionServiceLine
                     .getAmount()
@@ -789,7 +829,7 @@ public class MissionServiceLineValidatefield {
   //    IF Rec."Service %" <> 0 THEN
   //      //VALIDATE("Fixed Amount",TRUE);
   //      TESTFIELD("Fixed Amount",TRUE); // AP41 isat.sf// */
-  public MissionServiceLine validateFieldServicePercent(
+  public MissionServiceLine validateServicePercent(
       MissionServiceLine missionServiceLine, BigDecimal servicePercent) throws AxelorException {
     missionServiceLine.setServicePercent(servicePercent);
     missionServiceLine = this.checkIfInvoiced(missionServiceLine);
@@ -800,7 +840,7 @@ public class MissionServiceLineValidatefield {
               .getReferenceAmount()
               .multiply(missionServiceLine.getServicePercent())
               .divide(new BigDecimal(100), 2, RoundingMode.HALF_UP);
-      missionServiceLine = this.validateFieldUnitPrice(missionServiceLine, lUnitPrice);
+      missionServiceLine = this.validateUnitPrice(missionServiceLine, lUnitPrice);
     }
     if (missionServiceLine.getServicePercent().compareTo(servicePercent) != 0) {
       if (missionServiceLine.getServicePercent().compareTo(BigDecimal.ZERO) != 0
@@ -824,14 +864,14 @@ public class MissionServiceLineValidatefield {
   //END
   //ELSE
   //  VALIDATE("Qty. to Invoice", 0); */
-  public MissionServiceLine validateFieldAcceptToInvoice(
+  public MissionServiceLine validateAcceptToInvoice(
       MissionServiceLine missionServiceLine, Boolean acceptToInvoice) throws AxelorException {
     missionServiceLine.setAcceptToInvoice(acceptToInvoice);
     if (missionServiceLine.getAcceptToInvoice()) {
       if (missionServiceLine.getOutstandingQuantity().compareTo(BigDecimal.ZERO) == 0) {
         if (missionServiceLine.getChargeable()) {
           missionServiceLine =
-              this.validateFieldQtyToInvoice(
+              this.validateQtyToInvoice(
                   missionServiceLine, missionServiceLine.getOutstandingQuantity());
         } else {
           throw new AxelorException(
@@ -841,12 +881,12 @@ public class MissionServiceLineValidatefield {
         }
       }
     } else {
-      missionServiceLine = this.validateFieldQtyToInvoice(missionServiceLine, BigDecimal.ZERO);
+      missionServiceLine = this.validateQtyToInvoice(missionServiceLine, BigDecimal.ZERO);
     }
     return missionServiceLine;
   }
 
-  public MissionServiceLine validateFieldSellerFiscalPosition(
+  public MissionServiceLine validateSellerFiscalPosition(
       MissionServiceLine missionServiceLine, FiscalPosition sellerFiscalPosition)
       throws AxelorException {
     missionServiceLine.setSellerFiscalPosition(sellerFiscalPosition);
@@ -855,8 +895,212 @@ public class MissionServiceLineValidatefield {
     return missionServiceLine;
   }
 
+  /*
+   * PROCEDURE UpdateVAT@1000000017();
+    VAR
+      lVATPostingSetup@1000000002 : Record 325;
+      lAuctionSetup@1000000000 : Record 8011377;
+      lBuyerVATPostingGroup@1000000003 : Code[10];
+      OldVAT@1000000001 : Decimal;
+    BEGIN
+      OldVAT := "VAT %"; //AP26.ST
+      IF ("VAT Prod. Posting Group" <> '') AND
+         ("Gen. Prod. Posting Group" <> '') AND
+         ("Contact Imputation Type" <> "Contact Imputation Type"::None) THEN BEGIN
+        // Valeur par défaut acheteur
+        IF "Buyer VAT Bus. Posting Group" = '' THEN BEGIN
+          lAuctionSetup.GET;
+          lBuyerVATPostingGroup := lAuctionSetup."Default VAT Bus. Posting Group";
+        END
+        ELSE
+          lBuyerVATPostingGroup := "Buyer VAT Bus. Posting Group";
+        APPostingMgt.GetVATPostingSetup("Gen. Prod. Posting Group", "VAT Prod. Posting Group",
+                                        "Seller VAT Bus. Posting Group", lBuyerVATPostingGroup,
+                                        "Contact Imputation Type" = "Contact Imputation Type"::Buyer, "Auction Incl. VAT",
+                                        lVATPostingSetup);
+      END;
+
+      IF "Auction Bid" THEN BEGIN
+        "VAT %" := lVATPostingSetup."Bid VAT %";
+        "VAT Identifier" := lVATPostingSetup."Bid VAT Identifier";
+      END
+      ELSE BEGIN
+        "VAT %" := lVATPostingSetup."VAT %";
+        "VAT Identifier" := lVATPostingSetup."VAT Identifier";
+      END;
+      "VAT Calculation Type" := lVATPostingSetup."VAT Calculation Type";
+      //<<AP28.ST
+      IF ("VAT %" <> OldVAT) AND ("Price Includes VAT") THEN BEGIN
+        GetItem;
+        IF "Transaction Type" = "Transaction Type"::Mission THEN
+          MissionServicePriceMgt.VATConvert(Item,Rec)
+        ELSE
+          AuctionServicePriceMgt.VATConvert(Item,Rec);
+      END;
+      //>>AP28.ST
+      //<<AP25.ST
+      CASE "VAT Calculation Type" OF
+        "VAT Calculation Type"::"Reverse Charge VAT",
+        "VAT Calculation Type"::Exemption, //AP48.ST
+        "VAT Calculation Type"::"Sales Tax":
+          "VAT %" := 0;
+      END;
+      //>>AP25.ST
+      CalcAmounts;
+    END;
+   */
   private MissionServiceLine updateVAT(MissionServiceLine missionServiceLine) {
-    // TODO updateVAT
-    return null;
+    FiscalPosition buyerFiscalPosition;
+    //BigDecimal oldVAT = missionServiceLine.getvATPercent();
+    if (missionServiceLine.getProductFamily() != null
+        && missionServiceLine.getContactImputationType() != null
+        && missionServiceLine.getContactImputationType() != MissionServiceLineRepository.CONTACTIMPUTATIONTYPE_SELECT_NONE) {
+      // Valeur par défaut acheteur
+      if (missionServiceLine.getBuyerFiscalPosition() == null) {
+        AuctionSetup auctionSetup = Beans.get(AuctionSetupRepository.class).all().fetchOne();
+        buyerFiscalPosition = auctionSetup.getDefaultFiscalPosition();
+      }
+      else
+        buyerFiscalPosition = missionServiceLine.getBuyerFiscalPosition();
+
+      //TODO : APPostingMgt.GetVATPostingSetup
+    }
+    return missionServiceLine;
+  }
+
+  /*//Buyer_VAT_Bus_Posting_Group Code10
+   //OnValidateBEGIN
+   ////<<AP09.ISAT.ST
+   //IF ("Buyer VAT Bus. Posting Group" <> '') AND
+   //   ("Buyer VAT Bus. Posting Group" <> xRec."Buyer VAT Bus. Posting Group") THEN
+   //  IF NOT SkipChangeCheck THEN
+   //    MissServLineTools.AllowBuyerVATGrpChange(Rec,TRUE);
+   ////>>AP09.ISAT.ST
+   //
+   ////<< AP07 ISAT.EB
+   //IF ("Buyer VAT Bus. Posting Group" <> '') AND
+   //   ("Buyer VAT Bus. Posting Group" <> xRec."Buyer VAT Bus. Posting Group")
+   //THEN BEGIN
+   //  IF CurrFieldNo = FIELDNO("Buyer VAT Bus. Posting Group") THEN
+   //    ERROR(Text8011401,FIELDCAPTION("Buyer VAT Bus. Posting Group"));
+   //END;
+   ////>> AP07 ISAT.EB
+   //
+   //UpdateVAT;// */
+  public MissionServiceLine validateBuyerFiscalPosition(
+      MissionServiceLine missionServiceLine, FiscalPosition buyerFiscalPosition) {
+    missionServiceLine.setBuyerFiscalPosition(buyerFiscalPosition);
+    missionServiceLine = this.updateVAT(missionServiceLine);
+    return missionServiceLine;
+  }
+
+
+  /*//Reserve_Variance Decimal
+   //OnValidateBEGIN
+   //IF "Reserve Variance" <> 0 THEN BEGIN
+   //  TESTFIELD("Auction Bid", TRUE);
+   //  TESTFIELD("Contact Imputation Type", "Contact Imputation Type"::Seller);
+   //END;
+   //TESTFIELD("Invoiced Quantity",0);// */
+  public MissionServiceLine validateReserveVariance(
+      MissionServiceLine missionServiceLine, BigDecimal reserveVariance) throws AxelorException {
+    missionServiceLine.setReserveVariance(reserveVariance);
+    if (missionServiceLine.getReserveVariance().compareTo(BigDecimal.ZERO) != 0) {
+      if (!missionServiceLine.getAuctionBid() ) {
+        throw new AxelorException(
+            missionServiceLine,
+            TraceBackRepository.CATEGORY_INCONSISTENCY,
+            "Le champ 'Adjudication' doit être coché");
+      } 
+      if (missionServiceLine.getContactImputationType() != MissionServiceLineRepository.CONTACTIMPUTATIONTYPE_SELECT_SELLER) {
+        throw new AxelorException(
+            missionServiceLine,
+            TraceBackRepository.CATEGORY_INCONSISTENCY,
+            "Le champ 'Type imputation contact' doit être de type 'Vendeur'");
+      }
+    }
+    if (missionServiceLine.getInvoicedQuantity().compareTo(BigDecimal.ZERO) != 0) {
+      throw new AxelorException(
+          missionServiceLine,
+          TraceBackRepository.CATEGORY_INCONSISTENCY,
+          "Le champ 'Quantité facturée' doit être différent de 0");
+    }
+    return missionServiceLine;
+  }
+
+  //Auction_Incl_VAT Boolean
+   //OnValidateBEGIN
+   //VALIDATE("Auction Bid"); // AP08 ISAT.EB
+   //UpdateVAT;//
+  public MissionServiceLine validateAuctionInclVAT(
+      MissionServiceLine missionServiceLine, Boolean auctionInclVAT) {
+    missionServiceLine.setAuctionInclVAT(auctionInclVAT);
+    missionServiceLine = this.validateAuctionBid(missionServiceLine, missionServiceLine.getAuctionBid());
+    missionServiceLine = this.updateVAT(missionServiceLine);
+    return missionServiceLine;
+  }
+  /*
+   * //Fixed_Amount Boolean
+   //OnValidateBEGIN
+   //IF CurrFieldNo = FIELDNO("Fixed Amount") THEN
+   //  CheckIfInvoiced;  // AP18 isat.sf
+
+   ////<< AP18 isat.sf
+   //IF (xRec."Fixed Amount" = TRUE) AND (Rec."Fixed Amount" = FALSE) THEN BEGIN
+   //  IF "Invoiced Amount" <> 0 THEN BEGIN
+   //    //VALIDATE("Unit Price","Invoiced Amount");
+   //    "Fixed Amount" := TRUE;
+   //  END ELSE BEGIN
+   //    UpdatePrice;
+   //  END;
+   //END; 
+   ////>> AP18 isat.sf
+
+   ////IF "Fixed Amount" = TRUE THEN    // désactivé AP20 isat.sf
+   ////  VALIDATE("Price Includes VAT",TRUE); //  AP19 isat.sf //ap37 isat.zw désactivé//
+   */
+  public MissionServiceLine validateFixedAmount(
+      MissionServiceLine missionServiceLine, Boolean fixedAmount) throws AxelorException {
+    missionServiceLine.setFixedAmount(fixedAmount);
+    if (missionServiceLine.getFixedAmount() && !fixedAmount) {
+
+      //TODO MISSION SERVICE LEDGER ENTRY
+      /* 
+      if (missionServiceLine.getInvoicedAmount().compareTo(BigDecimal.ZERO) != 0) {
+        missionServiceLine.setFixedAmount(true);
+      } else {
+        missionServiceLine = this.updatePrice(missionServiceLine);
+      } 
+      */
+    }
+    return missionServiceLine;
+  }
+  /*
+   * //Cancelled Option
+   //OnValidateBEGIN
+   ////<<AP29.ST
+   //TESTFIELD("Invoiced Quantity", 0);
+   //IF Cancelled = Cancelled::Yes THEN BEGIN
+   //  IF Chargeable THEN
+   //    VALIDATE(Chargeable, FALSE);
+   //END;
+   ////>>AP29.ST//
+   */
+  public MissionServiceLine validateCancelled(
+      MissionServiceLine missionServiceLine, Boolean cancelled) throws AxelorException {
+    missionServiceLine.setCancelled(cancelled);
+    if (missionServiceLine.getInvoicedQuantity().compareTo(BigDecimal.ZERO) != 0) {
+      throw new AxelorException(
+          missionServiceLine,
+          TraceBackRepository.CATEGORY_INCONSISTENCY,
+          "Le champ 'Quantité facturée' doit être égal à 0");
+    }
+    if (missionServiceLine.getCancelled()) {
+      
+      if (missionServiceLine.getChargeable()) {
+        missionServiceLine = this.validateChargeable(missionServiceLine, false);
+      }
+    }
+    return missionServiceLine;
   }
 }

@@ -1,4 +1,4 @@
-package com.axelor.apps.openauctionbase.validatefield;
+package com.axelor.apps.openauctionbase.validate;
 
 import com.axelor.apps.base.db.Partner;
 import com.axelor.apps.openauction.db.AuctionHeader;
