@@ -16,7 +16,7 @@ public interface AuctionServicePriceMgt {
     //PROCEDURE FindAuctionServicePrice@1000000001(VAR pMissionServiceLine@1000000000 : Record 8011449;pBidPrice@1000000006 : Decimal;pEstimated@1000000004 : Boolean);
     public void findAuctionServicePrice(MissionServiceLine pMissionServiceLine, BigDecimal pBidPrice, Boolean pEstimated);
     //PROCEDURE UpdateAuctionServicePrice@1100281003(VAR pMissionServiceLine@1000000000 : Record 8011449;pEstimated@1000000004 : Boolean);
-    public void updateAuctionServicePrice(MissionServiceLine pMissionServiceLine, Boolean pEstimated);
+    public MissionServiceLine updateAuctionServicePrice(MissionServiceLine pMissionServiceLine, Boolean pEstimated);
     //PROCEDURE TestPrice@1000000008(pServicePrice@1000000008 : Record 8011427;DocTemplate@1000000006 : Code[20];DocNo@1000000005 : Code[20];LotGroup@1000000004 : Code[10];LotCode@1000000003 : Code[20];ContactGroup@1000000002 : Code[10];ContactCode@1000000001 : Code[20]) : Boolean;
     public Boolean testPrice(Object pServicePrice, String DocTemplate, String DocNo, String LotGroup, String LotCode, String ContactGroup, String ContactCode);
     //PROCEDURE GetAmount@1000000005(pMissionHeaderNo@1000000001 : Code[20];pLotNo@1000000000 : Code[20]);
