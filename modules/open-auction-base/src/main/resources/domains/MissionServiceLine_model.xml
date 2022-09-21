@@ -112,7 +112,7 @@
     <extra-code>
       <![CDATA[
 
-
+      
 
       //openauction.invoicingType.select.missionserviceline
       public static final String INVOICINGTYPE_SELECT_BILLABLE = "Billable";
@@ -135,6 +135,12 @@
       public static final String SERVICETYPE_SELECT_COMMISSION = "Commission0";
       public static final String SERVICETYPE_SELECT_EXPENSE = "Expense1";
       public static final String SERVICETYPE_SELECT_AUCTIONBID = "AuctionBid2";
+
+      
+      //openauction.type.select.servicetemplateline
+      public static final String TYPE_SELECT_SERVICETEMPLATELINE_SERVICE = "Service0";
+      public static final String TYPE_SELECT_SERVICETEMPLATELINE_RESSOURCE = "Ressource1";
+      public static final String TYPE_SELECT_SERVICETEMPLATELINE_EMPTY = "Empty2";
       ]]>
     </extra-code>
   </entity>

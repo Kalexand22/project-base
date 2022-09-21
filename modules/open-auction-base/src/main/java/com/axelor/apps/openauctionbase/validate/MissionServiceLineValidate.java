@@ -621,9 +621,27 @@ public class MissionServiceLineValidate {
     return missionServiceLine;
   }
 
-  private MissionServiceLine getQtyPerUnit(MissionServiceLine missionServiceLine) {
-    // TODO getQtyPerUnit
-    return null;
+  /*PROCEDURE GetQtyPerUnit@1000000005();
+    BEGIN
+      CASE Type OF
+        Type::Service : BEGIN
+          GetItem;
+          "Qty. per Unit Of Measure" := UOMMgt.GetQtyPerUnitOfMeasure(Item,"Unit of Measure Code");
+        END;
+        Type::Resource : BEGIN
+          IF "Unit of Measure Code" = '' THEN BEGIN
+            GetResource;
+            "Unit of Measure Code" := Resource."Base Unit of Measure";
+          END;
+          ResourceUnitofMeasure.GET("No.","Unit of Measure Code");
+          "Qty. per Unit Of Measure" := ResourceUnitofMeasure."Qty. per Unit of Measure";
+        END;
+      END;
+      VALIDATE(Quantity);
+    END; */
+  private MissionServiceLine getQtyPerUnit(MissionServiceLine missionServiceLine) {     
+      missionServiceLine.setQtyperUnitOfMeasure(BigDecimal.ONE);    
+    return missionServiceLine;
   }
 
   /*//Unit_of_Measure_Code Code10
