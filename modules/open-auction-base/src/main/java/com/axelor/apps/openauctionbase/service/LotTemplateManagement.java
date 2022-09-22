@@ -13,7 +13,7 @@ import java.util.Date;
 public interface LotTemplateManagement {
   // PROCEDURE CreateLot@1000000016(VAR pLotQuickInputJournal@1000000019 : Record 8011467;VAR
   // pNewLot@1000000006 : Record 8011404;pContactNo@1000000004 : Code[20]);
-  public LotExt CreateLot(LotQuickInputJournal pLotQuickInputJournal, Partner pContactNo);
+  public Lot CreateLot(LotQuickInputJournal pLotQuickInputJournal, Partner pContactNo);
   // PROCEDURE CreateLotFromContact@1000000005(VAR pLotQuickInputJournal@1000000001 : Record
   // 8011467;pContact@1000000000 : Record 5050);
   public void CreateLotFromContact(LotQuickInputJournal pLotQuickInputJournal, Partner pContact);

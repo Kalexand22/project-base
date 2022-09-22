@@ -15,7 +15,7 @@ import com.axelor.exception.db.repo.TraceBackRepository;
 import com.axelor.inject.Beans;
 import java.math.BigDecimal;
 
-public class LotQuickJournalInputValidateField {
+public class LotQuickJournalInputValidate {
 
   AuctionLotValueManagement auctionLotValueManagement = Beans.get(AuctionLotValueManagement.class);
   ClassificationManagement classificationManagement = Beans.get(ClassificationManagement.class);
@@ -28,7 +28,7 @@ public class LotQuickJournalInputValidateField {
                  END;
                  END;
   */
-  public LotQuickInputJournal validateFiedMissionNo(
+  public LotQuickInputJournal validateMissionNo(
       LotQuickInputJournal lotQuickInputJournal, MissionHeader missionNo) {
     lotQuickInputJournal.setMissionNo(missionNo);
     if (missionNo != null) {
@@ -50,7 +50,7 @@ public class LotQuickJournalInputValidateField {
                                                            END;
 
   */
-  public LotQuickInputJournal validateFiedAuctionNo(
+  public LotQuickInputJournal validateAuctionNo(
       LotQuickInputJournal lotQuickInputJournal, AuctionHeader auctionNo) {
     lotQuickInputJournal.setAuctionNo(auctionNo);
     if (auctionNo != null) {
@@ -92,7 +92,7 @@ public class LotQuickJournalInputValidateField {
                                                               END;
                                                             END;
   */
-  public LotQuickInputJournal validateFiedLotNo(
+  public LotQuickInputJournal validateLotNo(
       LotQuickInputJournal lotQuickInputJournal, Lot lotNo) {
     lotQuickInputJournal.setLotNo(lotNo);
     if (lotNo != null) {
@@ -134,7 +134,7 @@ public class LotQuickJournalInputValidateField {
 
                                                              GetDefaultExpert; //AP02.ISAT.ST
   */
-  public LotQuickInputJournal validateFiedLotTemplateCode(
+  public LotQuickInputJournal validateLotTemplateCode(
       LotQuickInputJournal lotQuickInputJournal, LotTemplate lotTemplateCode) {
     lotQuickInputJournal.setLotTemplateCode(lotTemplateCode);
     if (lotTemplateCode != null) {
@@ -184,7 +184,7 @@ public class LotQuickJournalInputValidateField {
   // IF "Line Type" <> "Line Type"::" " THEN BEGIN
   //  "Appraisal Value" := 0;
   // END;//
-  public LotQuickInputJournal validateFiedAppraisalValue(
+  public LotQuickInputJournal validateAppraisalValue(
       LotQuickInputJournal lotQuickInputJournal, BigDecimal appraisalValue) {
     lotQuickInputJournal.setAppraisalValue(appraisalValue);
     if (!lotQuickInputJournal
@@ -200,7 +200,7 @@ public class LotQuickJournalInputValidateField {
   // IF "Line Type" <> "Line Type"::" " THEN BEGIN
   //  "Min. Appraisal Value" := 0;
   // END;//
-  public LotQuickInputJournal validateFiedMinAppraisalValue(
+  public LotQuickInputJournal validateMinAppraisalValue(
       LotQuickInputJournal lotQuickInputJournal, BigDecimal minAppraisalValue) {
     lotQuickInputJournal.setMinAppraisalValue(minAppraisalValue);
     if (!lotQuickInputJournal
@@ -215,7 +215,7 @@ public class LotQuickJournalInputValidateField {
   // IF "Line Type" <> "Line Type"::" " THEN BEGIN
   //  "Max. Appraisal Value" := 0;
   // END;//
-  public LotQuickInputJournal validateFiedMaxAppraisalValue(
+  public LotQuickInputJournal validateMaxAppraisalValue(
       LotQuickInputJournal lotQuickInputJournal, BigDecimal maxAppraisalValue) {
     lotQuickInputJournal.setMaxAppraisalValue(maxAppraisalValue);
     if (!lotQuickInputJournal
@@ -232,7 +232,7 @@ public class LotQuickJournalInputValidateField {
   //  "Gross Reserve Price" := 0;
   // END;
   // AuctionLotValueMgt.CalcAuctionEstimByLotQuickJnl(Rec);//
-  public LotQuickInputJournal validateFiedGrossReservePrice(
+  public LotQuickInputJournal validateGrossReservePrice(
       LotQuickInputJournal lotQuickInputJournal, BigDecimal grossReservePrice) {
     lotQuickInputJournal.setGrossReservePrice(grossReservePrice);
     if (!lotQuickInputJournal
@@ -250,7 +250,7 @@ public class LotQuickJournalInputValidateField {
   // END;
   // AuctionLotValueMgt.CalcAuctionEstimByLotQuickJnl(Rec);//
 
-  public LotQuickInputJournal validateFiedNetReservePrice(
+  public LotQuickInputJournal validateNetReservePrice(
       LotQuickInputJournal lotQuickInputJournal, BigDecimal netReservePrice) {
     lotQuickInputJournal.setNetReservePrice(netReservePrice);
     if (!lotQuickInputJournal
@@ -266,7 +266,7 @@ public class LotQuickJournalInputValidateField {
   // IF "Line Type" <> "Line Type"::" " THEN BEGIN
   //  "Estimate Value" := 0;
   // END;//
-  public LotQuickInputJournal validateFiedEstimateValue(
+  public LotQuickInputJournal validateEstimateValue(
       LotQuickInputJournal lotQuickInputJournal, BigDecimal estimateValue) {
     lotQuickInputJournal.setEstimateValue(estimateValue);
     if (!lotQuickInputJournal
@@ -283,7 +283,7 @@ public class LotQuickJournalInputValidateField {
   //  "Min. Estimate Value" := 0;
   // END;
   // AuctionLotValueMgt.CalcAuctionEstimByLotQuickJnl(Rec);//
-  public LotQuickInputJournal validateFiedMinEstimateValue(
+  public LotQuickInputJournal validateMinEstimateValue(
       LotQuickInputJournal lotQuickInputJournal, BigDecimal minEstimateValue) {
     lotQuickInputJournal.setMinEstimateValue(minEstimateValue);
     if (!lotQuickInputJournal
@@ -301,7 +301,7 @@ public class LotQuickJournalInputValidateField {
   //  "Max. Estimate Value" := 0;
   // END;
   // AuctionLotValueMgt.CalcAuctionEstimByLotQuickJnl(Rec);//
-  public LotQuickInputJournal validateFiedMaxEstimateValue(
+  public LotQuickInputJournal validateMaxEstimateValue(
       LotQuickInputJournal lotQuickInputJournal, BigDecimal maxEstimateValue) {
     lotQuickInputJournal.setMaxEstimateValue(maxEstimateValue);
     if (!lotQuickInputJournal
@@ -321,7 +321,7 @@ public class LotQuickJournalInputValidateField {
   //  ValidateCategorieCode(1,"Lot Categorie 1 Code");
   // END;//
 
-  public LotQuickInputJournal validateFiedLotCategorie1Code(
+  public LotQuickInputJournal validateLotCategorie1Code(
       LotQuickInputJournal lotQuickInputJournal, ClassificationMembers lotCategorie1Code) {
     lotQuickInputJournal.setLotCategorie1Code(lotCategorie1Code);
     if (!lotQuickInputJournal
@@ -340,7 +340,7 @@ public class LotQuickJournalInputValidateField {
   // THEN BEGIN
   //  ValidateCategorieCode(2,"Lot Categorie 2 Code");
   // END;//
-  public LotQuickInputJournal validateFiedLotCategorie2Code(
+  public LotQuickInputJournal validateLotCategorie2Code(
       LotQuickInputJournal lotQuickInputJournal, ClassificationMembers lotCategorie2Code) {
     lotQuickInputJournal.setLotCategorie2Code(lotQuickInputJournal.getLotCategorie2Code());
     if (!lotQuickInputJournal
@@ -359,7 +359,7 @@ public class LotQuickJournalInputValidateField {
   // THEN BEGIN
   //  ValidateCategorieCode(3,"Lot Categorie 3 Code");
   // END;//
-  public LotQuickInputJournal validateFiedLotCategorie3Code(
+  public LotQuickInputJournal validateLotCategorie3Code(
       LotQuickInputJournal lotQuickInputJournal, ClassificationMembers lotCategorie3Code) {
     lotQuickInputJournal.setLotCategorie3Code(lotQuickInputJournal.getLotCategorie3Code());
     if (!lotQuickInputJournal
@@ -378,7 +378,7 @@ public class LotQuickJournalInputValidateField {
   // THEN BEGIN
   //  ValidateCategorieCode(4,"Lot Categorie 4 Code");
   // END;//
-  public LotQuickInputJournal validateFiedLotCategorie4Code(
+  public LotQuickInputJournal validateLotCategorie4Code(
       LotQuickInputJournal lotQuickInputJournal, ClassificationMembers lotCategorie4Code) {
     lotQuickInputJournal.setLotCategorie4Code(lotQuickInputJournal.getLotCategorie4Code());
     if (!lotQuickInputJournal
@@ -398,7 +398,7 @@ public class LotQuickJournalInputValidateField {
   // OnValidateBEGIN
   // IF "Expert Contact No." <> '' THEN
   //  TESTFIELD("Value Type","Value Type"::Appraisal);//
-  public LotQuickInputJournal validateFiedExpertContactNo(
+  public LotQuickInputJournal validateExpertContactNo(
       LotQuickInputJournal lotQuickInputJournal, Partner expertContactNo) throws AxelorException {
     lotQuickInputJournal.setExpertContactNo(expertContactNo);
     if (!lotQuickInputJournal.getExpertContactNo().equals(null)) {

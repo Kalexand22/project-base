@@ -35,7 +35,7 @@ public class LotTemplateManagementImpl implements LotTemplateManagement {
   MissionStatusManagement statusManagement;
   LotRepository lotRepository;
   LotInputJournalRepository lotInputJournalRepository;
-  LotExt lot;
+  Lot lot;
 
   @Inject
   public LotTemplateManagementImpl(
@@ -45,19 +45,19 @@ public class LotTemplateManagementImpl implements LotTemplateManagement {
     statusManagement = Beans.get(MissionStatusManagement.class);
     this.lotRepository = lotRepository;
     this.lotInputJournalRepository = lotInputJournalRepository;
-    this.lot = new LotExt();
+    this.lot = new Lot();
   }
 
   @Override
-  public LotExt CreateLot(LotQuickInputJournal pLotQuickInputJournal, Partner pContactNo) {
+  public Lot CreateLot(LotQuickInputJournal pLotQuickInputJournal, Partner pContactNo) {
     // lLot@1000000002 : Record 8011404;
-    LotExt lLot;
+    Lot lLot;
     LotTemplate lLotTemplate;
     lLotTemplate = pLotQuickInputJournal.getLotTemplateCode();
     if (lLotTemplate == null) {
       return null;
     }
-    lLot = new LotExt();
+    lLot = new Lot();
     lLot.setLotTemplateCode(pLotQuickInputJournal.getLotTemplateCode());
     // TODO lLotTemplate.CheckBeforeUsage;
     lLot = (LotExt) TransferFields.transferFields(lLotTemplate, lLot);
@@ -126,7 +126,7 @@ public class LotTemplateManagementImpl implements LotTemplateManagement {
 
   @Override
   public void CreateLotFromContact(LotQuickInputJournal pLotQuickInputJournal, Partner pContact) {
-    LotExt lLot = new LotExt();
+    Lot lLot = new Lot();
     lLot = this.CreateLot(pLotQuickInputJournal, pContact);
     this.CreateLotValueEntry(
         pLotQuickInputJournal, lLot, lLot.getCurrentMissionNo(), lLot.getMissionLine());
@@ -135,20 +135,13 @@ public class LotTemplateManagementImpl implements LotTemplateManagement {
   @Override
   public Lot CreateLotFromMission(
       LotQuickInputJournal pLotQuickInputJournal, MissionHeader pMissionHeader) {
-    // lLot@1100281000 : Record 8011404;
-    LotExt lLot;
-    // lCounter@1000000001 : Integer;
-    int lCounter;
-    // lTotal@1000000000 : Integer;
-    int lTotal;
-    // lLotNoMission@1100481000 : Integer;
-    int lLotNoMission = pLotQuickInputJournal.getLotNoMission();
-
+    
     PostLotQuickInputFromMission(pLotQuickInputJournal, pMissionHeader);
     // IF LotNo <> '' THEN BEGIN
     if (lot != null) {
 
       if (!lot.getLotGeneralStatus().equals(LotRepository.LOTGENERALSTATUS_SELECT_ONMISSION)) {
+        //TODO OnValidate
         lot.setLotGeneralStatus(LotRepository.LOTGENERALSTATUS_SELECT_ONMISSION);
         lotRepository.save(lot);
       }
