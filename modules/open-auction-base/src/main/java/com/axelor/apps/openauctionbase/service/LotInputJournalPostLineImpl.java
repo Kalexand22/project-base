@@ -13,9 +13,7 @@ import com.axelor.exception.AxelorException;
 import com.axelor.inject.Beans;
 import com.google.inject.Inject;
 import com.google.inject.persist.Transactional;
-
 import java.time.LocalDate;
-
 
 public class LotInputJournalPostLineImpl implements LotInputJournalPostLine {
   // LotInputJournal@1000000000 : Record 8011498;
@@ -28,16 +26,14 @@ public class LotInputJournalPostLineImpl implements LotInputJournalPostLine {
   }
 
   @Override
-  @Transactional
-  (rollbackOn = {AxelorException.class})
+  @Transactional(rollbackOn = {AxelorException.class})
   public void runMissionHeader(MissionHeader pMissionHeader) throws AxelorException {
     for (LotInputJournal lLotInputJournal : pMissionHeader.getLotInputJournalList()) {
       lotInputJournal = lLotInputJournal;
       code();
-    }    
+    }
   }
 
-  
   private void code() throws AxelorException {
     /*
        * lMissionHeader@1000000002 : Record 8011402;
@@ -56,7 +52,9 @@ public class LotInputJournalPostLineImpl implements LotInputJournalPostLine {
     lTempLotQuickInputJournal.setMissionNo(lotInputJournal.getDocumentNo());
     lTempLotQuickInputJournal.setMissionLineNo(lotInputJournal.getDocumentLineNo());
     lTempLotQuickInputJournal.setValuationAtBest(lotInputJournal.getValuationAtBest());
-    lTempLotQuickInputJournal = lLotQuickJournalInputValidate.validateLotTemplateCode(lTempLotQuickInputJournal, lotInputJournal.getLotTemplateCode());
+    lTempLotQuickInputJournal =
+        lLotQuickJournalInputValidate.validateLotTemplateCode(
+            lTempLotQuickInputJournal, lotInputJournal.getLotTemplateCode());
     lTempLotQuickInputJournal.setLotTemplateCode(lotInputJournal.getLotTemplateCode());
     lTempLotQuickInputJournal.setDescription(lotInputJournal.getDescription());
     lTempLotQuickInputJournal.setQuantity(lotInputJournal.getQuantity());
@@ -69,7 +67,8 @@ public class LotInputJournalPostLineImpl implements LotInputJournalPostLine {
     lTempLotQuickInputJournal.setNetReservePrice(lotInputJournal.getNetReservePrice());
     lTempLotQuickInputJournal.setMinAuctionEstimValue(lotInputJournal.getMinAuctionEstimValue());
     lTempLotQuickInputJournal.setMaxAuctionEstimValue(lotInputJournal.getMaxAuctionEstimValue());
-    LocalDate workDate = Beans.get(AppBaseService.class).getTodayDate(AuthUtils.getUser().getActiveCompany());
+    LocalDate workDate =
+        Beans.get(AppBaseService.class).getTodayDate(AuthUtils.getUser().getActiveCompany());
     lTempLotQuickInputJournal.setPostingDate(workDate);
     lTempLotQuickInputJournal.setDocumentDate(workDate);
     lTempLotQuickInputJournal.setDescription(lotInputJournal.getDescription());
@@ -99,12 +98,12 @@ public class LotInputJournalPostLineImpl implements LotInputJournalPostLine {
 
     lot = lAPLotTemplateMgt.GetLotNoCreated();
     lotInputJournal.setCreatedLotNo(lot.getNo());
-    //lot = transferFields(lotInputJournal, lot);    
-    lot = (Lot)TransferFields.transferFields(lotInputJournal, lot);
+    // lot = transferFields(lotInputJournal, lot);
+    lot = (Lot) TransferFields.transferFields(lotInputJournal, lot);
     lotRepo.save(lot);
   }
 
-  // TODO: This method is not used in the code. 
+  // TODO: This method is not used in the code.
   /*
   private Lot transferFields(LotInputJournal pLotInputJournal, Lot pLot) {
     pLot.setAgeCode(pLotInputJournal.getAgeCode());

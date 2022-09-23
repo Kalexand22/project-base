@@ -9,7 +9,8 @@ import java.util.Date;
 public interface MissionServicePriceManagement {
   // PROCEDURE FindMissionServicePrice@1000000001(VAR pMissionServiceLine@1000000000 : Record
   // 8011449;pEstimated@1000000004 : Boolean);
-  public MissionServiceLine findMissionServicePrice(MissionServiceLine pMissionServiceLine, Boolean pEstimated);
+  public MissionServiceLine findMissionServicePrice(
+      MissionServiceLine pMissionServiceLine, Boolean pEstimated);
   // PROCEDURE FindMissServPWithBaseAmount@1100481001(VAR pMissionServiceLine@1000000000 : Record
   // 8011449;pBaseAmount@1100481000 : Decimal;pEstimated@1000000004 : Boolean);
   public void findMissServPWithBaseAmount(

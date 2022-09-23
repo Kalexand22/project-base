@@ -463,7 +463,7 @@
     <option value="Empty1"></option>
     <option value="Lot2">Lot</option>
   </selection>
-  
+
   <selection name="openauction.inventoryNature.select">
     <option value="Description0">Description</option>
     <option value="DescriptionEstimation1">Description+Estimation</option>

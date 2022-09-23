@@ -140,7 +140,7 @@ public class ActivityManagementImpl implements ActivityManagement {
       MissionHeader pMissionHeader,
       MissionLine pMissionLine,
       Boolean pActionOnly) {
-    Lot lLot = pMissionLine.getLot();
+    Lot lLot = pMissionLine.getNoLot();
     LotTemplate lLotTemplate = lLot == null ? null : lLot.getLotTemplateCode();
     CreateActivityLines(
         pActivityHeader,

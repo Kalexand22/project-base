@@ -91,8 +91,7 @@ public class MissionServiceLineValidate {
       fiscalPosition = missionServiceLine.getChargeableContactNo().getFiscalPosition();
     }
     if (fiscalPosition != missionServiceLine.getSellerFiscalPosition()) {
-      missionServiceLine =
-          this.validateSellerFiscalePosition(missionServiceLine, fiscalPosition);
+      missionServiceLine = this.validateSellerFiscalePosition(missionServiceLine, fiscalPosition);
     }
 
     return missionServiceLine;
@@ -132,8 +131,7 @@ public class MissionServiceLineValidate {
             .getTransactionType()
             .equals(MissionServiceLineRepository.TRANSACTIONTYPE_SELECT_VENTE)
         && missionServiceLine.getPriceDate() != auctionNo.getAuctionDate()) {
-      missionServiceLine =
-          this.validatePriceDate(missionServiceLine, auctionNo.getAuctionDate());
+      missionServiceLine = this.validatePriceDate(missionServiceLine, auctionNo.getAuctionDate());
     } else {
       missionServiceLine.setAuctionTemplateCode(null);
       missionServiceLine.setAuctionInclVAT(false);
@@ -188,8 +186,7 @@ public class MissionServiceLineValidate {
       missionServiceLine.setAuctionLotPriceGroup(lot.getLotAuctionPriceGroup());
     }
     if (missionServiceLine.getProductNo() != null) {
-      missionServiceLine =
-          this.validateNo(missionServiceLine, missionServiceLine.getProductNo());
+      missionServiceLine = this.validateNo(missionServiceLine, missionServiceLine.getProductNo());
     }
     return missionServiceLine;
   }
@@ -215,8 +212,8 @@ public class MissionServiceLineValidate {
   //  END;
   // END;
   // VALIDATE("VAT Prod. Posting Group");//*/
-  public MissionServiceLine validateNo(
-      MissionServiceLine missionServiceLine, Product productNo) throws AxelorException {
+  public MissionServiceLine validateNo(MissionServiceLine missionServiceLine, Product productNo)
+      throws AxelorException {
     missionServiceLine.setProductNo(productNo);
     missionServiceLine.setDescription(productNo.getDescription());
     if (missionServiceLine.getAuctionBid()) {
@@ -296,8 +293,7 @@ public class MissionServiceLineValidate {
     }
     missionServiceLine = this.InitOutstanding(missionServiceLine);
     missionServiceLine =
-        this.validateQtyToInvoice(
-            missionServiceLine, missionServiceLine.getOutstandingQuantity());
+        this.validateQtyToInvoice(missionServiceLine, missionServiceLine.getOutstandingQuantity());
     missionServiceLine = this.CalcAmounts(missionServiceLine);
     missionServiceLine.setCostAmount(missionServiceLine.getUnitCost().multiply(quantity));
     return missionServiceLine;
@@ -432,38 +428,38 @@ public class MissionServiceLineValidate {
   }
 
   /*
-   * PROCEDURE UpdatePrice@1100281000();
-    VAR
-      lMissionPriceMgt@1100281000 : Codeunit 8011332;
-      lAuctionPriceMgt@1100281001 : Codeunit 8011331;
-    BEGIN
-      IF "Auction Bid" THEN EXIT;
-      CheckQuantity;
-      //<<ap36 isat.zw
-      GetItem;
-      CASE Item."Service Price System" OF
-        Item."Service Price System"::Standard : BEGIN
-          IF "Transaction Type" = "Transaction Type"::Mission THEN
-            MissionServicePriceMgt.FindMissionServicePrice(Rec,FALSE)
-          ELSE
-            AuctionServicePriceMgt.UpdateAuctionServicePrice(Rec,FALSE);
-        END;
-        Item."Service Price System"::Transport : BEGIN
-          ShippingAgentPriceMgt.FindTransportServPrice(Rec,FALSE);
-        END;
-        Item."Service Price System"::Caretaker : BEGIN
-          CaretakerServPriceMgt.FindMissionServicePrice(Rec,FALSE);
-        END;
-      END;
-      //<<ap36 isat.zw
-    END;
-   */
+  * PROCEDURE UpdatePrice@1100281000();
+   VAR
+     lMissionPriceMgt@1100281000 : Codeunit 8011332;
+     lAuctionPriceMgt@1100281001 : Codeunit 8011331;
+   BEGIN
+     IF "Auction Bid" THEN EXIT;
+     CheckQuantity;
+     //<<ap36 isat.zw
+     GetItem;
+     CASE Item."Service Price System" OF
+       Item."Service Price System"::Standard : BEGIN
+         IF "Transaction Type" = "Transaction Type"::Mission THEN
+           MissionServicePriceMgt.FindMissionServicePrice(Rec,FALSE)
+         ELSE
+           AuctionServicePriceMgt.UpdateAuctionServicePrice(Rec,FALSE);
+       END;
+       Item."Service Price System"::Transport : BEGIN
+         ShippingAgentPriceMgt.FindTransportServPrice(Rec,FALSE);
+       END;
+       Item."Service Price System"::Caretaker : BEGIN
+         CaretakerServPriceMgt.FindMissionServicePrice(Rec,FALSE);
+       END;
+     END;
+     //<<ap36 isat.zw
+   END;
+  */
   private MissionServiceLine UpdatePrice(MissionServiceLine missionServiceLine) {
     MissionServicePriceManagement missionServicePriceManagement =
         Beans.get(MissionServicePriceManagement.class);
     AuctionServicePriceMgt auctionServicePriceMgt = Beans.get(AuctionServicePriceMgt.class);
-    //ShippingAgentPriceMgt shippingAgentPriceMgt = Beans.get(ShippingAgentPriceMgt.class);
-    //TODO ShippingAgentPriceMgt
+    // ShippingAgentPriceMgt shippingAgentPriceMgt = Beans.get(ShippingAgentPriceMgt.class);
+    // TODO ShippingAgentPriceMgt
     CaretakerServicePriceMgt caretakerServPriceMgt = Beans.get(CaretakerServicePriceMgt.class);
     if (missionServiceLine.getAuctionBid()) {
       return missionServiceLine;
@@ -471,19 +467,23 @@ public class MissionServiceLineValidate {
     missionServiceLine = this.CheckQuantity(missionServiceLine);
     switch (missionServiceLine.getProductNo().getServicePriceSystem()) {
       case ProductRepository.SERVICEPRICESYSTEM_SELECT_STANDARD:
-        if (missionServiceLine.getTransactionType().equals(MissionServiceLineRepository.TRANSACTIONTYPE_SELECT_MISSION)) {
+        if (missionServiceLine
+            .getTransactionType()
+            .equals(MissionServiceLineRepository.TRANSACTIONTYPE_SELECT_MISSION)) {
           missionServiceLine =
               missionServicePriceManagement.findMissionServicePrice(missionServiceLine, false);
         } else {
-          missionServiceLine = auctionServicePriceMgt.updateAuctionServicePrice(missionServiceLine, false);
+          missionServiceLine =
+              auctionServicePriceMgt.updateAuctionServicePrice(missionServiceLine, false);
         }
         break;
       case ProductRepository.SERVICEPRICESYSTEM_SELECT_TRANSPORT:
-        //missionServiceLine = shippingAgentPriceMgt.findTransportServPrice(missionServiceLine);
-        //TODO ShippingAgentPriceMgt
+        // missionServiceLine = shippingAgentPriceMgt.findTransportServPrice(missionServiceLine);
+        // TODO ShippingAgentPriceMgt
         break;
       case ProductRepository.SERVICEPRICESYSTEM_SELECT_CARETAKER:
-        missionServiceLine = caretakerServPriceMgt.findMissionServicePrice(missionServiceLine, false);
+        missionServiceLine =
+            caretakerServPriceMgt.findMissionServicePrice(missionServiceLine, false);
         break;
     }
     return missionServiceLine;
@@ -658,8 +658,8 @@ public class MissionServiceLineValidate {
   /*//Amount Decimal
   //OnValidateBEGIN
   //CalcAmounts;// */
-  public MissionServiceLine validateAmount(
-      MissionServiceLine missionServiceLine, BigDecimal amount) throws AxelorException {
+  public MissionServiceLine validateAmount(MissionServiceLine missionServiceLine, BigDecimal amount)
+      throws AxelorException {
     missionServiceLine.setAmount(amount);
     missionServiceLine = this.CalcAmounts(missionServiceLine);
     return missionServiceLine;
@@ -691,25 +691,25 @@ public class MissionServiceLineValidate {
   }
 
   /*PROCEDURE GetQtyPerUnit@1000000005();
-    BEGIN
-      CASE Type OF
-        Type::Service : BEGIN
-          GetItem;
-          "Qty. per Unit Of Measure" := UOMMgt.GetQtyPerUnitOfMeasure(Item,"Unit of Measure Code");
-        END;
-        Type::Resource : BEGIN
-          IF "Unit of Measure Code" = '' THEN BEGIN
-            GetResource;
-            "Unit of Measure Code" := Resource."Base Unit of Measure";
-          END;
-          ResourceUnitofMeasure.GET("No.","Unit of Measure Code");
-          "Qty. per Unit Of Measure" := ResourceUnitofMeasure."Qty. per Unit of Measure";
-        END;
+  BEGIN
+    CASE Type OF
+      Type::Service : BEGIN
+        GetItem;
+        "Qty. per Unit Of Measure" := UOMMgt.GetQtyPerUnitOfMeasure(Item,"Unit of Measure Code");
       END;
-      VALIDATE(Quantity);
-    END; */
-  private MissionServiceLine getQtyPerUnit(MissionServiceLine missionServiceLine) {     
-      missionServiceLine.setQtyperUnitOfMeasure(BigDecimal.ONE);    
+      Type::Resource : BEGIN
+        IF "Unit of Measure Code" = '' THEN BEGIN
+          GetResource;
+          "Unit of Measure Code" := Resource."Base Unit of Measure";
+        END;
+        ResourceUnitofMeasure.GET("No.","Unit of Measure Code");
+        "Qty. per Unit Of Measure" := ResourceUnitofMeasure."Qty. per Unit of Measure";
+      END;
+    END;
+    VALIDATE(Quantity);
+  END; */
+  private MissionServiceLine getQtyPerUnit(MissionServiceLine missionServiceLine) {
+    missionServiceLine.setQtyperUnitOfMeasure(BigDecimal.ONE);
     return missionServiceLine;
   }
 
@@ -778,43 +778,51 @@ public class MissionServiceLineValidate {
   }
 
   /*
-   * LOCAL PROCEDURE GetAuctionLine@1000000010() : Boolean;
-    BEGIN
-      //AP02.ISAT.ST
-      IF ("Auction No." = '') OR ("Lot No." = '') OR ("Transaction Line No." = 0) THEN BEGIN
-        CLEAR(AuctionLine);
-        EXIT(FALSE);
-      END;
+  * LOCAL PROCEDURE GetAuctionLine@1000000010() : Boolean;
+   BEGIN
+     //AP02.ISAT.ST
+     IF ("Auction No." = '') OR ("Lot No." = '') OR ("Transaction Line No." = 0) THEN BEGIN
+       CLEAR(AuctionLine);
+       EXIT(FALSE);
+     END;
 
-      IF (AuctionLine."Auction No." = "Auction No.") AND (AuctionLine."Lot No." = "Lot No.") AND
-         (AuctionLine."Line No." = "Transaction Line No.") THEN
-        EXIT(TRUE);
+     IF (AuctionLine."Auction No." = "Auction No.") AND (AuctionLine."Lot No." = "Lot No.") AND
+        (AuctionLine."Line No." = "Transaction Line No.") THEN
+       EXIT(TRUE);
 
-      AuctionLine.SETRANGE("Auction No.","Auction No.");
-      AuctionLine.SETRANGE("Line No.","Transaction Line No."); // isat.sf
-      AuctionLine.SETRANGE("Lot No.","Lot No.");
-      IF AuctionLine.FINDFIRST THEN
-        EXIT(TRUE)
-      ELSE BEGIN
-        CLEAR(AuctionLine);
-        EXIT(FALSE);
-      END;
-    END;
-   */
+     AuctionLine.SETRANGE("Auction No.","Auction No.");
+     AuctionLine.SETRANGE("Line No.","Transaction Line No."); // isat.sf
+     AuctionLine.SETRANGE("Lot No.","Lot No.");
+     IF AuctionLine.FINDFIRST THEN
+       EXIT(TRUE)
+     ELSE BEGIN
+       CLEAR(AuctionLine);
+       EXIT(FALSE);
+     END;
+   END;
+  */
   private AuctionLine getAuctionLine(MissionServiceLine missionServiceLine) {
-    if(missionServiceLine.getAuctionNo() == null || missionServiceLine.getLotNo() == null || missionServiceLine.getTransactionLineNo() == 0)  {
+    if (missionServiceLine.getAuctionNo() == null
+        || missionServiceLine.getLotNo() == null
+        || missionServiceLine.getTransactionLineNo() == 0) {
       return null;
     }
-    if(auctionLine != null && auctionLine.getAuctionNo().equals(missionServiceLine.getAuctionNo()) && 
-      auctionLine.getLotNo().equals(missionServiceLine.getLotNo()) && auctionLine.getLineNo() == missionServiceLine.getTransactionLineNo()) {
+    if (auctionLine != null
+        && auctionLine.getAuctionNo().equals(missionServiceLine.getAuctionNo())
+        && auctionLine.getLotNo().equals(missionServiceLine.getLotNo())
+        && auctionLine.getLineNo() == missionServiceLine.getTransactionLineNo()) {
       return auctionLine;
     }
 
-    auctionLine = Beans.get(AuctionLineRepository.class)
-                        .all()
-                          .filter("self.auctionNo = ?1 AND self.lotNo = ?2 AND self.lineNo = ?3", 
-                          missionServiceLine.getAuctionNo(), missionServiceLine.getLotNo(), missionServiceLine.getTransactionLineNo())
-                          .fetchOne();
+    auctionLine =
+        Beans.get(AuctionLineRepository.class)
+            .all()
+            .filter(
+                "self.auctionNo = ?1 AND self.lotNo = ?2 AND self.lineNo = ?3",
+                missionServiceLine.getAuctionNo(),
+                missionServiceLine.getLotNo(),
+                missionServiceLine.getTransactionLineNo())
+            .fetchOne();
     return auctionLine;
   }
   /*//Chargeable Boolean
@@ -832,8 +840,7 @@ public class MissionServiceLineValidate {
     if (missionServiceLine.getAcceptToInvoice() != missionServiceLine.getChargeable()) {
       if (missionServiceLine.getOutstandingQuantity().compareTo(BigDecimal.ZERO) != 0) {
         missionServiceLine =
-            this.validateAcceptToInvoice(
-                missionServiceLine, missionServiceLine.getChargeable());
+            this.validateAcceptToInvoice(missionServiceLine, missionServiceLine.getChargeable());
       } else {
         missionServiceLine = this.validateAcceptToInvoice(missionServiceLine, false);
       }
@@ -983,97 +990,96 @@ public class MissionServiceLineValidate {
   }
 
   /*
-   * PROCEDURE UpdateVAT@1000000017();
-    VAR
-      lVATPostingSetup@1000000002 : Record 325;
-      lAuctionSetup@1000000000 : Record 8011377;
-      lBuyerVATPostingGroup@1000000003 : Code[10];
-      OldVAT@1000000001 : Decimal;
-    BEGIN
-      OldVAT := "VAT %"; //AP26.ST
-      IF ("VAT Prod. Posting Group" <> '') AND
-         ("Gen. Prod. Posting Group" <> '') AND
-         ("Contact Imputation Type" <> "Contact Imputation Type"::None) THEN BEGIN
-        // Valeur par défaut acheteur
-        IF "Buyer VAT Bus. Posting Group" = '' THEN BEGIN
-          lAuctionSetup.GET;
-          lBuyerVATPostingGroup := lAuctionSetup."Default VAT Bus. Posting Group";
-        END
-        ELSE
-          lBuyerVATPostingGroup := "Buyer VAT Bus. Posting Group";
-        APPostingMgt.GetVATPostingSetup("Gen. Prod. Posting Group", "VAT Prod. Posting Group",
-                                        "Seller VAT Bus. Posting Group", lBuyerVATPostingGroup,
-                                        "Contact Imputation Type" = "Contact Imputation Type"::Buyer, "Auction Incl. VAT",
-                                        lVATPostingSetup);
-      END;
+  * PROCEDURE UpdateVAT@1000000017();
+   VAR
+     lVATPostingSetup@1000000002 : Record 325;
+     lAuctionSetup@1000000000 : Record 8011377;
+     lBuyerVATPostingGroup@1000000003 : Code[10];
+     OldVAT@1000000001 : Decimal;
+   BEGIN
+     OldVAT := "VAT %"; //AP26.ST
+     IF ("VAT Prod. Posting Group" <> '') AND
+        ("Gen. Prod. Posting Group" <> '') AND
+        ("Contact Imputation Type" <> "Contact Imputation Type"::None) THEN BEGIN
+       // Valeur par défaut acheteur
+       IF "Buyer VAT Bus. Posting Group" = '' THEN BEGIN
+         lAuctionSetup.GET;
+         lBuyerVATPostingGroup := lAuctionSetup."Default VAT Bus. Posting Group";
+       END
+       ELSE
+         lBuyerVATPostingGroup := "Buyer VAT Bus. Posting Group";
+       APPostingMgt.GetVATPostingSetup("Gen. Prod. Posting Group", "VAT Prod. Posting Group",
+                                       "Seller VAT Bus. Posting Group", lBuyerVATPostingGroup,
+                                       "Contact Imputation Type" = "Contact Imputation Type"::Buyer, "Auction Incl. VAT",
+                                       lVATPostingSetup);
+     END;
 
-      IF "Auction Bid" THEN BEGIN
-        "VAT %" := lVATPostingSetup."Bid VAT %";
-        "VAT Identifier" := lVATPostingSetup."Bid VAT Identifier";
-      END
-      ELSE BEGIN
-        "VAT %" := lVATPostingSetup."VAT %";
-        "VAT Identifier" := lVATPostingSetup."VAT Identifier";
-      END;
-      "VAT Calculation Type" := lVATPostingSetup."VAT Calculation Type";
-      //<<AP28.ST
-      IF ("VAT %" <> OldVAT) AND ("Price Includes VAT") THEN BEGIN
-        GetItem;
-        IF "Transaction Type" = "Transaction Type"::Mission THEN
-          MissionServicePriceMgt.VATConvert(Item,Rec)
-        ELSE
-          AuctionServicePriceMgt.VATConvert(Item,Rec);
-      END;
-      //>>AP28.ST
-      //<<AP25.ST
-      CASE "VAT Calculation Type" OF
-        "VAT Calculation Type"::"Reverse Charge VAT",
-        "VAT Calculation Type"::Exemption, //AP48.ST
-        "VAT Calculation Type"::"Sales Tax":
-          "VAT %" := 0;
-      END;
-      //>>AP25.ST
-      CalcAmounts;
-    END;
-   */
+     IF "Auction Bid" THEN BEGIN
+       "VAT %" := lVATPostingSetup."Bid VAT %";
+       "VAT Identifier" := lVATPostingSetup."Bid VAT Identifier";
+     END
+     ELSE BEGIN
+       "VAT %" := lVATPostingSetup."VAT %";
+       "VAT Identifier" := lVATPostingSetup."VAT Identifier";
+     END;
+     "VAT Calculation Type" := lVATPostingSetup."VAT Calculation Type";
+     //<<AP28.ST
+     IF ("VAT %" <> OldVAT) AND ("Price Includes VAT") THEN BEGIN
+       GetItem;
+       IF "Transaction Type" = "Transaction Type"::Mission THEN
+         MissionServicePriceMgt.VATConvert(Item,Rec)
+       ELSE
+         AuctionServicePriceMgt.VATConvert(Item,Rec);
+     END;
+     //>>AP28.ST
+     //<<AP25.ST
+     CASE "VAT Calculation Type" OF
+       "VAT Calculation Type"::"Reverse Charge VAT",
+       "VAT Calculation Type"::Exemption, //AP48.ST
+       "VAT Calculation Type"::"Sales Tax":
+         "VAT %" := 0;
+     END;
+     //>>AP25.ST
+     CalcAmounts;
+   END;
+  */
   private MissionServiceLine updateVAT(MissionServiceLine missionServiceLine) {
     FiscalPosition buyerFiscalPosition;
-    //BigDecimal oldVAT = missionServiceLine.getvATPercent();
+    // BigDecimal oldVAT = missionServiceLine.getvATPercent();
     if (missionServiceLine.getProductFamily() != null
         && missionServiceLine.getContactImputationType() != null
-        && missionServiceLine.getContactImputationType() != MissionServiceLineRepository.CONTACTIMPUTATIONTYPE_SELECT_NONE) {
+        && missionServiceLine.getContactImputationType()
+            != MissionServiceLineRepository.CONTACTIMPUTATIONTYPE_SELECT_NONE) {
       // Valeur par défaut acheteur
       if (missionServiceLine.getBuyerFiscalPosition() == null) {
         AuctionSetup auctionSetup = Beans.get(AuctionSetupRepository.class).all().fetchOne();
         buyerFiscalPosition = auctionSetup.getDefaultFiscalPosition();
-      }
-      else
-        buyerFiscalPosition = missionServiceLine.getBuyerFiscalPosition();
+      } else buyerFiscalPosition = missionServiceLine.getBuyerFiscalPosition();
 
-      //TODO : APPostingMgt.GetVATPostingSetup
+      // TODO : APPostingMgt.GetVATPostingSetup
     }
     return missionServiceLine;
   }
 
   /*//Buyer_VAT_Bus_Posting_Group Code10
-   //OnValidateBEGIN
-   ////<<AP09.ISAT.ST
-   //IF ("Buyer VAT Bus. Posting Group" <> '') AND
-   //   ("Buyer VAT Bus. Posting Group" <> xRec."Buyer VAT Bus. Posting Group") THEN
-   //  IF NOT SkipChangeCheck THEN
-   //    MissServLineTools.AllowBuyerVATGrpChange(Rec,TRUE);
-   ////>>AP09.ISAT.ST
-   //
-   ////<< AP07 ISAT.EB
-   //IF ("Buyer VAT Bus. Posting Group" <> '') AND
-   //   ("Buyer VAT Bus. Posting Group" <> xRec."Buyer VAT Bus. Posting Group")
-   //THEN BEGIN
-   //  IF CurrFieldNo = FIELDNO("Buyer VAT Bus. Posting Group") THEN
-   //    ERROR(Text8011401,FIELDCAPTION("Buyer VAT Bus. Posting Group"));
-   //END;
-   ////>> AP07 ISAT.EB
-   //
-   //UpdateVAT;// */
+  //OnValidateBEGIN
+  ////<<AP09.ISAT.ST
+  //IF ("Buyer VAT Bus. Posting Group" <> '') AND
+  //   ("Buyer VAT Bus. Posting Group" <> xRec."Buyer VAT Bus. Posting Group") THEN
+  //  IF NOT SkipChangeCheck THEN
+  //    MissServLineTools.AllowBuyerVATGrpChange(Rec,TRUE);
+  ////>>AP09.ISAT.ST
+  //
+  ////<< AP07 ISAT.EB
+  //IF ("Buyer VAT Bus. Posting Group" <> '') AND
+  //   ("Buyer VAT Bus. Posting Group" <> xRec."Buyer VAT Bus. Posting Group")
+  //THEN BEGIN
+  //  IF CurrFieldNo = FIELDNO("Buyer VAT Bus. Posting Group") THEN
+  //    ERROR(Text8011401,FIELDCAPTION("Buyer VAT Bus. Posting Group"));
+  //END;
+  ////>> AP07 ISAT.EB
+  //
+  //UpdateVAT;// */
   public MissionServiceLine validateBuyerFiscalPosition(
       MissionServiceLine missionServiceLine, FiscalPosition buyerFiscalPosition) {
     missionServiceLine.setBuyerFiscalPosition(buyerFiscalPosition);
@@ -1081,25 +1087,25 @@ public class MissionServiceLineValidate {
     return missionServiceLine;
   }
 
-
   /*//Reserve_Variance Decimal
-   //OnValidateBEGIN
-   //IF "Reserve Variance" <> 0 THEN BEGIN
-   //  TESTFIELD("Auction Bid", TRUE);
-   //  TESTFIELD("Contact Imputation Type", "Contact Imputation Type"::Seller);
-   //END;
-   //TESTFIELD("Invoiced Quantity",0);// */
+  //OnValidateBEGIN
+  //IF "Reserve Variance" <> 0 THEN BEGIN
+  //  TESTFIELD("Auction Bid", TRUE);
+  //  TESTFIELD("Contact Imputation Type", "Contact Imputation Type"::Seller);
+  //END;
+  //TESTFIELD("Invoiced Quantity",0);// */
   public MissionServiceLine validateReserveVariance(
       MissionServiceLine missionServiceLine, BigDecimal reserveVariance) throws AxelorException {
     missionServiceLine.setReserveVariance(reserveVariance);
     if (missionServiceLine.getReserveVariance().compareTo(BigDecimal.ZERO) != 0) {
-      if (!missionServiceLine.getAuctionBid() ) {
+      if (!missionServiceLine.getAuctionBid()) {
         throw new AxelorException(
             missionServiceLine,
             TraceBackRepository.CATEGORY_INCONSISTENCY,
             "Le champ 'Adjudication' doit être coché");
-      } 
-      if (missionServiceLine.getContactImputationType() != MissionServiceLineRepository.CONTACTIMPUTATIONTYPE_SELECT_SELLER) {
+      }
+      if (missionServiceLine.getContactImputationType()
+          != MissionServiceLineRepository.CONTACTIMPUTATIONTYPE_SELECT_SELLER) {
         throw new AxelorException(
             missionServiceLine,
             TraceBackRepository.CATEGORY_INCONSISTENCY,
@@ -1115,64 +1121,65 @@ public class MissionServiceLineValidate {
     return missionServiceLine;
   }
 
-  //Auction_Incl_VAT Boolean
-   //OnValidateBEGIN
-   //VALIDATE("Auction Bid"); // AP08 ISAT.EB
-   //UpdateVAT;//
+  // Auction_Incl_VAT Boolean
+  // OnValidateBEGIN
+  // VALIDATE("Auction Bid"); // AP08 ISAT.EB
+  // UpdateVAT;//
   public MissionServiceLine validateAuctionInclVAT(
       MissionServiceLine missionServiceLine, Boolean auctionInclVAT) {
     missionServiceLine.setAuctionInclVAT(auctionInclVAT);
-    missionServiceLine = this.validateAuctionBid(missionServiceLine, missionServiceLine.getAuctionBid());
+    missionServiceLine =
+        this.validateAuctionBid(missionServiceLine, missionServiceLine.getAuctionBid());
     missionServiceLine = this.updateVAT(missionServiceLine);
     return missionServiceLine;
   }
   /*
-   * //Fixed_Amount Boolean
-   //OnValidateBEGIN
-   //IF CurrFieldNo = FIELDNO("Fixed Amount") THEN
-   //  CheckIfInvoiced;  // AP18 isat.sf
+  * //Fixed_Amount Boolean
+  //OnValidateBEGIN
+  //IF CurrFieldNo = FIELDNO("Fixed Amount") THEN
+  //  CheckIfInvoiced;  // AP18 isat.sf
 
-   ////<< AP18 isat.sf
-   //IF (xRec."Fixed Amount" = TRUE) AND (Rec."Fixed Amount" = FALSE) THEN BEGIN
-   //  IF "Invoiced Amount" <> 0 THEN BEGIN
-   //    //VALIDATE("Unit Price","Invoiced Amount");
-   //    "Fixed Amount" := TRUE;
-   //  END ELSE BEGIN
-   //    UpdatePrice;
-   //  END;
-   //END; 
-   ////>> AP18 isat.sf
+  ////<< AP18 isat.sf
+  //IF (xRec."Fixed Amount" = TRUE) AND (Rec."Fixed Amount" = FALSE) THEN BEGIN
+  //  IF "Invoiced Amount" <> 0 THEN BEGIN
+  //    //VALIDATE("Unit Price","Invoiced Amount");
+  //    "Fixed Amount" := TRUE;
+  //  END ELSE BEGIN
+  //    UpdatePrice;
+  //  END;
+  //END;
+  ////>> AP18 isat.sf
 
-   ////IF "Fixed Amount" = TRUE THEN    // désactivé AP20 isat.sf
-   ////  VALIDATE("Price Includes VAT",TRUE); //  AP19 isat.sf //ap37 isat.zw désactivé//
-   */
+  ////IF "Fixed Amount" = TRUE THEN    // désactivé AP20 isat.sf
+  ////  VALIDATE("Price Includes VAT",TRUE); //  AP19 isat.sf //ap37 isat.zw désactivé//
+  */
   public MissionServiceLine validateFixedAmount(
       MissionServiceLine missionServiceLine, Boolean fixedAmount) throws AxelorException {
     missionServiceLine.setFixedAmount(fixedAmount);
     if (missionServiceLine.getFixedAmount() && !fixedAmount) {
 
-      //TODO MISSION SERVICE LEDGER ENTRY
-      /* 
+      // TODO MISSION SERVICE LEDGER ENTRY
+      /*
       if (missionServiceLine.getInvoicedAmount().compareTo(BigDecimal.ZERO) != 0) {
         missionServiceLine.setFixedAmount(true);
       } else {
         missionServiceLine = this.updatePrice(missionServiceLine);
-      } 
+      }
       */
     }
     return missionServiceLine;
   }
   /*
-   * //Cancelled Option
-   //OnValidateBEGIN
-   ////<<AP29.ST
-   //TESTFIELD("Invoiced Quantity", 0);
-   //IF Cancelled = Cancelled::Yes THEN BEGIN
-   //  IF Chargeable THEN
-   //    VALIDATE(Chargeable, FALSE);
-   //END;
-   ////>>AP29.ST//
-   */
+  * //Cancelled Option
+  //OnValidateBEGIN
+  ////<<AP29.ST
+  //TESTFIELD("Invoiced Quantity", 0);
+  //IF Cancelled = Cancelled::Yes THEN BEGIN
+  //  IF Chargeable THEN
+  //    VALIDATE(Chargeable, FALSE);
+  //END;
+  ////>>AP29.ST//
+  */
   public MissionServiceLine validateCancelled(
       MissionServiceLine missionServiceLine, Boolean cancelled) throws AxelorException {
     missionServiceLine.setCancelled(cancelled);
@@ -1183,7 +1190,7 @@ public class MissionServiceLineValidate {
           "Le champ 'Quantité facturée' doit être égal à 0");
     }
     if (missionServiceLine.getCancelled()) {
-      
+
       if (missionServiceLine.getChargeable()) {
         missionServiceLine = this.validateChargeable(missionServiceLine, false);
       }

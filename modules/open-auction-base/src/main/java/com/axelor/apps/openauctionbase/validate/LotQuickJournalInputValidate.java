@@ -92,8 +92,7 @@ public class LotQuickJournalInputValidate {
                                                               END;
                                                             END;
   */
-  public LotQuickInputJournal validateLotNo(
-      LotQuickInputJournal lotQuickInputJournal, Lot lotNo) {
+  public LotQuickInputJournal validateLotNo(LotQuickInputJournal lotQuickInputJournal, Lot lotNo) {
     lotQuickInputJournal.setLotNo(lotNo);
     if (lotNo != null) {
       lotQuickInputJournal.setAuctionProductFamily(lotNo.getAuctionProductFamily());

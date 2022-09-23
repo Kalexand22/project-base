@@ -9,7 +9,8 @@ import java.util.Date;
 public class MissionServicePriceManagementImpl implements MissionServicePriceManagement {
 
   @Override
-  public MissionServiceLine findMissionServicePrice(MissionServiceLine pMissionServiceLine, Boolean pEstimated) {
+  public MissionServiceLine findMissionServicePrice(
+      MissionServiceLine pMissionServiceLine, Boolean pEstimated) {
     // TODO Auto-generated method stub
     return null;
   }

@@ -178,17 +178,17 @@
       ref="com.axelor.apps.openauction.db.MissionActivityLine" mappedBy="missionNo"/>
     <one-to-many name="lotList" ref="com.axelor.apps.openauction.db.Lot"
       mappedBy="currentMissionNo"/>
-    <one-to-many name="lotInputJournalList" ref="com.axelor.apps.openauction.db.LotInputJournal"
-      mappedBy="documentNo"/>
+    <one-to-many name="lotInputJournalList"
+      ref="com.axelor.apps.openauction.db.LotInputJournal" mappedBy="documentNo"/>
     <many-to-many name="contactList" ref="com.axelor.apps.base.db.Partner"/>
     <extra-code>
-    <![CDATA[ 
-    
+    <![CDATA[
+
     //openauction.missionType.select
     public static final String MISSIONTYPE_SELECT_QUOTE = "Quote0";
     public static final String MISSIONTYPE_SELECT_ORDER = "Order1";
 
-    
+
     //openauction.missionStatus.select
     public static final String MISSIONSTATUS_SELECT_INITIAL = "Initial0";
     public static final String MISSIONSTATUS_SELECT_CURRENT = "Current1";
@@ -197,6 +197,6 @@
     public static final String MISSIONSTATUS_SELECT_CANCELED = "Canceled4";
     public static final String MISSIONSTATUS_SELECT_FINISHED = "Finished5";
     ]]>
-  </extra-code>
+    </extra-code>
   </entity>
 </domain-models>
