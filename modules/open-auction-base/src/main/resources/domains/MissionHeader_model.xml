@@ -178,6 +178,8 @@
       ref="com.axelor.apps.openauction.db.MissionActivityLine" mappedBy="missionNo"/>
     <one-to-many name="lotList" ref="com.axelor.apps.openauction.db.Lot"
       mappedBy="currentMissionNo"/>
+    <one-to-many name="lotInputJournalList" ref="com.axelor.apps.openauction.db.LotInputJournal"
+      mappedBy="documentNo"/>
     <many-to-many name="contactList" ref="com.axelor.apps.base.db.Partner"/>
   </entity>
 </domain-models>

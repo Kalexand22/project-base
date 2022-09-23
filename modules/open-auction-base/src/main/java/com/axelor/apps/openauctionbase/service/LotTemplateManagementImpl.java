@@ -13,6 +13,7 @@ import com.axelor.apps.openauction.db.MissionLine;
 import com.axelor.apps.openauction.db.MissionServiceLine;
 import com.axelor.apps.openauction.db.ServiceTemplateLine;
 import com.axelor.apps.openauction.db.repo.LotInputJournalRepository;
+import com.axelor.apps.openauction.db.repo.LotQuickInputJournalRepository;
 import com.axelor.apps.openauction.db.repo.LotRepository;
 import com.axelor.apps.openauctionbase.repository.LotExt;
 import com.axelor.apps.openauctionbase.util.TransferFields;
@@ -20,6 +21,8 @@ import com.axelor.exception.AxelorException;
 import com.axelor.exception.db.repo.TraceBackRepository;
 import com.axelor.inject.Beans;
 import com.google.inject.Inject;
+import com.google.inject.persist.Transactional;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -33,18 +36,22 @@ public class LotTemplateManagementImpl implements LotTemplateManagement {
   ActivityManagement activityManagement;
   ContactLotManagement contactLotManagement;
   MissionStatusManagement statusManagement;
+  MissionLineManagement missionLineManagement;
   LotRepository lotRepository;
   LotInputJournalRepository lotInputJournalRepository;
+  LotQuickInputJournalRepository lotQuickInputJournalRepository;
   Lot lot;
 
   @Inject
   public LotTemplateManagementImpl(
-      LotRepository lotRepository, LotInputJournalRepository lotInputJournalRepository) {
+      LotRepository lotRepository, LotInputJournalRepository lotInputJournalRepository, LotQuickInputJournalRepository lotQuickInputJournalRepository) {
     activityManagement = Beans.get(ActivityManagement.class);
     contactLotManagement = Beans.get(ContactLotManagement.class);
     statusManagement = Beans.get(MissionStatusManagement.class);
+    missionLineManagement = Beans.get(MissionLineManagement.class);
     this.lotRepository = lotRepository;
     this.lotInputJournalRepository = lotInputJournalRepository;
+    this.lotQuickInputJournalRepository = lotQuickInputJournalRepository;
     this.lot = new Lot();
   }
 
@@ -149,12 +156,7 @@ public class LotTemplateManagementImpl implements LotTemplateManagement {
     return lot;
   }
 
-  @Override
-  public void PostLotQuickInputFromMission(
-      LotQuickInputJournal pLotQuickInputJournal, MissionHeader pMissionHeader) {
-    // TODO Auto-generated method stub
-
-  }
+ 
 
   @Override
   public String CreateLotFromAuction(LotQuickInputJournal pLotQuickInputJournal) {
@@ -238,7 +240,7 @@ public class LotTemplateManagementImpl implements LotTemplateManagement {
   public void CalcGrossReserveByNetReserve(LotInputJournal pLotInputJournal)
       throws AxelorException {
     if (pLotInputJournal.getLotTemplateCode() == null) {
-      throw new AxelorException(
+      throw new AxelorException(pLotInputJournal,
           TraceBackRepository.CATEGORY_INCONSISTENCY,
           "Vous devez spécifier le modèle de lot pour calculer le prix de réserve");
     }
@@ -401,5 +403,117 @@ public class LotTemplateManagementImpl implements LotTemplateManagement {
   @Override
   public Lot GetLotNoCreated() {
     return lot;
+  }
+
+   /*
+   * PROCEDURE PostLotQuickInputFromMission@1000000017(VAR pLotQuickInputJournal@1000000006 : Record 8011467;pMissionHeader@1000000005 : Record 8011402);
+    VAR
+      lFileInterfacePostData@1180113000 : Codeunit 8011645;
+      lCountryRegion@1000000011 : Record 9;
+      lLot@1000000002 : Record 8011404;
+      lActivityHeader@1000000003 : Record 8011405;
+      lMissionLine@1000000001 : Record 8011403;
+      lContact@1000000004 : Record 5050;
+      lMissionLineNo@1000000000 : Integer;
+      lLotNoMission@1100481000 : Integer;
+    BEGIN
+      //AP04.isat.SC
+      lLotNoMission := pLotQuickInputJournal."Lot No./Mission"; // AP18 isat.sf
+      IF pLotQuickInputJournal."Line Type" = pLotQuickInputJournal."Line Type"::" " THEN BEGIN
+        IF NOT HideMessage THEN BEGIN
+          WDialog.UPDATE(3,Text8011401);
+        END;
+
+        CreateLot(pLotQuickInputJournal,lLot,pMissionHeader."Master Contact No.");
+        IF NOT HideMessage THEN BEGIN
+          WDialog.UPDATE(3,Text8011401);
+        END;
+
+      //  IF lLot."Lot General Status" <> lLot."Lot General Status"::"On Mission" THEN BEGIN
+      //    lLot."Lot General Status" := lLot."Lot General Status"::"On Mission";
+      //    lLot.MODIFY(TRUE);
+      //  END;
+
+        pLotQuickInputJournal."Lot No./Mission" := lLotNoMission; // AP18 isat.sf
+
+        MissionLineManagement.CreateMissionLine(pMissionHeader,lMissionLine,lLot,pLotQuickInputJournal);
+        IF NOT HideMessage THEN BEGIN
+          WDialog.UPDATE(3,Text8011406);
+        END;
+        CreateLotValueEntry(pLotQuickInputJournal,lLot,pMissionHeader,lMissionLine);
+        IF NOT HideMessage THEN BEGIN
+          WDialog.UPDATE(3,Text8011404);
+        END;
+        IF lContact.GET(pMissionHeader."Master Contact No.") THEN BEGIN
+          ContactLotManagement.InsertSellerContactbyLot(lContact."No.",lLot."No.");
+        END;
+        IF NOT HideMessage THEN BEGIN
+          WDialog.UPDATE(3,Text8011403);
+        END;
+        IF ToRegistIntegrationLot THEN                                                      //ap21 isat.zw
+          lFileInterfacePostData.RegisterIntegrationLot(lLot."No.", 0, '', 0, RegistIntegrationEntryNo);     //ap21 isat.zw
+
+        IF lActivityHeader.GET(pMissionHeader."Activity Code To Lines") THEN BEGIN
+          ActivityManagement.CreateActivityLineFromMission(lActivityHeader,pMissionHeader,lMissionLine,FALSE);
+        END ELSE BEGIN
+          StatusManagement.CheckStatus(lMissionLine);
+        END;
+        //<<AP03.isat.pC
+        IF pLotQuickInputJournal."Origin Country Code" <> '' THEN
+          IF lCountryRegion.GET(pLotQuickInputJournal."Origin Country Code") THEN BEGIN
+            IF (lCountryRegion."EU Country/Region Code" = '') OR
+               (lCountryRegion."Intrastat Code" = '')
+            THEN BEGIN
+              ActivityManagement.CreateCustomDues(pMissionHeader."No.",'',lLot."No.",pMissionHeader."Master Contact No.",
+                     lMissionLine."Line No."); //AP08
+            END;
+          END;
+        //>>AP03.isat.pC
+        //<<AP05.isat.PC
+        IF NOT HideMessage THEN BEGIN
+          WDialog.UPDATE(3,Text8011405);
+        END;
+        //CreateLotInventoryEntry(pLotQuickInputJournal,lLot); //Ap12 isat.zw
+        //>>AP05.isat.PC
+      END ELSE BEGIN
+        MissionLineManagement.CreateCommentMissionLine(pMissionHeader,pLotQuickInputJournal);
+      END;
+      IF pLotQuickInputJournal.FINDFIRST THEN BEGIN
+        pLotQuickInputJournal.DELETE(TRUE);
+      END;
+    END;
+   */
+  @Override
+  @Transactional
+  (rollbackOn = {AxelorException.class, Exception.class})
+  public void PostLotQuickInputFromMission(
+      LotQuickInputJournal pLotQuickInputJournal, MissionHeader pMissionHeader) {
+    Lot lLot = new Lot();
+    MissionLine lMissionLine = new MissionLine();
+    
+    if (pLotQuickInputJournal.getLineType() == null) {
+      
+      lLot = this.CreateLot(pLotQuickInputJournal , pMissionHeader.getMasterContactNo());
+      
+      lMissionLine = missionLineManagement.CreateMissionLine(
+          pMissionHeader, lLot, pLotQuickInputJournal);
+      
+      this.CreateLotValueEntry(pLotQuickInputJournal, lLot, pMissionHeader, lMissionLine);
+      
+      if (pMissionHeader.getMasterContactNo()!=null) {
+        contactLotManagement.insertSellerContactbyLot(pMissionHeader.getMasterContactNo(), lLot);
+      }     
+      
+      if (pMissionHeader.getActivityCodeToLines()!=null) {
+        activityManagement.CreateActivityLineFromMission(
+          pMissionHeader.getActivityCodeToLines(), pMissionHeader, lMissionLine, false);
+      } else {
+        statusManagement.checkStatus(lMissionLine);
+      }
+      
+    } else {
+      missionLineManagement.CreateCommentMissionLine(pMissionHeader, pLotQuickInputJournal);
+    }
+    lotQuickInputJournalRepository.remove(pLotQuickInputJournal);
   }
 }

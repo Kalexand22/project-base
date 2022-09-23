@@ -9,11 +9,13 @@ import com.axelor.apps.openauction.db.repo.LotRepository;
 import com.axelor.apps.openauctionbase.util.TransferFields;
 import com.axelor.apps.openauctionbase.validate.LotQuickJournalInputValidate;
 import com.axelor.auth.AuthUtils;
+import com.axelor.exception.AxelorException;
 import com.axelor.inject.Beans;
 import com.google.inject.Inject;
+import com.google.inject.persist.Transactional;
+
 import java.time.LocalDate;
 
-import org.springframework.cglib.core.Local;
 
 public class LotInputJournalPostLineImpl implements LotInputJournalPostLine {
   // LotInputJournal@1000000000 : Record 8011498;
@@ -26,23 +28,17 @@ public class LotInputJournalPostLineImpl implements LotInputJournalPostLine {
   }
 
   @Override
-  public LotInputJournal runWithCheck(LotInputJournal pLotInputJournal) {
-
-    lotInputJournal = pLotInputJournal;
-    code(true);
-    pLotInputJournal = lotInputJournal;
-    return pLotInputJournal;
+  @Transactional
+  (rollbackOn = {AxelorException.class})
+  public void runMissionHeader(MissionHeader pMissionHeader) throws AxelorException {
+    for (LotInputJournal lLotInputJournal : pMissionHeader.getLotInputJournalList()) {
+      lotInputJournal = lLotInputJournal;
+      code();
+    }    
   }
 
-  @Override
-  public LotInputJournal runWithoutCheck(LotInputJournal pLotInputJournal) {
-    lotInputJournal = pLotInputJournal;
-    code(false);
-    pLotInputJournal = lotInputJournal;
-    return pLotInputJournal;
-  }
-
-  private void code(Boolean check) {
+  
+  private void code() {
     /*
        * lMissionHeader@1000000002 : Record 8011402;
     lTempLotQuickInputJournal@1000000003 : TEMPORARY Record 8011467;
