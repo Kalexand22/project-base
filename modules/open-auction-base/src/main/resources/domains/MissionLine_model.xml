@@ -101,10 +101,8 @@
       ref="com.axelor.apps.base.db.TradingName"/>
     <many-to-one name="externalContactNo" title="N° contact externe"
       ref="com.axelor.apps.base.db.Partner"/>
-    <!--<many-to-one name="inventoryLocation" title="Localisation"
-      ref="com.axelor.apps.openauction.db.LawyerBusAddress"/>
-    <many-to-one name="inventorySubLocation" title="Sous-localisation"
-      ref="com.axelor.apps.openauction.db.LawyerBusAddress"/>-->
+    <!--<many-to-one name="inventoryLocation" title="Localisation" ref="com.axelor.apps.openauction.db.LawyerBusAddress"/>
+      <many-to-one name="inventorySubLocation" title="Sous-localisation" ref="com.axelor.apps.openauction.db.LawyerBusAddress"/> -->
     <decimal name="inventoryOperating" title="Exploitation"/>
     <decimal name="inventoryRealization" title="Réalisation"/>
     <decimal name="inventoryLeasing" title="Leasing"/>
