@@ -141,7 +141,7 @@ public class LotTemplateManagementImpl implements LotTemplateManagement {
 
   @Override
   public Lot CreateLotFromMission(
-      LotQuickInputJournal pLotQuickInputJournal, MissionHeader pMissionHeader) {
+      LotQuickInputJournal pLotQuickInputJournal, MissionHeader pMissionHeader) throws AxelorException {
     
     PostLotQuickInputFromMission(pLotQuickInputJournal, pMissionHeader);
     // IF LotNo <> '' THEN BEGIN
@@ -487,7 +487,7 @@ public class LotTemplateManagementImpl implements LotTemplateManagement {
   @Transactional
   (rollbackOn = {AxelorException.class, Exception.class})
   public void PostLotQuickInputFromMission(
-      LotQuickInputJournal pLotQuickInputJournal, MissionHeader pMissionHeader) {
+      LotQuickInputJournal pLotQuickInputJournal, MissionHeader pMissionHeader) throws AxelorException {
     Lot lLot = new Lot();
     MissionLine lMissionLine = new MissionLine();
     

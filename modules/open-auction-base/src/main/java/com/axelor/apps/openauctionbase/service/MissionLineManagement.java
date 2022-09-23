@@ -7,6 +7,7 @@ import com.axelor.apps.openauction.db.LotQuickInputJournal;
 import com.axelor.apps.openauction.db.MissionHeader;
 import com.axelor.apps.openauction.db.MissionLine;
 import com.axelor.apps.openauction.db.MissionServiceLine;
+import com.axelor.exception.AxelorException;
 
 public interface MissionLineManagement {
     
@@ -25,7 +26,7 @@ public interface MissionLineManagement {
     //PROCEDURE SortMissionLine@1000000003(pMission@1000000000 : Record 8011402);
     public void SortMissionLine(MissionHeader pMission);
     //PROCEDURE CreateMissionLine@1000000004(VAR pMissionHeader@1000000000 : Record 8011402;VAR pMissionLine@1000000002 : Record 8011403;VAR pLot@1000000001 : Record 8011404;pLotQuickInputJournal@1000000003 : Record 8011467) rValue : Boolean;
-    public MissionLine CreateMissionLine(MissionHeader pMissionHeader, Lot pLot, LotQuickInputJournal pLotQuickInputJournal);
+    public MissionLine CreateMissionLine(MissionHeader pMissionHeader, Lot pLot, LotQuickInputJournal pLotQuickInputJournal) throws AxelorException;
     //PROCEDURE CreateCommentMissionLine@1000000006(pMissionHeader@1000000000 : Record 8011402;pLotQuickInputJournal@1000000002 : Record 8011467);
     public void CreateCommentMissionLine(MissionHeader pMissionHeader, LotQuickInputJournal pLotQuickInputJournal);
     //PROCEDURE GetMissionLineNo@1000000009(pMissionHeaderNo@1000000001 : Code[20]);

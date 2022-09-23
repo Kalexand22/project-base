@@ -20,11 +20,11 @@ public interface LotTemplateManagement {
   // PROCEDURE CreateLotFromMission@1000000003(VAR pLotQuickInputJournal@1000000006 : Record
   // 8011467;pMissionHeader@1000000005 : Record 8011402);
   public Lot CreateLotFromMission(
-      LotQuickInputJournal pLotQuickInputJournal, MissionHeader pMissionHeader);
+      LotQuickInputJournal pLotQuickInputJournal, MissionHeader pMissionHeader) throws AxelorException;
   // PROCEDURE PostLotQuickInputFromMission@1000000017(VAR pLotQuickInputJournal@1000000006 : Record
   // 8011467;pMissionHeader@1000000005 : Record 8011402);
   public void PostLotQuickInputFromMission(
-      LotQuickInputJournal pLotQuickInputJournal, MissionHeader pMissionHeader);
+      LotQuickInputJournal pLotQuickInputJournal, MissionHeader pMissionHeader) throws AxelorException;
   // PROCEDURE CreateLotFromAuction@1000000015(VAR pLotQuickInputJournal@1000000001 : Record
   // 8011467) : Code[20];
   public String CreateLotFromAuction(LotQuickInputJournal pLotQuickInputJournal);

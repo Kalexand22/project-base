@@ -459,6 +459,11 @@
     <option value="Canceled4">Annulé</option>
     <option value="Finished5">Terminé</option>
   </selection>
+  <selection name="openauction.type.select.missionline">
+    <option value="Empty1"></option>
+    <option value="Lot2">Lot</option>
+  </selection>
+  
   <selection name="openauction.inventoryNature.select">
     <option value="Description0">Description</option>
     <option value="DescriptionEstimation1">Description+Estimation</option>

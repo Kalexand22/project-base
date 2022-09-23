@@ -8,6 +8,7 @@ import com.axelor.apps.base.db.repo.ProductRepository;
 import com.axelor.apps.base.service.app.AppBaseService;
 import com.axelor.apps.openauction.db.AuctionHeader;
 import com.axelor.apps.openauction.db.AuctionLine;
+import com.axelor.apps.openauction.db.AuctionLotPriceGroup;
 import com.axelor.apps.openauction.db.AuctionSetup;
 import com.axelor.apps.openauction.db.Lot;
 import com.axelor.apps.openauction.db.MissionContactPriceGroup;
@@ -498,6 +499,13 @@ public class MissionServiceLineValidate {
   public MissionServiceLine validateLotPriceGroup(
       MissionServiceLine missionServiceLine, MissionLotPriceGroup lotPriceGroup) {
     missionServiceLine.setLotPriceGroup(lotPriceGroup);
+    missionServiceLine = this.UpdatePrice(missionServiceLine);
+    return missionServiceLine;
+  }
+
+  public MissionServiceLine validateAuctionLotPriceGroup(
+      MissionServiceLine missionServiceLine, AuctionLotPriceGroup lotPriceGroup) {
+    missionServiceLine.setAuctionLotPriceGroup(lotPriceGroup);
     missionServiceLine = this.UpdatePrice(missionServiceLine);
     return missionServiceLine;
   }

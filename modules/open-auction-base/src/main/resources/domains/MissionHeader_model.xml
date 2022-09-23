@@ -181,5 +181,22 @@
     <one-to-many name="lotInputJournalList" ref="com.axelor.apps.openauction.db.LotInputJournal"
       mappedBy="documentNo"/>
     <many-to-many name="contactList" ref="com.axelor.apps.base.db.Partner"/>
+    <extra-code>
+    <![CDATA[ 
+    
+    //openauction.missionType.select
+    public static final String MISSIONTYPE_SELECT_QUOTE = "Quote0";
+    public static final String MISSIONTYPE_SELECT_ORDER = "Order1";
+
+    
+    //openauction.missionStatus.select
+    public static final String MISSIONSTATUS_SELECT_INITIAL = "Initial0";
+    public static final String MISSIONSTATUS_SELECT_CURRENT = "Current1";
+    public static final String MISSIONSTATUS_SELECT_DONE = "Done2";
+    public static final String MISSIONSTATUS_SELECT_WAITING = "Waiting3";
+    public static final String MISSIONSTATUS_SELECT_CANCELED = "Canceled4";
+    public static final String MISSIONSTATUS_SELECT_FINISHED = "Finished5";
+    ]]>
+  </extra-code>
   </entity>
 </domain-models>

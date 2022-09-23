@@ -38,7 +38,7 @@ public class LotInputJournalPostLineImpl implements LotInputJournalPostLine {
   }
 
   
-  private void code() {
+  private void code() throws AxelorException {
     /*
        * lMissionHeader@1000000002 : Record 8011402;
     lTempLotQuickInputJournal@1000000003 : TEMPORARY Record 8011467;

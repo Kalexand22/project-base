@@ -389,6 +389,19 @@
       public static final String LOTGENERALSTATUS_SELECT_RETURN = "Return4";
       public static final String LOTGENERALSTATUS_SELECT_CANCELED = "Canceled5";
 
+      
+      //openauction.lotType.select.lot
+      public static final String LOTTYPE_SELECT_MEETINGSALE = "MeetingSale0";
+      public static final String LOTTYPE_SELECT_GROUPINGONSALE = "GroupingOnSale1";
+      public static final String LOTTYPE_SELECT_LOT = "Lot2";
+      public static final String LOTTYPE_SELECT_GROUPINGORIGINLOT = "GroupingOriginLot3";
+      public static final String LOTTYPE_SELECT_ORIGINLOTCOMPONENT = "OriginLotComponent4";
+
+      
+      //openauction.addedValueType.select.lot
+      public static final String ADDEDVALUETYPE_SELECT_FREE = "Free0";
+      public static final String ADDEDVALUETYPE_SELECT_SPECIFICSUM = "SpecificSum1";
+
       ]]>
     </extra-code>
     <track on="UPDATE">
