@@ -21,14 +21,14 @@
     <decimal name="value" title="Valeur"/>
     <decimal name="minimumValue" title="Valeur minimale"/>
     <decimal name="maximumValue" title="Valeur maximale"/>
-    <decimal name="minAuctionEstimValue" title="Valeur estimation vente min"/>
-    <decimal name="maxAuctionEstimValue" title="Valeur estimation vente max"/>
+    <decimal name="minAuctionEstimValue" title="Estimation basse"/>
+    <decimal name="maxAuctionEstimValue" title="Estimation haute"/>
     <decimal name="grossReservePrice" title="Prix réserve brut"/>
     <decimal name="netReservePrice" title="Prix réserve net"/>
     <many-to-one name="productFamilyAdj" title="Famille comptable produit adjudication"
       ref="com.axelor.apps.base.db.ProductFamily"/>
     <many-to-one name="lotConditionCode" title="Etat lot"
-      ref="com.axelor.apps.openauction.db.Code"/>
+      ref="com.axelor.apps.openauction.db.LotCondition"/>
     <string name="externalNo" title="N° externe"/>
     <many-to-one name="currencyCode" title="Code devise"
       ref="com.axelor.apps.base.db.Currency"/>
@@ -60,7 +60,7 @@
       ref="com.axelor.apps.openauction.db.AuctionHeader"/>
     <integer name="passingOrderNo" title="N° ordre"/>
     <many-to-one name="passingIndexNo" title="N° indice"
-      ref="com.axelor.apps.openauction.db.Code"/>
+      ref="com.axelor.apps.openauction.db.PassingIndex"/>
     <many-to-one name="interlocutor" title="Interlocuteur"
       ref="com.axelor.apps.base.db.Partner"/>
     <many-to-one name="lotNatureCode" title="Nature lot"
@@ -87,7 +87,7 @@
     <many-to-one name="authorCode" title="Code auteur"
       ref="com.axelor.apps.openauction.db.Author"/>
     <many-to-one name="historicalPeriod" title="Période historique"
-      ref="com.axelor.apps.openauction.db.Periode"/>
+      ref="com.axelor.apps.openauction.db.HistoricalPeriod"/>
     <string name="schoolType" title="Type école" selection="openauction.schoolType.select"/>
     Unitof
     <many-to-one name="schoolCode" title="Code école"

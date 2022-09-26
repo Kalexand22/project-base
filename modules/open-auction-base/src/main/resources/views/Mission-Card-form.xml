@@ -21,9 +21,9 @@
     model="com.axelor.apps.openauction.db.MissionHeader" width="large" canNew="false">
     <toolbar>
       <button name="newMission" title="Créer une mission" onClick="mission.template.wizard"/>
-      <button name="saisie" title="Saisie des lots" onClick="save,mission.journal.input.all"/>
       <button name="valider" title="Créer une mission de vente"
         onClick="save,mission.create.auction.mission"/>
+      <button name="saisie" title="Saisie des lots" onClick="save,mission.journal.input.all"/>
     </toolbar>
     <panel name="MainPanel">
       <field name="missionStatus" showTitle="false" colSpan="12" widget="NavSelect"/>
@@ -180,15 +180,16 @@
     model="com.axelor.apps.openauction.db.Lot">
     <field name="auctionMission" expr="eval: false"/>
   </action-record>
-
   <action-view name="mission.journal.input.all"
-    model="com.axelor.apps.openauction.db.Lot" title="Saisie des lignes de mission">
-    <view name="lot-input-journal-grid" type="grid"/>
-    <view name="lot-input-journal-form" type="form"/>
-    <view-param name="details-view" value="true"/>
-    <domain>self.currentMissionNo = :_missionRecord</domain>
-    <context name="_missionRecord" expr="eval: __this__"/>
-    <context name="_missionRecordId" expr="eval: __this__.id"/>
+    model="com.axelor.apps.openauction.db.MissionHeader" title="Saisie des lignes de mission">
+
+    <view name="input-journal-form" type="form"/>
+    <view-param name="popup" value="reload"/>
+    <view-param name="show-toolbar" value="true"/>
+    <view-param name="show-confirm" value="true"/>
+    <view-param name="popup.maximized" value="true"/>
+    <view-param name="forceEdit" value="true"/>
+    <context name="_showRecord" expr="eval: id"/>
   </action-view>
 
   <action-view name="mission.template.wizard"

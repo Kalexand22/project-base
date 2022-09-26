@@ -4,9 +4,9 @@ import com.axelor.apps.base.db.Country;
 import com.axelor.apps.base.db.ProductFamily;
 import com.axelor.apps.openauction.db.AuctionHeader;
 import com.axelor.apps.openauction.db.AuctionLotPriceGroup;
-import com.axelor.apps.openauction.db.Code;
 import com.axelor.apps.openauction.db.FreeReason;
 import com.axelor.apps.openauction.db.Lot;
+import com.axelor.apps.openauction.db.LotCondition;
 import com.axelor.apps.openauction.db.LotNature;
 import com.axelor.apps.openauction.db.LotTemplate;
 import com.axelor.apps.openauction.db.LotUnitofMeasure;
@@ -283,7 +283,7 @@ public class LotValidate {
 
     */
   @Transactional
-  public Lot validateLotConditionCode(Lot lot, Code lotConditionCode) {
+  public Lot validateLotConditionCode(Lot lot, LotCondition lotConditionCode) {
     lot.setLotConditionCode(lotConditionCode);
     MissionLine lMissionLine = lot.getCurrentMissionLineNo();
     if (lMissionLine != null) {

@@ -56,7 +56,7 @@
       ref="com.axelor.apps.openauction.db.AuctionRoom"/>
     <integer name="passingOrderNo" title="N° ordre"/>
     <many-to-one name="passingIndexNo" title="N° indice"
-      ref="com.axelor.apps.openauction.db.Code"/>
+      ref="com.axelor.apps.openauction.db.PassingIndex"/>
     <many-to-one name="sellerContactNo" title="N° contact vendeur"
       ref="com.axelor.apps.base.db.Partner"/>
     <date name="auctionDate" title="Date de vente"/>
@@ -89,7 +89,7 @@
     <many-to-one name="make" title="Marque"
       ref="com.axelor.apps.openauction.db.VehiclesMake"/>
     <many-to-one name="lotConditionCode" title="Etat lot"
-      ref="com.axelor.apps.openauction.db.Code"/>
+      ref="com.axelor.apps.openauction.db.LotCondition"/>
     <many-to-one name="interlocutor" title="Interlocuteur"
       ref="com.axelor.apps.base.db.Partner"/>
     <date name="dateToAuctionFrom" title="A vendre à compter du"/>

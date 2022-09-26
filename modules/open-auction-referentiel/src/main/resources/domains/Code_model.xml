@@ -3,11 +3,7 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://axelor.com/xml/ns/domain-models http://axelor.com/xml/ns/domain-models/domain-models_5.4.xsd">
   <module name="openauction" package="com.axelor.apps.openauction.db"/>
-  <entity name="Code">
-    <string name="type" title="Type" selection="openauction.typecode.select"/>
-    <string name="code" title="Code"/>
-    <string name="description" title="Description" namecolumn="true"/>
-  </entity>
+
 
   <entity name="Epoque">
     <string name="code" title="Code"/>
@@ -26,7 +22,32 @@
     <string name="code" title="Code"/>
     <string name="description" title="Description" namecolumn="true"/>
   </entity>
-  <entity name="Periode">
+  <entity name="HistoricalPeriod">
+    <string name="code" title="Code"/>
+    <string name="description" title="Description" namecolumn="true"/>
+  </entity>
+
+  <entity name="InventoryCategoryProduct">
+    <string name="code" title="Code"/>
+    <string name="description" title="Description" namecolumn="true"/>
+  </entity>
+
+  <entity name="InventoryType">
+    <string name="code" title="Code"/>
+    <string name="description" title="Description" namecolumn="true"/>
+  </entity>
+
+  <entity name="LotCondition">
+    <string name="code" title="Code"/>
+    <string name="description" title="Description" namecolumn="true"/>
+  </entity>
+
+  <entity name="PassingIndex">
+    <string name="code" title="Code"/>
+    <string name="description" title="Description" namecolumn="true"/>
+  </entity>
+
+  <entity name="RetirementReason">
     <string name="code" title="Code"/>
     <string name="description" title="Description" namecolumn="true"/>
   </entity>

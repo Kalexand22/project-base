@@ -32,7 +32,7 @@
       selection="openauction.groupProcessType.select"/>
     <boolean name="retired" title="Retiré"/>
     <many-to-one name="retirementReason" title="Motif retrait"
-      ref="com.axelor.apps.openauction.db.Code"/>
+      ref="com.axelor.apps.openauction.db.RetirementReason"/>
 
     <many-to-one name="bondPaymentMethod" title="Mode règlement caution"
       ref="com.axelor.apps.account.db.PaymentMode"/>

@@ -38,7 +38,7 @@
 
     <string name="correspBussRelationCode" title="Relation d'affaire correspondant"/>
     <many-to-one name="inventoryType" title="Type inventaire"
-      ref="com.axelor.apps.openauction.db.Code"/>
+      ref="com.axelor.apps.openauction.db.InventoryType"/>
     <string name="inventoryNature" title="Nature inventaire"
       selection="openauction.inventoryNature.select"/>
     <string name="sellerInvStatementUnit" title="Unité de facturation"

@@ -38,7 +38,7 @@
     <integer name="repDupLotNoMission" title="N° lot/mission recolement/duplication"/>
     <boolean name="toBeValuated" title="A estimer"/>
     <many-to-one name="lotCondition" title="Condition lot"
-      ref="com.axelor.apps.openauction.db.Code"/>
+      ref="com.axelor.apps.openauction.db.LotCondition"/>
     <many-to-one name="companySpecialCode" title="Code spécialité société"
       ref="com.axelor.apps.openauction.db.Specializing"/>
     <string name="equipementSpecialCode" title="Code équipement spécial"/>

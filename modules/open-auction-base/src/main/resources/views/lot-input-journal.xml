@@ -2,31 +2,81 @@
 <object-views xmlns="http://axelor.com/xml/ns/object-views"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.4.xsd">
-  <grid name="lot-input-journal-grid" title="Saisie des lignes de mission"
-    model="com.axelor.apps.openauction.db.Lot" edit-icon="true"
-    onNew="action-record-lot-set-mission2">
+
+
+
+
+  <form name="input-journal-form" title="Saisie des ligne de mission"
+    model="com.axelor.apps.openauction.db.MissionHeader" width="large">
     <toolbar>
       <button name="valider" title="Valider" onClick="action-validate-lot-input-journal"/>
     </toolbar>
-    <field name="description" width="400"/>
-    <field name="lotTemplateCode" title="Modèle"/>
-    <field name="lotCategorie1Code1" title="Thème"/>
-    <field name="lotNatureCode" title="Nature de lot"/>
+    <panel name="MainPanel">
+      <field name="missionStatus" showTitle="false" colSpan="12" widget="NavSelect"/>
+      <panel colSpan="2" itemSpan="12"/>
+      <panel colSpan="3" itemSpan="12">
+        <panel itemSpan="12">
+          <field name="masterContactNo" colSpan="12" canNew="true"
+            domain="self.isContact = false" formview="partner-supplier-form"/>
+          <field name="description" title="Titre de la mission"/>
+          <field name="responsibilityCenter"/>
+        </panel>
+      </panel>
+      <panel colSpan="3" itemSpan="12">
+        <panel itemSpan="12">
+          <field name="auctionnerCode"/>
+          <field name="missionManagerCode" title="Responsable mission"/>
+          <field name="managerEntryCode" title="Responsable saisie"/>
+        </panel>
+      </panel>
+      <panel colSpan="3" itemSpan="12">
+        <panel itemSpan="12">
+          <field name="missionTemplateCode"/>
+          <field name="printConsignmentAgreement" colSpan="6"/>
+          <field name="reqConsignmentAgreement" colSpan="6"/>
+          <field name="globalConsAgreemAccepted" colSpan="6"/>
+        </panel>
+      </panel>
+    </panel>
+    <panel>
+      <field name="lotInputJournalList" title="Saisie de lots" canEdit="true" canNew="true"
+        grid-view="lot-input-journal-grid" form-view="lot-input-journal-form" colSpan="12"
+        widget="MasterDetail" height="20">
+      </field>
+    </panel>
+  </form>
 
+  <grid name="lot-input-journal-grid" model="com.axelor.apps.openauction.db.LotInputJournal"
+    title="Saisie des lignes de mission" editable="true" canEdit="true" canNew="true"
+    onNew="action-record-lot-set-mission2">
+
+    <field name="lotTemplateCode" title="Modèle"/>
+    <field name="lotCategorie1Code" title="Thème"/>
+    <field name="lotNatureCode" title="Nature de lot"/>
+    <field name="description" width="400"/>
+    <field name="valueType"/>
+    <field name="minAuctionEstimValue"/>
+    <field name="maxAuctionEstimValue"/>
+    <field name="grossReservePrice"/>
+    <field name="netReservePrice"/>
+    <field name="binCode"/>
+    <field name="auctionNo"/>
+    <field name="passingOrderNo"/>
+    <field name="passingIndexNo"/>
+    <field name="lotConditionCode"/>
   </grid>
 
-  <form name="lot-input-journal-form" title="Saisie des ligne de mission"
-    model="com.axelor.apps.openauction.db.Lot" width="large" onNew="action-record-lot-set-mission2">
-    <toolbar>
-      <button name="valider" title="Valider" onClick="action-validate-lot-input-journal"/>
-    </toolbar>
+
+  <form name="lot-input-journal-form" model="com.axelor.apps.openauction.db.LotInputJournal"
+    title="Detail du lot">
     <panel name="showPanel" hidden="true">
       <field name="lotNatureCode.wine"/>
       <field name="lotNatureCode.automotive"/>
       <field name="lotNatureCode.equipment"/>
       <field name="lotNatureCode.artObject"/>
     </panel>
-    <panel title="Général" canCollapse="true">
+
+    <panel title="Général" canCollapse="true" colSpan="12">
       <field name="description"/>
 
       <field name="lotTemplateCode" title="Modèle"/>
@@ -40,7 +90,8 @@
       <field name="maximumValue" title="Est. haute"/>
       <field name="lotConditionCode"/>
     </panel>
-    <panel name="WinePanel" title="Détail" canCollapse="true" showIf="lotNatureCode.wine">
+    <panel name="WinePanel" title="Détail" canCollapse="true" showIf="lotNatureCode.wine"
+      colSpan="12">
       <field name="catalogDescription" title="Desc. catalogue" widget="html"/>
       <field name="comment1"/>
       <field name="name"/>
@@ -61,7 +112,7 @@
       <field name="cubageUnit" title="Unit. Vol."/>
     </panel>
     <panel name="EquipmentPanel" title="Détail" canCollapse="true"
-      showIf="lotNatureCode.equipment">
+      showIf="lotNatureCode.equipment" colSpan="12">
       <field name="catalogDescription" colSpan="12" widget="html"/>
       <field name="comment1"/>
       <field name="internalComment"/>
@@ -81,7 +132,8 @@
       <field name="cubageUnit" title="Unit. Vol."/>
       <field name="weightUnit" title="Unit. Pds"/>
     </panel>
-    <panel name="ArtPanel" title="Détail" canCollapse="true" showIf="lotNatureCode.artObject">
+    <panel name="ArtPanel" title="Détail" canCollapse="true" showIf="lotNatureCode.artObject"
+      colSpan="12">
       <field title="Desc. catalogue" name="catalogDescription" colSpan="12" widget="html"/>
       <field name="comment1"/>
       <field name="internalComment"/>
@@ -108,7 +160,7 @@
       <field title="Unit. Vol." name="cubageUnit"/>
       <field title="Unit. Pds" name="weightUnit"/>
     </panel>
-    <panel name="VehiclePanel" title="Détail" canCollapse="true"
+    <panel name="VehiclePanel" title="Détail" canCollapse="true" colSpan="12"
       showIf="lotNatureCode.automotive">
       <panel>
         <field name="registration"/>
@@ -127,7 +179,6 @@
         <field name="$powerKW" title="Puissance KW" type="decimal"/>
         <field name="argusModel" colSpan="12"/>
         <field name="argusVersionModel" colSpan="12"/>
-
       </panel>
       <panel>
         <panel colSpan="6">
@@ -160,22 +211,20 @@
 
       </panel>
     </panel>
-    <panel name="vehicle-option" title="Equipements" showIf="lotNatureCode.automotive">
+    <panel name="vehicle-option" title="Equipements" showIf="lotNatureCode.automotive"
+      colSpan="12">
       <panel-include view="vehicle-option-form"/>
     </panel>
-    <panel canCollapse="true">
+    <panel canCollapse="true" colSpan="12">
       <panel-include view="picture-form"/>
     </panel>
   </form>
 
 
   <action-method name="action-validate-lot-input-journal">
-    <call class="com.axelor.apps.openauction.controller.LotInputJournalController"
+    <call class="com.axelor.apps.openauction.controller.LotInputJournalPostLineController"
       method="validate"/>
   </action-method>
 
-  <action-record name="action-record-lot-set-mission2"
-    model="com.axelor.apps.openauction.db.Lot">
-    <field name="currentMissionNo" expr="eval: _missionRecord"/>
-  </action-record>
+
 </object-views>

@@ -59,7 +59,7 @@
     <date name="missionDate" title="Date de mission"/>
     <date name="judgmentAuctionDate" title="Date ordonnance de vente"/>
     <many-to-one name="inventoryType" title="Type inventaire"
-      ref="com.axelor.apps.openauction.db.Code"/>
+      ref="com.axelor.apps.openauction.db.InventoryType"/>
     <string name="inventoryNature" title="Nature inventaire"
       selection="openauction.inventoryNature.select"/>
     <date name="inventoryDate" title="Date inventaire"/>

@@ -55,8 +55,10 @@ public class LotInputJournalPostLineImpl implements LotInputJournalPostLine {
     lTempLotQuickInputJournal =
         lLotQuickJournalInputValidate.validateLotTemplateCode(
             lTempLotQuickInputJournal, lotInputJournal.getLotTemplateCode());
-    lTempLotQuickInputJournal = lLotQuickJournalInputValidate.validateLotTemplateCode(lTempLotQuickInputJournal, lotInputJournal.getLotTemplateCode());
-    //lTempLotQuickInputJournal.setLotTemplateCode(lotInputJournal.getLotTemplateCode());
+    lTempLotQuickInputJournal =
+        lLotQuickJournalInputValidate.validateLotTemplateCode(
+            lTempLotQuickInputJournal, lotInputJournal.getLotTemplateCode());
+    // lTempLotQuickInputJournal.setLotTemplateCode(lotInputJournal.getLotTemplateCode());
     lTempLotQuickInputJournal.setDescription(lotInputJournal.getDescription());
     lTempLotQuickInputJournal.setQuantity(lotInputJournal.getQuantity());
     lTempLotQuickInputJournal.setAppraisalValue(lotInputJournal.getValue());

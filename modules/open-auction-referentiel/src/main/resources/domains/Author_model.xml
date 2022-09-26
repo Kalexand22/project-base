@@ -11,14 +11,15 @@
     <string name="dateofBirth" title="Date de naissance"/>
     <string name="dateofDeath" title="Date de décès"/>
     <string name="sex" title="Sexe" selection="openauction.sex.select"/>
-    <many-to-one name="age" title="Epoque" ref="com.axelor.apps.openauction.db.Code"/>
+    <many-to-one name="age" title="Epoque" ref="com.axelor.apps.openauction.db.Epoque"/>
     <string name="salutationCode" title="Code appelation"/>
     <string name="schoolType" title="Type école" selection="openauction.schoolType.select"/>
-    <many-to-one name="school" title="Ecole" ref="com.axelor.apps.openauction.db.Code"/>
-    <many-to-one name="style" title="Style" ref="com.axelor.apps.openauction.db.Code"/>
-    <many-to-one name="century" title="Siècle" ref="com.axelor.apps.openauction.db.Code"/>
+    <many-to-one name="school" title="Ecole" ref="com.axelor.apps.openauction.db.Ecole"/>
+    <many-to-one name="style" title="Style" ref="com.axelor.apps.openauction.db.Style"/>
+    <many-to-one name="century" title="Siècle"
+      ref="com.axelor.apps.openauction.db.Siecle"/>
     <many-to-one name="historicalPeriod" title="Période historique"
-      ref="com.axelor.apps.openauction.db.Code"/>
+      ref="com.axelor.apps.openauction.db.HistoricalPeriod"/>
     <string name="institutionRightNo" title="N° ADAGP"/>
     <boolean name="resaleRight" title="Droit de suite"/>
     <string name="noSeries" title="Souches de n°"/>

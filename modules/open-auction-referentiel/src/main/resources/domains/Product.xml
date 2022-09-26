@@ -48,7 +48,7 @@
     <boolean name="detailledSellerGLPosting" title="Comptabilisation détaillée mission"/>
     <boolean name="displayInPayment" title="Affichage en règlement"/>
     <many-to-one name="inventoryCategoryItem" title="Catégorie article inventaire"
-      ref="com.axelor.apps.openauction.db.Code"/>
+      ref="com.axelor.apps.openauction.db.InventoryCategoryProduct"/>
     <string name="inventoryItemDescription" title="Désignation article inventaire"/>
     <integer name="invMissionAssOrderPriority" title="Ordre priorité demande évaluation"/>
     <string name="servicePriceSystem" title="Système de tarification"

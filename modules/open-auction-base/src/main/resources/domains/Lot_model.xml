@@ -69,7 +69,7 @@
     <boolean name="judicial" title="Judiciaire"/>
     <string name="lotType" title="Type lot" selection="openauction.lotType.select"/>
     <many-to-one name="lotConditionCode" title="Etat lot"
-      ref="com.axelor.apps.openauction.db.Code"/>
+      ref="com.axelor.apps.openauction.db.LotCondition"/>
     <string name="lotInventoryStatus" title="Statut stock lot"
       selection="openauction.lotInventoryStatus.select.lot"/>
     <string name="lotGeneralStatus" title="Statut général lot"
@@ -338,7 +338,7 @@
     <many-to-one name="authorCode" title="Code auteur"
       ref="com.axelor.apps.openauction.db.Author"/>
     <many-to-one name="historicalPeriod" title="Période historique"
-      ref="com.axelor.apps.openauction.db.Periode"/>
+      ref="com.axelor.apps.openauction.db.HistoricalPeriod"/>
     <string name="schoolType" title="Type école" selection="openauction.schoolType.select"/>
     <many-to-one name="schoolCode" title="Code école"
       ref="com.axelor.apps.openauction.db.Ecole"/>
