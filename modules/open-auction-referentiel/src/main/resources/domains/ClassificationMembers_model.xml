@@ -8,59 +8,13 @@
       ref="com.axelor.apps.openauction.db.Classification"/>
     <string name="memberCode" title="Code"/>
     <string name="presentationOrder" title="Ordre de presentation"/>
-    <string name="parentMemberCode" title="Code membre parent"/>
+    <many-to-one name="parentMemberCode" title="Code membre parent"
+      ref="com.axelor.apps.openauction.db.ClassificationMembers"/>
     <string name="description" title="Désignation" namecolumn="true"/>
     <string name="classificationType" title="Type classification"
       selection="openauction.classificationType.select"/>
     <integer name="level1" title="Niveau"/>
     <string name="externalNo" title="N° externe"/>
   </entity>
-  <entity name="ClassificationMembers1">
-    <many-to-one name="classificationCode" title="Code classification"
-      ref="com.axelor.apps.openauction.db.Classification"/>
-    <string name="memberCode" title="Code"/>
-    <string name="presentationOrder" title="Ordre de presentation"/>
-    <string name="parentMemberCode" title="Code membre parent"/>
-    <string name="description" title="Désignation" namecolumn="true"/>
-    <string name="classificationType" title="Type classification"
-      selection="openauction.classificationType.select"/>
-    <integer name="level1" title="Niveau"/>
-    <string name="externalNo" title="N° externe"/>
-  </entity>
-  <entity name="ClassificationMembers2">
-    <many-to-one name="classificationCode" title="Code classification"
-      ref="com.axelor.apps.openauction.db.Classification"/>
-    <string name="memberCode" title="Code"/>
-    <string name="presentationOrder" title="Ordre de presentation"/>
-    <string name="parentMemberCode" title="Code membre parent"/>
-    <string name="description" title="Désignation" namecolumn="true"/>
-    <string name="classificationType" title="Type classification"
-      selection="openauction.classificationType.select"/>
-    <integer name="level1" title="Niveau"/>
-    <string name="externalNo" title="N° externe"/>
-  </entity>
-  <entity name="ClassificationMembers3">
-    <many-to-one name="classificationCode" title="Code classification"
-      ref="com.axelor.apps.openauction.db.Classification"/>
-    <string name="memberCode" title="Code"/>
-    <string name="presentationOrder" title="Ordre de presentation"/>
-    <string name="parentMemberCode" title="Code membre parent"/>
-    <string name="description" title="Désignation" namecolumn="true"/>
-    <string name="classificationType" title="Type classification"
-      selection="openauction.classificationType.select"/>
-    <integer name="level1" title="Niveau"/>
-    <string name="externalNo" title="N° externe"/>
-  </entity>
-  <entity name="ClassificationMembers4">
-    <many-to-one name="classificationCode" title="Code classification"
-      ref="com.axelor.apps.openauction.db.Classification"/>
-    <string name="memberCode" title="Code"/>
-    <string name="presentationOrder" title="Ordre de presentation"/>
-    <string name="parentMemberCode" title="Code membre parent"/>
-    <string name="description" title="Désignation" namecolumn="true"/>
-    <string name="classificationType" title="Type classification"
-      selection="openauction.classificationType.select"/>
-    <integer name="level1" title="Niveau"/>
-    <string name="externalNo" title="N° externe"/>
-  </entity>
+
 </domain-models>
