@@ -40,8 +40,8 @@
     </panel>
     <panel>
       <field name="lotInputJournalList" title="Saisie de lots" canEdit="true" canNew="true"
-        grid-view="lot-input-journal-grid" form-view="lot-input-journal-form" colSpan="12"
-        widget="MasterDetail" height="20">
+        grid-view="lot-input-journal-grid" form-view="lot-input-journal-form"
+        summary-view="lot-input-journal-form" colSpan="12" widget="MasterDetail" height="20">
       </field>
     </panel>
   </form>
@@ -68,7 +68,7 @@
 
 
   <form name="lot-input-journal-form" model="com.axelor.apps.openauction.db.LotInputJournal"
-    title="Detail du lot">
+    title="Detail du lot" width="large">
     <panel name="showPanel" hidden="true">
       <field name="lotNatureCode.wine"/>
       <field name="lotNatureCode.automotive"/>
