@@ -4,9 +4,6 @@
   xsi:schemaLocation="http://axelor.com/xml/ns/object-views
   http://axelor.com/xml/ns/object-views/object-views_5.0.xsd">
 
-  <menuitem name="menu-compta" title="Comptabilité" order="1"/>
-  <menuitem name="menu-finance-vente" title="Finances vente" order="2"/>
-  <menuitem name="menu-finance-achat" title="Finances achat" order="3"/>
   <menuitem name="menu-lot" title="Lots" order="4"/>
   <menuitem name="menu-vente" title="Ventes" order="5"/>
   <menuitem name="menu-affaire" title="Affaires" order="6"/>
@@ -15,7 +12,6 @@
   <menuitem name="menu-equipment" title="Matériels" order="9"/>
   <menuitem name="menu-vehicle" title="Véhicules" order="10"/>
   <menuitem name="menu-logistique" title="Logistique" order="11"/>
-  <menuitem name="menu-administration" title="Administration" order="14"/>
 
   <menuitem name="menu-equipment-all" parent="menu-equipment"
     title="Liste des lots matériels" action="equipment.all"/>

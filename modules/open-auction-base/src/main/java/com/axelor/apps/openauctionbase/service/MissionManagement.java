@@ -1,7 +1,11 @@
 package com.axelor.apps.openauctionbase.service;
 
+import com.axelor.apps.openauction.db.ActivityHeader;
+import com.axelor.apps.openauction.db.AuctionHeader;
+import com.axelor.apps.openauction.db.Lot;
 import com.axelor.apps.openauction.db.MissionHeader;
 import com.axelor.apps.openauction.db.MissionLine;
+import com.axelor.apps.openauction.db.MissionTemplate;
 
 public interface MissionManagement {
   // PROCEDURE TransferToAuctionMission@1000000006(VAR pMissionHeader@1000000006 : Record
@@ -14,11 +18,11 @@ public interface MissionManagement {
   // Code[20];pMissionTemplate@1000000007 : Code[10];Add@1000000006 :
   // Boolean;pTransactionLineNo@1100481000 : Integer);
   public Integer changeActivity(
-      String pActivityCode,
-      String pMissionNo,
-      String pAuctionNo,
-      String pLotNo,
-      String pMissionTemplate,
+      ActivityHeader pActivityCode,
+      MissionHeader pMissionNo,
+      AuctionHeader pAuctionNo,
+      Lot pLotNo,
+      MissionTemplate pMissionTemplate,
       Boolean Add,
       Integer pTransactionLineNo);
   // PROCEDURE IfAllMissionServiceInvoiced@1000000013(pMissionHeader@1000000000 : Record 8011402)

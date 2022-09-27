@@ -193,7 +193,7 @@
   </action-view>
 
   <action-view name="mission.template.wizard"
-    title="Créer une mission à partir d'un modèle" model="com.axelor.apps.base.db.Wizard">
+    title="Créer une mission à partir d'un modèle" model="com.axelor.apps.openauction.db.MissionHeaderWizard">
     <view name="mission-creation-wizard-form" type="form"/>
     <view-param name="show-toolbar" value="false"/>
     <view-param name="width" value="800"/>

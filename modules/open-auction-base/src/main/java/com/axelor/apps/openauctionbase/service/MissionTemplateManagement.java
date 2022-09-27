@@ -6,19 +6,19 @@ import com.axelor.apps.openauction.db.MissionHeader;
 import com.axelor.apps.openauction.db.MissionTemplate;
 
 public interface MissionTemplateManagement {
-  public MissionHeader CreateMissionFromMission(
+  public MissionHeader createMissionFromMission(
       MissionHeader pMissionHeader,
       MissionTemplate pMissionTemplate,
       Boolean pJudicialFilter,
       String pLawyerBusNo);
 
-  public Boolean CreateMissionFromContact(Partner pContact);
+  public Boolean createMissionFromContact(Partner pContact);
 
-  public void GetCustomerNo();
+  public void getCustomerNo();
 
-  public void SetAuctionFromInv(Boolean pTrue);
+  public void setAuctionFromInv(Boolean pTrue);
 
-  public void SetSkipActivityCreation(Boolean pSkipActivity);
+  public void setSkipActivityCreation(Boolean pSkipActivity);
 
-  public void CreateActivity(MissionHeader pMissionHeader, ActivityHeader pActivityCodeToHeader);
+  public void createActivity(MissionHeader pMissionHeader, ActivityHeader pActivityCodeToHeader);
 }

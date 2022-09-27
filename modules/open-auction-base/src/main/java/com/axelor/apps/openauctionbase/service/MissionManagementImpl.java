@@ -1,7 +1,11 @@
 package com.axelor.apps.openauctionbase.service;
 
+import com.axelor.apps.openauction.db.ActivityHeader;
+import com.axelor.apps.openauction.db.AuctionHeader;
+import com.axelor.apps.openauction.db.Lot;
 import com.axelor.apps.openauction.db.MissionHeader;
 import com.axelor.apps.openauction.db.MissionLine;
+import com.axelor.apps.openauction.db.MissionTemplate;
 
 public class MissionManagementImpl implements MissionManagement {
 
@@ -19,13 +23,13 @@ public class MissionManagementImpl implements MissionManagement {
 
   @Override
   public Integer changeActivity(
-      String pActivityCode,
-      String pMissionNo,
-      String pAuctionNo,
-      String pLotNo,
-      String pMissionTemplate,
-      Boolean Add,
-      Integer pTransactionLineNo) {
+    ActivityHeader pActivityCode,
+    MissionHeader pMissionNo,
+    AuctionHeader pAuctionNo,
+    Lot pLotNo,
+    MissionTemplate pMissionTemplate,
+    Boolean Add,
+    Integer pTransactionLineNo) {
     // TODO Auto-generated method stub
     return null;
   }

@@ -23,13 +23,13 @@ public class MissionLineManagementImpl implements MissionLineManagement {
   }
 
   @Override
-  public void SendLotToAuction(MissionLine pMissionLine) {
+  public void sendLotToAuction(MissionLine pMissionLine) {
     // TODO Auto-generated method stub
 
   }
 
   @Override
-  public Integer LotInsertMission(
+  public Integer lotInsertMission(
       MissionHeader pMissionHeader,
       Lot pLot,
       MissionLine pMissionLine,
@@ -39,31 +39,31 @@ public class MissionLineManagementImpl implements MissionLineManagement {
   }
 
   @Override
-  public void DuplicateMissionLine(MissionLine pMissionLine, Boolean pSameLotNo) {
+  public void duplicateMissionLine(MissionLine pMissionLine, Boolean pSameLotNo) {
     // TODO Auto-generated method stub
 
   }
 
   @Override
-  public Boolean IsAffectedLotInMission(MissionHeader pMissionHeader, Lot pLot) {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public Boolean DeleteMissionLine(MissionLine pMissionLine) {
+  public Boolean isAffectedLotInMission(MissionHeader pMissionHeader, Lot pLot) {
     // TODO Auto-generated method stub
     return null;
   }
 
   @Override
-  public void SortMissionLine(MissionHeader pMission) {
+  public Boolean deleteMissionLine(MissionLine pMissionLine) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public void sortMissionLine(MissionHeader pMission) {
     // TODO Auto-generated method stub
 
   }
 
   @Override
-  public MissionLine CreateMissionLine(
+  public MissionLine createMissionLine(
       MissionHeader pMissionHeader, Lot pLot, LotQuickInputJournal pLotQuickInputJournal)
       throws AxelorException {
     /*
@@ -94,7 +94,7 @@ public class MissionLineManagementImpl implements MissionLineManagement {
           TraceBackRepository.CATEGORY_INCONSISTENCY,
           "Le statut de la mission ne doit pas être annulé ou terminé");
     }
-    if (IsAffectedLotInMission(pMissionHeader, pLot)) {
+    if (isAffectedLotInMission(pMissionHeader, pLot)) {
       return null;
     }
 
@@ -105,7 +105,7 @@ public class MissionLineManagementImpl implements MissionLineManagement {
     GetMissionLineNo(pMissionHeader."No.");
        */
     missionLineNo = 0;
-    GetMissionLineNo(pMissionHeader);
+    getMissionLineNo(pMissionHeader);
 
     /*
        * lMissionLine.INIT;
@@ -149,7 +149,7 @@ public class MissionLineManagementImpl implements MissionLineManagement {
     if (pLotQuickInputJournal.getLotNoMission() != 0) {
       lMissionLine.setLotNoMission(pLotQuickInputJournal.getLotNoMission());
     } else {
-      lMissionLine.setLotNoMission(GetNewLotMissionNo(pMissionHeader));
+      lMissionLine.setLotNoMission(getNewLotMissionNo(pMissionHeader));
     }
     lMissionLine.setContactNo(pMissionHeader.getMasterContactNo());
     lMissionLine.setType(MissionLineRepository.TYPE_SELECT_LOT);
@@ -176,38 +176,38 @@ public class MissionLineManagementImpl implements MissionLineManagement {
   }
 
   @Override
-  public void CreateCommentMissionLine(
+  public void createCommentMissionLine(
       MissionHeader pMissionHeader, LotQuickInputJournal pLotQuickInputJournal) {
     // TODO Auto-generated method stub
 
   }
 
   @Override
-  public String GetMissionLineNo(MissionHeader pMissionHeaderNo) {
+  public String getMissionLineNo(MissionHeader pMissionHeaderNo) {
     // TODO Auto-generated method stub
     return null;
   }
 
   @Override
-  public String ExistPostedBuyerInvoice(MissionHeader pMissionNo, Lot pLotNo) {
+  public String existPostedBuyerInvoice(MissionHeader pMissionNo, Lot pLotNo) {
     // TODO Auto-generated method stub
     return null;
   }
 
   @Override
-  public String ExistPostedSellerInvoice(MissionHeader pMissionNo, Lot pLotNo) {
+  public String existPostedSellerInvoice(MissionHeader pMissionNo, Lot pLotNo) {
     // TODO Auto-generated method stub
     return null;
   }
 
   @Override
-  public String ExistPostedMissionInvoice(MissionHeader pMissionNo, Lot pLotNo) {
+  public String existPostedMissionInvoice(MissionHeader pMissionNo, Lot pLotNo) {
     // TODO Auto-generated method stub
     return null;
   }
 
   @Override
-  public Integer LotInsertMissionNotAuction(
+  public Integer lotInsertMissionNotAuction(
       MissionHeader pMissionHeader,
       Lot pLot,
       MissionLine pMissionLine,
@@ -217,7 +217,7 @@ public class MissionLineManagementImpl implements MissionLineManagement {
   }
 
   @Override
-  public Boolean CreateMissionLineNotAuction(
+  public Boolean createMissionLineNotAuction(
       MissionHeader pMissionHeader,
       MissionLine pMissionLine,
       Lot pLot,
@@ -227,7 +227,7 @@ public class MissionLineManagementImpl implements MissionLineManagement {
   }
 
   @Override
-  public Integer GetNewLotMissionNo(MissionHeader pMissionNo) {
+  public Integer getNewLotMissionNo(MissionHeader pMissionNo) {
     // TODO Auto-generated method stub
     return null;
   }

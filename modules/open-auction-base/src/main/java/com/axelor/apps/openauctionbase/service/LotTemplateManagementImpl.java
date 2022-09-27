@@ -497,7 +497,7 @@ public class LotTemplateManagementImpl implements LotTemplateManagement {
       lLot = this.CreateLot(pLotQuickInputJournal, pMissionHeader.getMasterContactNo());
 
       lMissionLine =
-          missionLineManagement.CreateMissionLine(pMissionHeader, lLot, pLotQuickInputJournal);
+          missionLineManagement.createMissionLine(pMissionHeader, lLot, pLotQuickInputJournal);
 
       this.CreateLotValueEntry(pLotQuickInputJournal, lLot, pMissionHeader, lMissionLine);
 
@@ -513,7 +513,7 @@ public class LotTemplateManagementImpl implements LotTemplateManagement {
       }
 
     } else {
-      missionLineManagement.CreateCommentMissionLine(pMissionHeader, pLotQuickInputJournal);
+      missionLineManagement.createCommentMissionLine(pMissionHeader, pLotQuickInputJournal);
     }
     lotQuickInputJournalRepository.remove(pLotQuickInputJournal);
   }

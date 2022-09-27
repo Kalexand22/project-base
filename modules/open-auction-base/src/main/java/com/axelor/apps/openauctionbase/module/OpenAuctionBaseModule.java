@@ -25,6 +25,8 @@ import com.axelor.apps.openauctionbase.service.MissionServicePriceManagement;
 import com.axelor.apps.openauctionbase.service.MissionServicePriceManagementImpl;
 import com.axelor.apps.openauctionbase.service.MissionTemplateManagement;
 import com.axelor.apps.openauctionbase.service.MissionTemplateManagementImpl;
+import com.axelor.apps.openauctionbase.service.ToolsMissionChange;
+import com.axelor.apps.openauctionbase.service.ToolsMissionChangeImpl;
 
 public class OpenAuctionBaseModule extends AxelorModule {
 
@@ -43,5 +45,6 @@ public class OpenAuctionBaseModule extends AxelorModule {
     bind(CaretakerServicePriceMgt.class).to(CaretakerServicePriceMgtImpl.class);
     bind(AuctionServicePriceMgt.class).to(AuctionServicePriceMgtImpl.class);
     bind(LotStatusMgt.class).to(LotStatusMgtImpl.class);
+    bind(ToolsMissionChange.class).to(ToolsMissionChangeImpl.class);
   }
 }

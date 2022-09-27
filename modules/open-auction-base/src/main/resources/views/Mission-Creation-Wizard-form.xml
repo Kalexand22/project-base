@@ -3,39 +3,33 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.4.xsd">
   <form name="mission-creation-wizard-form" title="Création de mission"
-    model="com.axelor.apps.base.db.Wizard" width="large"
-    onLoad="action-template-wizard-step-status-init">
+    model="com.axelor.apps.openauction.db.MissionHeaderWizard" width="large" 
+    >
 
+  <!--
+     <panel name="stepStatusPanel" colSpan="12"> <field name="stepStatusSelect" showTitle="false"
+      readonly="true" colSpan="12" type="integer" widget="NavSelect"/> <panel name="buttonPanel" colSpan="12">
+      <button name="previousBtn" readonlyIf="stepStatusSelect &lt; 1" colSpan="1" icon="fa-caret-left" onClick="save,
+      action-template-wizard-step-status-previous"/> <button name="nextBtn" readonlyIf="stepStatusSelect >
+      1" colSpan="1" icon="fa-caret-right" onClick="save, action-template-wizard-step-status-next"/> <button
+      name="validateBtn" title="Validate" onClick="save,action-mission-template-wizard-method-create"/> </panel>
+      </panel> -->
     <panel name="stepStatusPanel" colSpan="12">
-      <field name="stepStatusSelect" showTitle="false" readonly="true" colSpan="12"
-        type="integer" widget="NavSelect"/>
-      <panel name="buttonPanel" colSpan="12">
-        <button name="previousBtn" readonlyIf="stepStatusSelect &lt; 1" colSpan="1"
-          icon="fa-caret-left" onClick="save, action-template-wizard-step-status-previous"/>
-        <button name="nextBtn" readonlyIf="stepStatusSelect > 1" colSpan="1"
-          icon="fa-caret-right" onClick="save, action-template-wizard-step-status-next"/>
-        <button name="validateBtn" title="Validate"
-          onClick="save,action-mission-template-wizard-method-create"/>
-      </panel>
+      <button
+      name="validateBtn" title="Validate" onClick="action-template-wizard-init,action-mission-template-wizard-method-create"/> 
     </panel>
+     
     <panel name="MainPanel">
-      <field name="missionTemplate" title="Modèle de mission" type="many-to-one"
-        target="com.axelor.apps.openauction.db.MissionTemplate"/>
-      <field title="Centre de gestion" name="responsibilityCenter" type="many-to-one"
-        target="com.axelor.apps.base.db.TradingName"/>
-      <field title="Titre mission" name="missionTitle" type="string"/>
+      <field name="missionTemplateCode" />
+      <field  name="responsibilityCenter"/>
+      <field  name="description"/>
     </panel>
     <panel name="MainPanel2">
-      <field title="N° contact principal" name="masterContactNo" type="many-to-one"
-        target="com.axelor.apps.base.db.Partner"/>
-      <field title="Code commissaire-priseur" name="auctioneerCode" type="many-to-one"
-        target="com.axelor.apps.base.db.Partner"/>
-      <field title="Responsable mission" name="missionManagerCode" type="many-to-one"
-        target="com.axelor.apps.base.db.Partner"/>
-      <field title="Code activité pour en-tête" name="activityCodeToHeader" type="many-to-one"
-        target="com.axelor.apps.openauction.db.ActivityHeader"/>
-      <field title="Code activité pour lignes" name="activityCodeToLine" type="many-to-one"
-        target="com.axelor.apps.openauction.db.ActivityHeader"/>
+      <field title="N° contact principal" name="masterContactNo"/>
+      <field title="Code commissaire-priseur" name="auctioneerCode"/>
+      <field title="Responsable mission" name="missionManagerCode"/>
+      <field title="Code activité pour en-tête" name="activityCodeToHeader"/>
+      <field title="Code activité pour lignes" name="activityCodeToLines"/>
     </panel>
   </form>
 
@@ -44,20 +38,9 @@
       method="createMissionFromTemplate"/>
   </action-method>
 
-  <action-record name="action-template-wizard-step-status-init"
-    model="com.axelor.apps.base.db.Wizard">
-    <field name="stepStatusSelect" expr="eval:1"/>
+  <action-record name="action-template-wizard-init"
+    model="com.axelor.apps.openauction.db.MissionHeaderWizard">
+    <field name="missionStatus" expr="Initial0"/>
   </action-record>
-
-  <action-record name="action-template-wizard-step-status-previous"
-    model="com.axelor.apps.base.db.Wizard">
-    <field name="stepStatusSelect" expr="eval: stepStatusSelect - 1"/>
-  </action-record>
-
-  <action-record name="action-template-wizard-step-status-next"
-    model="com.axelor.apps.base.db.Wizard">
-    <field name="stepStatusSelect" expr="eval: stepStatusSelect + 1"/>
-  </action-record>
-
 
 </object-views>
