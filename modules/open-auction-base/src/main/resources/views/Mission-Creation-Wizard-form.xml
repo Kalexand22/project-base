@@ -3,11 +3,9 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.4.xsd">
   <form name="mission-creation-wizard-form" title="Création de mission"
-    model="com.axelor.apps.openauction.db.MissionHeaderWizard" width="large" 
-    >
+    model="com.axelor.apps.openauction.db.MissionHeaderWizard" width="large">
 
-  <!--
-     <panel name="stepStatusPanel" colSpan="12"> <field name="stepStatusSelect" showTitle="false"
+    <!-- <panel name="stepStatusPanel" colSpan="12"> <field name="stepStatusSelect" showTitle="false"
       readonly="true" colSpan="12" type="integer" widget="NavSelect"/> <panel name="buttonPanel" colSpan="12">
       <button name="previousBtn" readonlyIf="stepStatusSelect &lt; 1" colSpan="1" icon="fa-caret-left" onClick="save,
       action-template-wizard-step-status-previous"/> <button name="nextBtn" readonlyIf="stepStatusSelect >
@@ -15,14 +13,14 @@
       name="validateBtn" title="Validate" onClick="save,action-mission-template-wizard-method-create"/> </panel>
       </panel> -->
     <panel name="stepStatusPanel" colSpan="12">
-      <button
-      name="validateBtn" title="Validate" onClick="action-template-wizard-init,action-mission-template-wizard-method-create"/> 
+      <button name="validateBtn" title="Validate"
+        onClick="action-template-wizard-init,action-mission-template-wizard-method-create"/>
     </panel>
-     
+
     <panel name="MainPanel">
-      <field name="missionTemplateCode" />
-      <field  name="responsibilityCenter"/>
-      <field  name="description"/>
+      <field name="missionTemplateCode"/>
+      <field name="responsibilityCenter"/>
+      <field name="description"/>
     </panel>
     <panel name="MainPanel2">
       <field title="N° contact principal" name="masterContactNo"/>

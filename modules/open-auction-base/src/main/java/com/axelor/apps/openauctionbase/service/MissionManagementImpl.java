@@ -23,13 +23,13 @@ public class MissionManagementImpl implements MissionManagement {
 
   @Override
   public Integer changeActivity(
-    ActivityHeader pActivityCode,
-    MissionHeader pMissionNo,
-    AuctionHeader pAuctionNo,
-    Lot pLotNo,
-    MissionTemplate pMissionTemplate,
-    Boolean Add,
-    Integer pTransactionLineNo) {
+      ActivityHeader pActivityCode,
+      MissionHeader pMissionNo,
+      AuctionHeader pAuctionNo,
+      Lot pLotNo,
+      MissionTemplate pMissionTemplate,
+      Boolean Add,
+      Integer pTransactionLineNo) {
     // TODO Auto-generated method stub
     return null;
   }

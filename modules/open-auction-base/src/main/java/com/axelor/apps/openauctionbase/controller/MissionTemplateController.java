@@ -25,7 +25,7 @@ public class MissionTemplateController {
       MissionTemplateManagement missionTemplateManagement =
           Beans.get(MissionTemplateManagement.class);
       pMissionHeader =
-          missionTemplateManagement.CreateMissionFromMission(
+          missionTemplateManagement.createMissionFromMission(
               pMissionHeader, pMissionHeader.getMissionTemplateCode(), false, "");
 
       if (pMissionHeader != null) {
