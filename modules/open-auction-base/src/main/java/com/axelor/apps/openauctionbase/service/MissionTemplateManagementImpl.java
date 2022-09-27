@@ -17,7 +17,6 @@ import com.google.inject.persist.Transactional;
 public class MissionTemplateManagementImpl implements MissionTemplateManagement {
 
   MissionHeaderRepository missionHeaderRepository;
-  MissionTemplate MissionTemplate;
   Boolean HideTemplate;
   Boolean AuctionFromInv;
   Boolean SkipActivity;
@@ -51,17 +50,17 @@ public class MissionTemplateManagementImpl implements MissionTemplateManagement 
 
 
     */
-    MissionHeader lmissionHeader = pMissionHeader;
-    if (MissionTemplate != null) {
-      lmissionHeader.setMissionTemplateCode(MissionTemplate);
-      lmissionHeader =
-          (MissionHeader) TransferFields.transferFields(lmissionHeader, pMissionTemplate);
+
+    if (pMissionTemplate != null) {
+      pMissionHeader.setMissionTemplateCode(pMissionTemplate);
+      pMissionHeader =
+          (MissionHeader) TransferFields.transferFields(pMissionTemplate, pMissionHeader);
       if (pMissionHeader.getNo() != null) {
-        lmissionHeader.setNo(pMissionHeader.getNo());
+        pMissionHeader.setNo(pMissionHeader.getNo());
       }
-      lmissionHeader.setMissionType(pMissionHeader.getMissionType());
-      lmissionHeader.setActivityCodeToHeader(pMissionTemplate.getActivityCodeToHeader());
-      missionHeaderRepository.save(lmissionHeader);
+      pMissionHeader.setMissionType(pMissionHeader.getMissionType());
+      pMissionHeader.setActivityCodeToHeader(pMissionTemplate.getActivityCodeToHeader());
+      // missionHeaderRepository.save(lmissionHeader);
 
       /*
       * lMissionHeader.VALIDATE("Auctioneer Code",lAuctioneerCode);
@@ -86,19 +85,19 @@ public class MissionTemplateManagementImpl implements MissionTemplateManagement 
        lMissionHeader.VALIDATE("Previous Mission No.",lOriginMissionNo);
        lMissionHeader.VALIDATE("Responsibility Center",lMissionResponsabilityCenter);
       */
-      lmissionHeader =
+      pMissionHeader =
           missionHeaderValidate.validateAuctioneerCode(
-              lmissionHeader, lmissionHeader.getAuctionnerCode());
-      String lMissionTitle = lmissionHeader.getDescription();
+              pMissionHeader, pMissionHeader.getAuctionnerCode());
+      String lMissionTitle = pMissionHeader.getDescription();
       if (lMissionTitle != null && !lMissionTitle.isEmpty()) {
-        lmissionHeader.setDescription(lMissionTitle);
+        pMissionHeader.setDescription(lMissionTitle);
       } else {
-        lmissionHeader.setDescription(
-            pMissionTemplate.getCode() + " " + lmissionHeader.getMasterContactNo().getFullName());
+        pMissionHeader.setDescription(
+            pMissionTemplate.getCode() + " " + pMissionHeader.getMasterContactNo().getFullName());
       }
-      lmissionHeader =
+      pMissionHeader =
           missionHeaderValidate.validateResponsibilityCenter(
-              lmissionHeader, lmissionHeader.getResponsibilityCenter());
+              pMissionHeader, pMissionHeader.getResponsibilityCenter());
 
       /*
       * IF lLawyerBus."No." <> '' THEN BEGIN
@@ -142,53 +141,56 @@ public class MissionTemplateManagementImpl implements MissionTemplateManagement 
           // TODO REVOIR LE CODE
           switch (lLawyerBus.getProcessType()) {
             case "Procedure RJ":
-              lmissionHeader =
+              pMissionHeader =
                   missionHeaderValidate.validateMasterContactNo(
-                      lmissionHeader, lLawyerBus.getDebtorContactNo());
+                      pMissionHeader, lLawyerBus.getDebtorContactNo());
               break;
             case "Backup":
-              lmissionHeader =
+              pMissionHeader =
                   missionHeaderValidate.validateMasterContactNo(
-                      lmissionHeader, lLawyerBus.getDebtorContactNo());
+                      pMissionHeader, lLawyerBus.getDebtorContactNo());
               break;
             case "Procedure LJ":
-              lmissionHeader =
+              pMissionHeader =
                   missionHeaderValidate.validateMasterContactNo(
-                      lmissionHeader, lmissionHeader.getMasterContactNo());
+                      pMissionHeader, pMissionHeader.getMasterContactNo());
               break;
             case "Recovery":
-              lmissionHeader =
-                  missionHeaderValidate.validateManager(lmissionHeader, lLawyerBus.getManager());
+              pMissionHeader =
+                  missionHeaderValidate.validateManager(pMissionHeader, lLawyerBus.getManager());
               // lmissionHeader = missionHeaderValidate.validateMainInterlocutorNo(lmissionHeader,
               // lLawyerBus.getMainInterlocutorNo());
-              lmissionHeader =
+              pMissionHeader =
                   missionHeaderValidate.validateMasterContactNo(
-                      lmissionHeader, lLawyerBus.getDebtorContactNo());
-              lmissionHeader.setCorrespondentContactNo(lLawyerBus.getContactNo());
-              lmissionHeader.setDebtorLawyer(lLawyerBus.getDebtorLawyer());
-              lmissionHeader.setCreditorsLawyer(lLawyerBus.getCreditorsLawyer());
-              lmissionHeader.setRepresentativeofCreditors(
+                      pMissionHeader, lLawyerBus.getDebtorContactNo());
+              pMissionHeader.setCorrespondentContactNo(lLawyerBus.getContactNo());
+              pMissionHeader.setDebtorLawyer(lLawyerBus.getDebtorLawyer());
+              pMissionHeader.setCreditorsLawyer(lLawyerBus.getCreditorsLawyer());
+              pMissionHeader.setRepresentativeofCreditors(
                   lLawyerBus.getRepresentativeofCreditors());
               break;
             default:
-              lmissionHeader =
+              pMissionHeader =
                   missionHeaderValidate.validateMasterContactNo(
-                      lmissionHeader, lmissionHeader.getMasterContactNo());
+                      pMissionHeader, pMissionHeader.getMasterContactNo());
               break;
           }
         }
       } else {
-        lmissionHeader =
+        pMissionHeader =
             missionHeaderValidate.validateMasterContactNo(
-                lmissionHeader, lmissionHeader.getMasterContactNo());
+                pMissionHeader, pMissionHeader.getMasterContactNo());
       }
 
       // TODO Méthode à compléter?
     }
 
+    missionHeaderRepository.save(pMissionHeader);
+
     if (!SkipActivity) {
-      this.createActivity(lmissionHeader, lmissionHeader.getActivityCodeToHeader());
+      this.createActivity(pMissionHeader, pMissionHeader.getActivityCodeToHeader());
     }
+
     return pMissionHeader;
   }
 

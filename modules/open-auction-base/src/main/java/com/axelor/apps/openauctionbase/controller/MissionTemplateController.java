@@ -26,7 +26,7 @@ public class MissionTemplateController {
           Beans.get(MissionTemplateManagement.class);
       pMissionHeader =
           missionTemplateManagement.createMissionFromMission(
-              pMissionHeader, pMissionHeader.getMissionTemplateCode(), false, "");
+              pMissionHeader, missionHeaderWizard.getMissionTemplateCode(), false, "");
 
       if (pMissionHeader != null) {
         // Open the generated mission in a new tab
