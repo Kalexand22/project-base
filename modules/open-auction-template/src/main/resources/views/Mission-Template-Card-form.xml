@@ -91,7 +91,7 @@
         <field name="inventoryNature"/>
       </panel>
       <panel title="Divers" name="divers">
-        <field name="noSeries"/>
+        <field name="noSequence"/>
         <field name="missionType"/>
         <field name="modifiedBy"/>
         <field name="lastModified"/>

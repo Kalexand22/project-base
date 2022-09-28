@@ -50,7 +50,6 @@ public class ActivityManagementImpl implements ActivityManagement {
     Boolean lLineToTreat = false;
     Partner lcontact = pMissionHeader != null ? pMissionHeader.getMasterContactNo() : null;
     ;
-    
 
     // TODO pActivityHeader.TestUsage(lDate);
 
@@ -157,10 +156,9 @@ public class ActivityManagementImpl implements ActivityManagement {
       Integer pTransactionLineNo) {
     ServiceTemplate missionServiceTemplate;
     MissionServiceLine lMissionServiceLine = new MissionServiceLineExt();
-    
+
     if (pActivityLine.getServiceTemplateCode() == null) return;
 
-   
     missionServiceTemplate = pActivityLine.getServiceTemplateCode();
     for (ServiceTemplateLine missionServiceTemplateLine :
         missionServiceTemplate.getTemplateLineList()) {

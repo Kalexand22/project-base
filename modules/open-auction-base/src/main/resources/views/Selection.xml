@@ -2098,21 +2098,29 @@
     <option value="LotPriceGroup1">Groupe prix lot</option>
     <option value="Lot2">Lot</option>
   </selection>
+
   <selection name="openauction.contactType.select.tariff">
     <option value="AllContact0">Tous les contacts</option>
     <option value="ContactPriceGroup1">Groupe prix contact</option>
     <option value="Contact2">Contact</option>
   </selection>
+
   <selection name="openauction.calculationType.select.tariff">
     <option value="UnitPrice0">Prix unitaire</option>
     <option value="Service1">% Commission</option>
     <option value="CommissionScale2">Barème commission</option>
   </selection>
+
   <selection name="openauction.commBaseCalc.select.tariff">
     <option value="Empty0">
     </option>
     <option value="ReservePrice1">Prix de réserve</option>
     <option value="EstimatedValueMin2">Valeur estimation min</option>
     <option value="EstimatedValueMax3">Valeur estimation max</option>
+  </selection>
+
+  <selection name="sequence.generic.code.select"
+    id="openauction.sequence.generic.code.select">
+    <option value="Mission">Mission</option>
   </selection>
 </object-views>

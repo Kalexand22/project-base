@@ -46,6 +46,8 @@
     <string name="sellerInvStatementPeriod" title="Période décompte vente"/>
     <boolean name="noChargeable" title="Charges non facturables"/>
     <string name="noSeries" title="Souches de n°"/>
+    <many-to-one ref="com.axelor.apps.base.db.Sequence" name="noSequence"
+      title="Séquence de n°"/>
     <many-to-one name="lotNatureFilter" title="Filtre nature lot"
       ref="com.axelor.apps.openauction.db.LotNature"/>
     <many-to-one name="contactTemplateFilter" title="Filtre modèle contact"

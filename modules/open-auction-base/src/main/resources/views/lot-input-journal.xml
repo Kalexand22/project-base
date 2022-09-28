@@ -3,9 +3,6 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.4.xsd">
 
-
-
-
   <form name="input-journal-form" title="Saisie des ligne de mission"
     model="com.axelor.apps.openauction.db.MissionHeader" width="large">
     <toolbar>
@@ -222,7 +219,7 @@
 
 
   <action-method name="action-validate-lot-input-journal">
-    <call class="com.axelor.apps.openauction.controller.LotInputJournalPostLineController"
+    <call class="com.axelor.apps.openauctionbase.controller.LotInputJournalPostLineController"
       method="validate"/>
   </action-method>
 

@@ -27,7 +27,14 @@ public class TransferFields {
             && !objDescriptorSource.getName().equals("createdOn")) {
           try {
             Object objValue = PropertyUtils.getProperty(pSource, objDescriptorSource.getName());
-            PropertyUtils.setProperty(pDestination, objDescriptorDestination.getName(), objValue);
+            Object objValueDest =
+                PropertyUtils.getProperty(pDestination, objDescriptorDestination.getName());
+            if (objValueDest == null
+                || objValueDest.equals("")
+                || objValueDest.equals(false)
+                || objValueDest.equals(0)) {
+              PropertyUtils.setProperty(pDestination, objDescriptorDestination.getName(), objValue);
+            }
           } catch (Exception e) {
             e.printStackTrace();
           }

@@ -2,7 +2,9 @@ package com.axelor.apps.openauctionbase.module;
 
 import com.axelor.app.AxelorModule;
 import com.axelor.apps.openauction.db.MissionServiceLine;
+import com.axelor.apps.openauction.db.repo.MissionHeaderRepository;
 import com.axelor.apps.openauction.db.repo.MissionServiceLineRepository;
+import com.axelor.apps.openauctionbase.repository.MissionHeaderOpenAuctionRepo;
 import com.axelor.apps.openauctionbase.repository.MissionServiceLineExt;
 import com.axelor.apps.openauctionbase.repository.MissionServiceLineRepositoryExt;
 import com.axelor.apps.openauctionbase.service.ActivityManagement;
@@ -17,8 +19,12 @@ import com.axelor.apps.openauctionbase.service.CaretakerServicePriceMgt;
 import com.axelor.apps.openauctionbase.service.CaretakerServicePriceMgtImpl;
 import com.axelor.apps.openauctionbase.service.ContactLotManagement;
 import com.axelor.apps.openauctionbase.service.ContactLotManagementImpl;
+import com.axelor.apps.openauctionbase.service.LotInputJournalPostLine;
+import com.axelor.apps.openauctionbase.service.LotInputJournalPostLineImpl;
 import com.axelor.apps.openauctionbase.service.LotStatusMgt;
 import com.axelor.apps.openauctionbase.service.LotStatusMgtImpl;
+import com.axelor.apps.openauctionbase.service.LotTemplateManagement;
+import com.axelor.apps.openauctionbase.service.LotTemplateManagementImpl;
 import com.axelor.apps.openauctionbase.service.MissionManagement;
 import com.axelor.apps.openauctionbase.service.MissionManagementImpl;
 import com.axelor.apps.openauctionbase.service.MissionServicePriceManagement;
@@ -49,5 +55,8 @@ public class OpenAuctionBaseModule extends AxelorModule {
     bind(LotStatusMgt.class).to(LotStatusMgtImpl.class);
     bind(ToolsMissionChange.class).to(ToolsMissionChangeImpl.class);
     bind(MissionStatusManagement.class).to(MissionStatusManagementImpl.class);
+    bind(LotInputJournalPostLine.class).to(LotInputJournalPostLineImpl.class);
+    bind(MissionHeaderRepository.class).to(MissionHeaderOpenAuctionRepo.class);
+    bind(LotTemplateManagement.class).to(LotTemplateManagementImpl.class);
   }
 }

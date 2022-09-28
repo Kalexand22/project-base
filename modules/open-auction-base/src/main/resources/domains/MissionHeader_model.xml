@@ -4,7 +4,7 @@
   xsi:schemaLocation="http://axelor.com/xml/ns/domain-models http://axelor.com/xml/ns/domain-models/domain-models_5.4.xsd">
   <module name="openauction" package="com.axelor.apps.openauction.db"/>
   <entity name="MissionHeader">
-    <string name="no" title="N°"/>
+    <string name="no" title="N°" readonly="true" unique="true"/>
     <many-to-one name="missionTemplateCode" title="Code modèle mission"
       ref="com.axelor.apps.openauction.db.MissionTemplate"/>
     <string name="description" title="Titre mission" namecolumn="true"/>

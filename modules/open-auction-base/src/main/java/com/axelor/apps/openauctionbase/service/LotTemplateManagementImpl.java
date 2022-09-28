@@ -10,7 +10,6 @@ import com.axelor.apps.openauction.db.LotQuickInputJournal;
 import com.axelor.apps.openauction.db.LotTemplate;
 import com.axelor.apps.openauction.db.MissionHeader;
 import com.axelor.apps.openauction.db.MissionLine;
-import com.axelor.apps.openauction.db.MissionServiceLine;
 import com.axelor.apps.openauction.db.ServiceTemplateLine;
 import com.axelor.apps.openauction.db.repo.LotInputJournalRepository;
 import com.axelor.apps.openauction.db.repo.LotQuickInputJournalRepository;
@@ -280,7 +279,7 @@ public class LotTemplateManagementImpl implements LotTemplateManagement {
   @Override
   public BigDecimal CalcCommissionWithBaseAmount(
       LotInputJournal pLotInputJournal, BigDecimal pBaseAmount) {
-    
+
     MissionHeader lMission = pLotInputJournal.getDocumentNo();
     LotTemplate lLotTemplate = pLotInputJournal.getLotTemplateCode();
     ActivityHeader lActivityHeader = lMission.getActivityCodeToHeader();
