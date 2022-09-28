@@ -280,7 +280,7 @@ public class LotTemplateManagementImpl implements LotTemplateManagement {
   @Override
   public BigDecimal CalcCommissionWithBaseAmount(
       LotInputJournal pLotInputJournal, BigDecimal pBaseAmount) {
-    MissionServiceLine lMissionServiceLine;
+    
     MissionHeader lMission = pLotInputJournal.getDocumentNo();
     LotTemplate lLotTemplate = pLotInputJournal.getLotTemplateCode();
     ActivityHeader lActivityHeader = lMission.getActivityCodeToHeader();
@@ -295,7 +295,6 @@ public class LotTemplateManagementImpl implements LotTemplateManagement {
           if (lMissionServiceTemplateLine.getProduct() != null) {
             lItem = lMissionServiceTemplateLine.getProduct();
             // IF lItem."Service Type" = lItem."Service Type"::Commission THEN BEGIN
-
           }
 
           //  WITH lMissionServiceLine DO BEGIN
