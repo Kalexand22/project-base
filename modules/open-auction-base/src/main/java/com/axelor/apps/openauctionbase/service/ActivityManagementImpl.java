@@ -6,7 +6,6 @@ import com.axelor.apps.openauction.db.ActivityLine;
 import com.axelor.apps.openauction.db.AuctionHeader;
 import com.axelor.apps.openauction.db.Lot;
 import com.axelor.apps.openauction.db.LotTemplate;
-import com.axelor.apps.openauction.db.MissionActivityLine;
 import com.axelor.apps.openauction.db.MissionHeader;
 import com.axelor.apps.openauction.db.MissionLine;
 import com.axelor.apps.openauction.db.MissionServiceLine;
@@ -18,11 +17,9 @@ import com.axelor.apps.openauction.db.repo.MissionActivityLineRepository;
 import com.axelor.apps.openauction.db.repo.MissionServiceLineRepository;
 import com.axelor.apps.openauctionbase.repository.MissionServiceLineExt;
 import com.axelor.apps.openauctionbase.repository.MissionServiceLineRepositoryExt;
-import com.axelor.auth.db.User;
 import com.google.inject.Inject;
 import com.google.inject.persist.Transactional;
 import java.lang.invoke.MethodHandles;
-import java.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,14 +47,10 @@ public class ActivityManagementImpl implements ActivityManagement {
       Boolean pIsActionOnly,
       Integer pTransactionLineNo) {
 
-    MissionLine lMissionLine;
     Boolean lLineToTreat = false;
     Partner lcontact = pMissionHeader != null ? pMissionHeader.getMasterContactNo() : null;
     ;
-    LocalDate lDate =
-        pIsAuction ? pAuctionHeader.getAuctionDate() : pMissionHeader.getMissionDate();
-    User lSalespersonCode = pIsAuction ? null : pMissionHeader.getSalespersonCode();
-    MissionHeader lMission = pIsAuction ? pAuctionHeader.getMissionNo() : pMissionHeader;
+    
 
     // TODO pActivityHeader.TestUsage(lDate);
 
@@ -164,12 +157,10 @@ public class ActivityManagementImpl implements ActivityManagement {
       Integer pTransactionLineNo) {
     ServiceTemplate missionServiceTemplate;
     MissionServiceLine lMissionServiceLine = new MissionServiceLineExt();
-    MissionActivityLine lMissionActivityLine = new MissionActivityLine();
+    
     if (pActivityLine.getServiceTemplateCode() == null) return;
 
-    Boolean lValidateOK =
-        pActivityLine.getTodoTemplateCode() == null
-            || pActivityLine.getTodoTemplateCode().equals("");
+   
     missionServiceTemplate = pActivityLine.getServiceTemplateCode();
     for (ServiceTemplateLine missionServiceTemplateLine :
         missionServiceTemplate.getTemplateLineList()) {
