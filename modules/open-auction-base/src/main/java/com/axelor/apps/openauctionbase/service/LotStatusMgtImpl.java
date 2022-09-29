@@ -336,8 +336,9 @@ public class LotStatusMgtImpl implements LotStatusMgt {
     }
     LotRepository lLotRepository = Beans.get(LotRepository.class);
     LotBOMHistoryRepository lLotBOMHistoryRepository = Beans.get(LotBOMHistoryRepository.class);
-    
-    List<Lot> lSubLotList = lLotRepository.all().filter("self.parentBomLot = ?1", pLotParent.getNo()).fetch();
+
+    List<Lot> lSubLotList =
+        lLotRepository.all().filter("self.parentBomLot = ?1", pLotParent.getNo()).fetch();
 
     for (Lot lLot : lSubLotList) {
       if (pLotParent.getLotGeneralStatus().equals(LotRepository.LOTGENERALSTATUS_CANCELED)
@@ -347,10 +348,11 @@ public class LotStatusMgtImpl implements LotStatusMgt {
         LotValidate lLotValidate = Beans.get(LotValidate.class);
         lLot = lLotValidate.validateLotType(lLot, LotRepository.LOTTYPE_LOT);
         lLot.setParentBOMLot(null);
-        List<LotBOMHistory> lLotBOMHistList = lLotBOMHistoryRepository
-        .all(LotBOMHistory.class)
-        .filter("self.lotNo = ?1 AND self.childLotNo = ?2 ", pLotParent,lLot )
-        .fetch();
+        List<LotBOMHistory> lLotBOMHistList =
+            lLotBOMHistoryRepository
+                .all(LotBOMHistory.class)
+                .filter("self.lotNo = ?1 AND self.childLotNo = ?2 ", pLotParent, lLot)
+                .fetch();
         for (LotBOMHistory lLotBOMHistory : lLotBOMHistList) {
           if (lLotBOMHistory.getChildLotNo().equals(lLot)) {
             lLotBOMHistory.setCancelled(true);

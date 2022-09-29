@@ -2129,7 +2129,7 @@
     <option value="Template1">Modèle</option>
     <option value="No2">N°</option>
   </selection>
-  
+
   <selection name="openauction.lotType.select.tariff">
     <option value="AllLot0">Tous les lots</option>
     <option value="LotPriceGroup1">Groupe prix lot</option>
