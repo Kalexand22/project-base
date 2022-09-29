@@ -25,6 +25,8 @@ import com.axelor.apps.openauctionbase.service.LotStatusMgt;
 import com.axelor.apps.openauctionbase.service.LotStatusMgtImpl;
 import com.axelor.apps.openauctionbase.service.LotTemplateManagement;
 import com.axelor.apps.openauctionbase.service.LotTemplateManagementImpl;
+import com.axelor.apps.openauctionbase.service.LotValueJournalPostLine;
+import com.axelor.apps.openauctionbase.service.LotValueJournalPostLineImpl;
 import com.axelor.apps.openauctionbase.service.MissionLineManagement;
 import com.axelor.apps.openauctionbase.service.MissionLineManagementImpl;
 import com.axelor.apps.openauctionbase.service.MissionManagement;
@@ -61,5 +63,6 @@ public class OpenAuctionBaseModule extends AxelorModule {
     bind(LotTemplateManagement.class).to(LotTemplateManagementImpl.class);
     bind(MissionLineManagement.class).to(MissionLineManagementImpl.class);
     bind(ClassificationManagement.class).to(ClassificationManagementimpl.class);
+    bind(LotValueJournalPostLine.class).to(LotValueJournalPostLineImpl.class);
   }
 }

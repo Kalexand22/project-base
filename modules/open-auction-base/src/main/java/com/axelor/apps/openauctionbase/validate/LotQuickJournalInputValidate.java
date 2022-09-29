@@ -102,11 +102,11 @@ public class LotQuickJournalInputValidate {
       lotQuickInputJournal.setLotCategorie4Code(lotNo.getLotCategorie4Code1());
       if (lotQuickInputJournal
           .getValueType()
-          .equals(LotQuickInputJournalRepository.VALUE_TYPE_SELECT_ESTIMATE)) {
+          .equals(LotQuickInputJournalRepository.VALUETYPE_ESTIMATE)) {
         lotQuickInputJournal.setExpertContactNo(null);
       } else if (lotQuickInputJournal
           .getValueType()
-          .equals(LotQuickInputJournalRepository.VALUE_TYPE_SELECT_APPRAISAL)) {
+          .equals(LotQuickInputJournalRepository.VALUETYPE_APPRAISAL)) {
         lotQuickInputJournal.setExpertContactNo(lotNo.getDefaultExpertContactNo());
       }
       lotQuickInputJournal.setExternalNo(lotNo.getExternalNo());
@@ -166,11 +166,11 @@ public class LotQuickJournalInputValidate {
     Partner partner = null;
     if (lotQuickInputJournal
         .getValueType()
-        .equals(LotQuickInputJournalRepository.VALUE_TYPE_SELECT_ESTIMATE)) {
+        .equals(LotQuickInputJournalRepository.VALUETYPE_ESTIMATE)) {
       lotQuickInputJournal.setExpertContactNo(null);
     } else if (lotQuickInputJournal
         .getValueType()
-        .equals(LotQuickInputJournalRepository.VALUE_TYPE_SELECT_APPRAISAL)) {
+        .equals(LotQuickInputJournalRepository.VALUETYPE_APPRAISAL)) {
       if (lotTemplateCode != null) {
         lotQuickInputJournal.setExpertContactNo(lotTemplateCode.getDefaultExpert());
       }
@@ -186,9 +186,7 @@ public class LotQuickJournalInputValidate {
   public LotQuickInputJournal validateAppraisalValue(
       LotQuickInputJournal lotQuickInputJournal, BigDecimal appraisalValue) {
     lotQuickInputJournal.setAppraisalValue(appraisalValue);
-    if (!lotQuickInputJournal
-        .getLineType()
-        .equals(LotQuickInputJournalRepository.LINETYPE_SELECT_EMPTY)) {
+    if (!lotQuickInputJournal.getLineType().equals(LotQuickInputJournalRepository.LINETYPE_EMPTY)) {
       lotQuickInputJournal.setAppraisalValue(BigDecimal.ZERO);
     }
     return lotQuickInputJournal;
@@ -202,9 +200,7 @@ public class LotQuickJournalInputValidate {
   public LotQuickInputJournal validateMinAppraisalValue(
       LotQuickInputJournal lotQuickInputJournal, BigDecimal minAppraisalValue) {
     lotQuickInputJournal.setMinAppraisalValue(minAppraisalValue);
-    if (!lotQuickInputJournal
-        .getLineType()
-        .equals(LotQuickInputJournalRepository.LINETYPE_SELECT_EMPTY)) {
+    if (!lotQuickInputJournal.getLineType().equals(LotQuickInputJournalRepository.LINETYPE_EMPTY)) {
       lotQuickInputJournal.setMinAppraisalValue(BigDecimal.ZERO);
     }
     return lotQuickInputJournal;
@@ -217,9 +213,7 @@ public class LotQuickJournalInputValidate {
   public LotQuickInputJournal validateMaxAppraisalValue(
       LotQuickInputJournal lotQuickInputJournal, BigDecimal maxAppraisalValue) {
     lotQuickInputJournal.setMaxAppraisalValue(maxAppraisalValue);
-    if (!lotQuickInputJournal
-        .getLineType()
-        .equals(LotQuickInputJournalRepository.LINETYPE_SELECT_EMPTY)) {
+    if (!lotQuickInputJournal.getLineType().equals(LotQuickInputJournalRepository.LINETYPE_EMPTY)) {
       lotQuickInputJournal.setMaxAppraisalValue(BigDecimal.ZERO);
     }
     return lotQuickInputJournal;
@@ -234,9 +228,7 @@ public class LotQuickJournalInputValidate {
   public LotQuickInputJournal validateGrossReservePrice(
       LotQuickInputJournal lotQuickInputJournal, BigDecimal grossReservePrice) {
     lotQuickInputJournal.setGrossReservePrice(grossReservePrice);
-    if (!lotQuickInputJournal
-        .getLineType()
-        .equals(LotQuickInputJournalRepository.LINETYPE_SELECT_EMPTY)) {
+    if (!lotQuickInputJournal.getLineType().equals(LotQuickInputJournalRepository.LINETYPE_EMPTY)) {
       lotQuickInputJournal.setGrossReservePrice(BigDecimal.ZERO);
     }
     auctionLotValueManagement.calcAuctionEstimByLotQuickJnl(lotQuickInputJournal);
@@ -252,9 +244,7 @@ public class LotQuickJournalInputValidate {
   public LotQuickInputJournal validateNetReservePrice(
       LotQuickInputJournal lotQuickInputJournal, BigDecimal netReservePrice) {
     lotQuickInputJournal.setNetReservePrice(netReservePrice);
-    if (!lotQuickInputJournal
-        .getLineType()
-        .equals(LotQuickInputJournalRepository.LINETYPE_SELECT_EMPTY)) {
+    if (!lotQuickInputJournal.getLineType().equals(LotQuickInputJournalRepository.LINETYPE_EMPTY)) {
       lotQuickInputJournal.setNetReservePrice(BigDecimal.ZERO);
     }
     auctionLotValueManagement.calcAuctionEstimByLotQuickJnl(lotQuickInputJournal);
@@ -268,9 +258,7 @@ public class LotQuickJournalInputValidate {
   public LotQuickInputJournal validateEstimateValue(
       LotQuickInputJournal lotQuickInputJournal, BigDecimal estimateValue) {
     lotQuickInputJournal.setEstimateValue(estimateValue);
-    if (!lotQuickInputJournal
-        .getLineType()
-        .equals(LotQuickInputJournalRepository.LINETYPE_SELECT_EMPTY)) {
+    if (!lotQuickInputJournal.getLineType().equals(LotQuickInputJournalRepository.LINETYPE_EMPTY)) {
       lotQuickInputJournal.setEstimateValue(BigDecimal.ZERO);
     }
     return lotQuickInputJournal;
@@ -285,9 +273,7 @@ public class LotQuickJournalInputValidate {
   public LotQuickInputJournal validateMinEstimateValue(
       LotQuickInputJournal lotQuickInputJournal, BigDecimal minEstimateValue) {
     lotQuickInputJournal.setMinEstimateValue(minEstimateValue);
-    if (!lotQuickInputJournal
-        .getLineType()
-        .equals(LotQuickInputJournalRepository.LINETYPE_SELECT_EMPTY)) {
+    if (!lotQuickInputJournal.getLineType().equals(LotQuickInputJournalRepository.LINETYPE_EMPTY)) {
       lotQuickInputJournal.setMinEstimateValue(BigDecimal.ZERO);
     }
     auctionLotValueManagement.calcAuctionEstimByLotQuickJnl(lotQuickInputJournal);
@@ -303,9 +289,7 @@ public class LotQuickJournalInputValidate {
   public LotQuickInputJournal validateMaxEstimateValue(
       LotQuickInputJournal lotQuickInputJournal, BigDecimal maxEstimateValue) {
     lotQuickInputJournal.setMaxEstimateValue(maxEstimateValue);
-    if (!lotQuickInputJournal
-        .getLineType()
-        .equals(LotQuickInputJournalRepository.LINETYPE_SELECT_EMPTY)) {
+    if (!lotQuickInputJournal.getLineType().equals(LotQuickInputJournalRepository.LINETYPE_EMPTY)) {
       lotQuickInputJournal.setMaxEstimateValue(BigDecimal.ZERO);
     }
     auctionLotValueManagement.calcAuctionEstimByLotQuickJnl(lotQuickInputJournal);
@@ -403,7 +387,7 @@ public class LotQuickJournalInputValidate {
     if (!lotQuickInputJournal.getExpertContactNo().equals(null)) {
       if (!lotQuickInputJournal
           .getValueType()
-          .equals(LotQuickInputJournalRepository.VALUE_TYPE_SELECT_APPRAISAL)) {
+          .equals(LotQuickInputJournalRepository.VALUETYPE_APPRAISAL)) {
         throw new AxelorException(
             TraceBackRepository.CATEGORY_INCONSISTENCY,
             "Value type must be appraisal",

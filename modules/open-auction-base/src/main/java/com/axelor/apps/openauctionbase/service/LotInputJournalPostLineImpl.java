@@ -97,112 +97,12 @@ public class LotInputJournalPostLineImpl implements LotInputJournalPostLine {
     lAPLotTemplateMgt.GetLotNoCreated(lLotNoCreated);
     LotInputJournal."Created Lot No." := lLotNoCreated; //Ap03 isat.zw
      */
-    Lot lot = lAPLotTemplateMgt.CreateLotFromMission(lTempLotQuickInputJournal, lMissionHeader);
+    Lot lot = lAPLotTemplateMgt.createLotFromMission(lTempLotQuickInputJournal, lMissionHeader);
 
-    lot = lAPLotTemplateMgt.GetLotNoCreated();
+    lot = lAPLotTemplateMgt.getLotNoCreated();
     lotInputJournal.setCreatedLotNo(lot.getNo());
     // lot = transferFields(lotInputJournal, lot);
     lot = (Lot) TransferFields.transferFields(lotInputJournal, lot);
     lotRepo.save(lot);
   }
-
-  // TODO: This method is not used in the code.
-  /*
-  private Lot transferFields(LotInputJournal pLotInputJournal, Lot pLot) {
-    pLot.setAgeCode(pLotInputJournal.getAgeCode());
-    pLot.setAttributionType(pLotInputJournal.getAttributionType());
-    pLot.setCentury(pLotInputJournal.getCentury());
-    pLot.setCatalogDescription(pLotInputJournal.getCatalogDescription());
-    pLot.setBibliography(pLotInputJournal.getBibliography());
-    pLot.setAuthorName(pLotInputJournal.getAuthorName());
-    pLot.setAuthorCode(pLotInputJournal.getAuthorCode());
-
-    pLot.setCollection(pLotInputJournal.getCollection());
-    pLot.setComment1(pLotInputJournal.getComment1());
-    pLot.setCreationYear(pLotInputJournal.getCreationYear());
-    pLot.setCubage(pLotInputJournal.getCubage());
-    pLot.setCubageUnit(pLotInputJournal.getCubageUnit());
-    pLot.setExhibition(pLotInputJournal.getExhibition());
-    pLot.setFrom1(pLotInputJournal.getFrom1());
-    pLot.setHeight(pLotInputJournal.getHeight());
-
-    pLot.setHistoricalPeriod(pLotInputJournal.getHistoricalPeriod());
-    pLot.setLength(pLotInputJournal.getLength());
-    pLot.setLotNatureCode(pLotInputJournal.getLotNatureCode());
-    pLot.setReproduction(pLotInputJournal.getReproduction());
-    pLot.setSchoolCode(pLotInputJournal.getSchoolCode());
-    pLot.setSchoolType(pLotInputJournal.getSchoolType());
-    pLot.setStyleCode(pLotInputJournal.getStyleCode());
-    pLot.setTechnicalDescription(pLotInputJournal.getTechnicalDescription());
-    pLot.setTitle(pLotInputJournal.getTitle());
-    pLot.setUnitofMeasure(pLotInputJournal.getUnitofMeasure());
-    pLot.setWeight(pLotInputJournal.getWeight());
-    pLot.setWeightUnit(pLotInputJournal.getWeightUnit());
-    pLot.setWidth(pLotInputJournal.getWidth());
-
-    pLot.setAlarm(pLotInputJournal.getAlarm());
-    pLot.setAntiStartupCode(pLotInputJournal.getAntiStartupCode());
-    pLot.setBatteryProblem(pLotInputJournal.getBatteryProblem());
-    pLot.setBreakdownLorryCharge(pLotInputJournal.getBreakdownLorryCharge());
-
-    pLot.setCarRadioFront(pLotInputJournal.getCarRadioFront());
-    pLot.setColor(pLotInputJournal.getColor());
-    pLot.setDamaged(pLotInputJournal.getDamaged());
-    pLot.setDateOfFirstRegistration(pLotInputJournal.getDateOfFirstRegistration());
-    pLot.setEmptyWeight(pLotInputJournal.getEmptyWeight());
-    pLot.setEnergy(pLotInputJournal.getEnergy());
-    pLot.setEngineTrade(pLotInputJournal.getEngineTrade());
-    pLot.setEstimateKilometrage(pLotInputJournal.getEstimateKilometrage());
-    pLot.setExternalReferenceCode(pLotInputJournal.getExternalReferenceCode());
-
-    pLot.setGaged(pLotInputJournal.getGaged());
-    pLot.setGrossTrailerWeight(pLotInputJournal.getGrossTrailerWeight());
-    pLot.setGrossVehicleWeight(pLotInputJournal.getGrossVehicleWeight());
-    pLot.setHorsePower(pLotInputJournal.getHorsePower());
-    pLot.setKeys1(pLotInputJournal.getKeys1());
-    pLot.setKilometrage(pLotInputJournal.getKilometrage());
-    pLot.setKind(pLotInputJournal.getKind());
-    pLot.setLotNatureCode(pLotInputJournal.getLotNatureCode());
-    pLot.setMaintenanceNoteBook(pLotInputJournal.getMaintenanceNoteBook());
-
-    pLot.setRegistration(pLotInputJournal.getRegistration());
-    pLot.setRegistrationDocument(pLotInputJournal.getRegistrationdocument());
-    pLot.setRehabilitationcosts(pLotInputJournal.getRehabilitationcosts());
-    pLot.setRegrouping(pLotInputJournal.getRegrouping());
-    pLot.setSeatingCapacity(pLotInputJournal.getSeatingCapacity());
-    pLot.setSpareWheel(pLotInputJournal.getSpareWheel());
-    pLot.setTechnicalDescription(pLotInputJournal.getTechnicalDescription());
-    pLot.setUnroadworthy(pLotInputJournal.getUnroadworthy());
-    pLot.setvIN(pLotInputJournal.getvIN());
-
-    pLot.setYear(pLotInputJournal.getYear());
-
-    pLot.setAppellation(pLotInputJournal.getAppellation());
-    pLot.setCap(pLotInputJournal.getCap());
-    pLot.setVineyard(pLotInputJournal.getVineyard());
-
-    pLot.setCapacity(pLotInputJournal.getCapacity());
-    pLot.setDiameter(pLotInputJournal.getDiameter());
-    pLot.setGrapeHarvest(pLotInputJournal.getGrapeHarvest());
-    pLot.setGrapeVariety(pLotInputJournal.getGrapeVariety());
-    pLot.setLabel(pLotInputJournal.getLabel());
-    pLot.setLevel1(pLotInputJournal.getLevel1());
-    pLot.setName(pLotInputJournal.getName());
-    pLot.setPotentialofAgeing(pLotInputJournal.getPotentialofAgeing());
-    pLot.setPreserving(pLotInputJournal.getPreserving());
-
-    pLot.setTechnicalDescription(pLotInputJournal.getTechnicalDescription());
-    pLot.setVintage(pLotInputJournal.getVintage());
-
-    pLot.setAknowledgmentofReceipt(pLotInputJournal.getAknowledgmentofReceipt());
-    pLot.setEngineTrade(pLotInputJournal.getEngineTrade());
-    pLot.setEquipmentBrandNo(pLotInputJournal.getEquipmentBrandNo());
-    pLot.setFolderType(pLotInputJournal.getFolderType());
-    pLot.setKindofMaterial(pLotInputJournal.getKindofMaterial());
-
-    pLot.setReference(pLotInputJournal.getReference());
-    pLot.setSerialNo(pLotInputJournal.getSerialNo());
-    return pLot;
-  }
-   */
 }

@@ -631,6 +631,12 @@
     <option value="ShippingAgent4">Transporteur</option>
     <option value="Service5">Service</option>
   </selection>
+
+  <selection name="openauction.sourceType.select.lotvaluejournal">
+    <option value="Mission0">Mission</option>
+    <option value="Auction1">Vente</option>
+  </selection>
+
   <selection name="openauction.interfaceType.select">
     <option value="Accounting0">Comptabilité</option>
     <option value="Payroll1">Paie</option>
@@ -752,6 +758,14 @@
     <option value="Internet3">Internet</option>
     <option value="Internet3">Vente flash</option>
   </selection>
+
+  <selection name="openauction.auctionType.select.lotvaluejournal">
+    <option value="Empty0"></option>
+    <option value="SellOffPrice">Mise à prix</option>
+    <option value="AbsenteeBid">Ordre d'achat</option>
+    <option value="MaximumBid">Enchère max</option>
+  </selection>
+
   <selection name="openauction.inventoryRemovalDocument.select">
     <option value="ShipmentDocument0">Document expédition</option>
     <option value="FalloftheHammer1">Validation adjudication</option>

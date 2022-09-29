@@ -98,16 +98,16 @@
       <![CDATA[
 
       //openauction.valueType.select
-      public static final String VALUE_TYPE_SELECT_APPRAISAL = "Appraisal0";
-      public static final String VALUE_TYPE_SELECT_ESTIMATE = "Estimate1";
+      public static final String VALUETYPE_APPRAISAL = "Appraisal0";
+      public static final String VALUETYPE_ESTIMATE = "Estimate1";
 
 
       //openauction.valueType.select
-      public static final String LINETYPE_SELECT_EMPTY = "Empty0";
-      public static final String LINETYPE_SELECT_HEADING = "Heading1";
-      public static final String LINETYPE_SELECT_TOTAL = "Total2";
-      public static final String LINETYPE_SELECT_BEGINSUBTOTAL = "BeginSubTotal3";
-      public static final String LINETYPE_SELECT_ENDSUBTOTAL = "EndSubTotal4";
+      public static final String LINETYPE_EMPTY = "Empty0";
+      public static final String LINETYPE_HEADING = "Heading1";
+      public static final String LINETYPE_TOTAL = "Total2";
+      public static final String LINETYPE_BEGINSUBTOTAL = "BeginSubTotal3";
+      public static final String LINETYPE_ENDSUBTOTAL = "EndSubTotal4";
       ]]>
     </extra-code>
   </entity>

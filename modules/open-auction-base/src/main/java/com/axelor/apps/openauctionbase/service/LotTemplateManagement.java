@@ -12,30 +12,30 @@ import java.util.Date;
 public interface LotTemplateManagement {
   // PROCEDURE CreateLot@1000000016(VAR pLotQuickInputJournal@1000000019 : Record 8011467;VAR
   // pNewLot@1000000006 : Record 8011404;pContactNo@1000000004 : Code[20]);
-  public Lot CreateLot(LotQuickInputJournal pLotQuickInputJournal, Partner pContactNo);
+  public Lot createLot(LotQuickInputJournal pLotQuickInputJournal, Partner pContactNo);
   // PROCEDURE CreateLotFromContact@1000000005(VAR pLotQuickInputJournal@1000000001 : Record
   // 8011467;pContact@1000000000 : Record 5050);
-  public void CreateLotFromContact(LotQuickInputJournal pLotQuickInputJournal, Partner pContact);
+  public void createLotFromContact(LotQuickInputJournal pLotQuickInputJournal, Partner pContact);
   // PROCEDURE CreateLotFromMission@1000000003(VAR pLotQuickInputJournal@1000000006 : Record
   // 8011467;pMissionHeader@1000000005 : Record 8011402);
-  public Lot CreateLotFromMission(
+  public Lot createLotFromMission(
       LotQuickInputJournal pLotQuickInputJournal, MissionHeader pMissionHeader)
       throws AxelorException;
   // PROCEDURE PostLotQuickInputFromMission@1000000017(VAR pLotQuickInputJournal@1000000006 : Record
   // 8011467;pMissionHeader@1000000005 : Record 8011402);
-  public void PostLotQuickInputFromMission(
+  public void postLotQuickInputFromMission(
       LotQuickInputJournal pLotQuickInputJournal, MissionHeader pMissionHeader)
       throws AxelorException;
   // PROCEDURE CreateLotFromAuction@1000000015(VAR pLotQuickInputJournal@1000000001 : Record
   // 8011467) : Code[20];
-  public String CreateLotFromAuction(LotQuickInputJournal pLotQuickInputJournal);
+  public String createLotFromAuction(LotQuickInputJournal pLotQuickInputJournal);
   // PROCEDURE CreateLotTemplate@1000000000(VAR pLotTemplate@1000000004 : Record
   // 8011411;pTypeOrigin@1000000008 : 'List,Card');
-  public void CreateLotTemplate(Lot pLotTemplate, String pTypeOrigin);
+  public void createLotTemplate(Lot pLotTemplate, String pTypeOrigin);
   // PROCEDURE CreateLotValueEntry@1000000018(VAR pLotQuickInputJournal@1000000000 : Record
   // 8011467;pLot@1000000004 : Record 8011404;pMissionHeader@1000000001 : Record
   // 8011402;pMissionLine@1000000002 : Record 8011403);
-  public void CreateLotValueEntry(
+  public void createLotValueEntry(
       LotQuickInputJournal pLotQuickInputJournal,
       Lot pLot,
       MissionHeader pMissionHeader,
@@ -43,7 +43,7 @@ public interface LotTemplateManagement {
   // PROCEDURE CreateLotValueEntryReserve@1100481000(VAR pLotQuickInputJournal@1000000000 : Record
   // 8011467;pLot@1000000004 : Record 8011404;pMissionHeader@1000000001 : Record
   // 8011402;pMissionLine@1000000002 : Record 8011403);
-  public void CreateLotValueEntryReserve(
+  public void createLotValueEntryReserve(
       LotQuickInputJournal pLotQuickInputJournal,
       Lot pLot,
       MissionHeader pMissionHeader,
@@ -51,7 +51,7 @@ public interface LotTemplateManagement {
   // PROCEDURE CreateLotValueEntryEstimate@1100481001(VAR pLotQuickInputJournal@1000000000 : Record
   // 8011467;pLot@1000000004 : Record 8011404;pMissionHeader@1000000001 : Record
   // 8011402;pMissionLine@1000000002 : Record 8011403);
-  public void CreateLotValueEntryEstimate(
+  public void createLotValueEntryEstimate(
       LotQuickInputJournal pLotQuickInputJournal,
       Lot pLot,
       MissionHeader pMissionHeader,
@@ -59,7 +59,7 @@ public interface LotTemplateManagement {
   // PROCEDURE CreateLotValueEntryAuctEstim@1180113000(VAR pLotQuickInputJournal@1000000000 : Record
   // 8011467;pLot@1000000004 : Record 8011404;pMissionHeader@1000000001 : Record
   // 8011402;pMissionLine@1000000002 : Record 8011403);
-  public void CreateLotValueEntryAuctEstim(
+  public void createLotValueEntryAuctEstim(
       LotQuickInputJournal pLotQuickInputJournal,
       Lot pLot,
       MissionHeader pMissionHeader,
@@ -67,7 +67,7 @@ public interface LotTemplateManagement {
   // PROCEDURE CreateLotValueEntryAppraisal@1100481002(VAR pLotQuickInputJournal@1000000000 : Record
   // 8011467;pLot@1000000004 : Record 8011404;pMissionHeader@1000000001 : Record
   // 8011402;pMissionLine@1000000002 : Record 8011403);
-  public void CreateLotValueEntryAppraisal(
+  public void createLotValueEntryAppraisal(
       LotQuickInputJournal pLotQuickInputJournal,
       Lot pLot,
       MissionHeader pMissionHeader,
@@ -75,41 +75,41 @@ public interface LotTemplateManagement {
   // PROCEDURE CreateLotValueEntryQuotation@1100481010(VAR pLotQuickInputJournal@1000000000 : Record
   // 8011467;pLot@1000000004 : Record 8011404;pMissionHeader@1000000001 : Record
   // 8011402;pMissionLine@1000000002 : Record 8011403);
-  public void CreateLotValueEntryQuotation(
+  public void createLotValueEntryQuotation(
       LotQuickInputJournal pLotQuickInputJournal,
       Lot pLot,
       MissionHeader pMissionHeader,
       MissionLine pMissionLine);
   // PROCEDURE CreateLotInventoryEntry@1000000004(VAR pLotQuickInputJournal@1000000003 : Record
   // 8011467;pLot@1000000002 : Record 8011404);
-  public void CreateLotInventoryEntry(LotQuickInputJournal pLotQuickInputJournal, Lot pLot);
+  public void createLotInventoryEntry(LotQuickInputJournal pLotQuickInputJournal, Lot pLot);
   // PROCEDURE CalcGrossReserveByNetReserve@1100481003(VAR pLotInputJournal@1100481000 : Record
   // 8011498);
-  public void CalcGrossReserveByNetReserve(LotInputJournal pLotInputJournal) throws Exception;
+  public void calcGrossReserveByNetReserve(LotInputJournal pLotInputJournal) throws Exception;
   // PROCEDURE CalcNetReserveByGrossReserve@1100481004(VAR pLotInputJournal@1100481000 : Record
   // 8011498);
-  public void CalcNetReserveByGrossReserve(LotInputJournal pLotInputJournal) throws AxelorException;
+  public void calcNetReserveByGrossReserve(LotInputJournal pLotInputJournal) throws AxelorException;
   // PROCEDURE CalcCommissionWithBaseAmount@1100481005(VAR pLotInputJournal@1100481000 : Record
   // 8011498;pBaseAmount@1100481001 : Decimal) rAmountCommission : Decimal;
-  public java.math.BigDecimal CalcCommissionWithBaseAmount(
+  public java.math.BigDecimal calcCommissionWithBaseAmount(
       LotInputJournal pLotInputJournal, java.math.BigDecimal pBaseAmount);
   // PROCEDURE CreateLotFromJudicialMission@1100481006(VAR pOriginMissionLine@1100481000 : Record
   // 8011403;VAR pLotQuickInputJournal@1000000001 : Record 8011467) : Code[20];
-  public String CreateLotFromJudicialMission(
+  public String createLotFromJudicialMission(
       MissionLine pOriginMissionLine, LotQuickInputJournal pLotQuickInputJournal);
   // PROCEDURE PostLotQuickInputFromJuMission@1100481009(VAR pLotQuickInputJournal@1000000006 :
   // Record 8011467;VAR pOriginMissionLine@1000000005 : Record 8011403);
-  public void PostLotQuickInputFromJuMission(
+  public void postLotQuickInputFromJuMission(
       LotQuickInputJournal pLotQuickInputJournal, MissionLine pOriginMissionLine);
   // PROCEDURE CreateLotInvValueEntry@1100481007(pMissionLine@1000000002 : Record 8011403);
-  public void CreateLotInvValueEntry(MissionLine pMissionLine);
+  public void createLotInvValueEntry(MissionLine pMissionLine);
   // PROCEDURE CreateLotValueEntryFromLot@1100481008(pLotNo@1000000004 :
   // Code[20];pPostingDate@1000000001 : Date;pEntryType@1000000002 : 'Estimate,Seller
   // Estimate,Appraisal,Bid Price,Inventory,Reserve
   // Price,Auction,Acquisition,Quotation,GuaranteedPrice';pAmount@1000000000 :
   // Decimal;pMinAmount@1000000005 : Decimal;pMaxAmount@1000000007 : Decimal;pContactNo@1100481001 :
   // Code[20]);
-  public void CreateLotValueEntryFromLot(
+  public void createLotValueEntryFromLot(
       String pLotNo,
       Date pPostingDate,
       String pEntryType,
@@ -119,8 +119,8 @@ public interface LotTemplateManagement {
       Partner pContactNo);
   // PROCEDURE SetToRegistIntegrationLot@1180113001(pToRegistIntegrationLot@1180113000 :
   // Boolean;pRegistIntegrationEntryNo@1180113001 : Integer);
-  public void SetToRegistIntegrationLot(
+  public void setToRegistIntegrationLot(
       Boolean pToRegistIntegrationLot, Integer pRegistIntegrationEntryNo);
 
-  public Lot GetLotNoCreated();
+  public Lot getLotNoCreated();
 }
