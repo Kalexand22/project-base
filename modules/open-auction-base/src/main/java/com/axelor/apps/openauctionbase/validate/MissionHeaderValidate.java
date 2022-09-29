@@ -68,9 +68,7 @@ public class MissionHeaderValidate {
   public MissionHeader validateMissionStatus(MissionHeader missionHeader, String missionStatus)
       throws AxelorException {
     missionHeader.setMissionStatus(missionStatus);
-    if (missionHeader
-        .getMissionStatus()
-        .equals(MissionHeaderRepository.MISSIONSTATUS_FINISHED)) {
+    if (missionHeader.getMissionStatus().equals(MissionHeaderRepository.MISSIONSTATUS_FINISHED)) {
       if (!missionManagement.ifAllMissionServiceInvoiced(missionHeader)) {
         throw new AxelorException(
             missionHeader,
@@ -84,9 +82,7 @@ public class MissionHeaderValidate {
             "All mission services must be invoiced");
       }
     }
-    if (missionHeader
-        .getMissionStatus()
-        .equals(MissionHeaderRepository.MISSIONSTATUS_CANCELED)) {
+    if (missionHeader.getMissionStatus().equals(MissionHeaderRepository.MISSIONSTATUS_CANCELED)) {
       missionStatusManagement.cancelMission(missionHeader);
     } else {
       missionStatusManagement.cancelCancelledMission(missionHeader);

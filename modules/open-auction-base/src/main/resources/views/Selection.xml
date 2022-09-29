@@ -513,7 +513,7 @@
     <option value="MeetingSale0">Faculté réunion vente</option>
     <option value="GroupingOnSale1">Regroupement en vente</option>
     <option value="Lot2">Lot</option>
-    <option value="GroupingOriginLot3">Lot origine dégroupement</option>
+    <option value="UnGroupingOriginLot3">Lot origine dégroupement</option>
     <option value="OriginLotComponent4">Composant lot origine</option>
   </selection>
   <selection name="openauction.bidInvoicingStatus.select">
@@ -688,6 +688,7 @@
     <option value="Internal0">Interne</option>
     <option value="External1">Externe</option>
   </selection>
+
   <selection name="openauction.auctionStatus.select">
     <option value="Initial0">Initial</option>
     <option value="Confirmed1">Confirmé</option>
@@ -695,6 +696,16 @@
     <option value="Finished3">Terminé</option>
     <option value="Canceled4">Annulée</option>
   </selection>
+
+  <selection name="openauction.auctionStatus.select.auctionline">
+    <option value="Initial0">Initial</option>
+    <option value="Confirmed1">Confirmé</option>
+    <option value="Auction2">En vente</option>
+    <option value="Finished3">Vacation terminée</option>
+    <option value="Closed">Clôturée</option>
+    <option value="Canceled">Annulée</option>
+  </selection>
+
   <selection name="openauction.auctionStatus.select.lot">
     <option value="Initial0">Initial</option>
     <option value="ToSign1">A signer</option>
@@ -780,6 +791,7 @@
     <option value="n10247680">1024*768</option>
     <option value="n12808001">1280*800</option>
   </selection>
+
   <selection name="openauction.lineStatus.select">
     <option value="Empty0"></option>
     <option value="Auctionned1">Adjugé</option>
@@ -790,6 +802,7 @@
     <option value="Unconsigned6">Non mandaté</option>
     <option value="OutOfAuction7">Invendable</option>
   </selection>
+
   <selection name="openauction.groupProcessType.select">
     <option value="Meeting0">Réunion</option>
     <option value="Group1">Groupement</option>
@@ -810,6 +823,7 @@
     <option value="Invoicing1">En facture</option>
     <option value="Invoiced2">Facturé</option>
   </selection>
+
   <selection name="openauction.processType.select">
     <option value="Empty0">
     </option>
@@ -825,6 +839,14 @@
     <option value="SimpleLJ10">Liquidation simplifiée</option>
     <option value="AdditionalInventory11">Complément d'inventaire</option>
   </selection>
+
+  <selection name="openauction.processType.select.lotbomhistory">
+    <option value="Meeting">Réunion</option>
+    <option value="Group">Groupement</option>
+    <option value="Ungroup">Dégroupement</option>
+    <option value="Duplicate">Duplication</option>
+  </selection>
+
   <selection name="openauction.fileStatus.select">
     <option value="Valued0">Prisée</option>
     <option value="Frappe1">Frappe</option>
@@ -2107,6 +2129,7 @@
     <option value="Template1">Modèle</option>
     <option value="No2">N°</option>
   </selection>
+  
   <selection name="openauction.lotType.select.tariff">
     <option value="AllLot0">Tous les lots</option>
     <option value="LotPriceGroup1">Groupe prix lot</option>

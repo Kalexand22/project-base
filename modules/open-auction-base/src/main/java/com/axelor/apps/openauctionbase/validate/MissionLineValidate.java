@@ -103,9 +103,7 @@ public class MissionLineValidate {
         lot.setResponsibilityCenter(missionLine.getMissionNo().getResponsibilityCenter());
         lot.setJudicial(missionLine.getMissionNo().getJudicial());
         lot.setCurrentMissionLineNo(missionLine);
-        lot =
-            lotValidate.validateLotGeneralStatus(
-                lot, LotRepository.LOTGENERALSTATUS_ONMISSION);
+        lot = lotValidate.validateLotGeneralStatus(lot, LotRepository.LOTGENERALSTATUS_ONMISSION);
 
         // TODO Laywer Bus. No.
       }

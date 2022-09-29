@@ -62,15 +62,12 @@ public class ActivityManagementImpl implements ActivityManagement {
             .equals(ActivityHeaderRepository.APPLICABLEON_HEADER)) {
           lLineToTreat = true;
         }
-        if (pActivityHeader
-            .getApplicableOn()
-            .equals(ActivityHeaderRepository.APPLICABLEON_LINE)) {
+        if (pActivityHeader.getApplicableOn().equals(ActivityHeaderRepository.APPLICABLEON_LINE)) {
           lLineToTreat =
               line.getLotTemplateFilter().equals(pLotTemplate)
                   || line.getLotTemplateFilter() == null;
         }
-        if (line.getToDoApplicableTo()
-            .equals(ActivityLineRepository.TODOAPPLICABLETO_SELLER)) {
+        if (line.getToDoApplicableTo().equals(ActivityLineRepository.TODOAPPLICABLETO_SELLER)) {
           lcontact = pMissionHeader.getMasterContactNo();
         } else {
           lcontact = null;

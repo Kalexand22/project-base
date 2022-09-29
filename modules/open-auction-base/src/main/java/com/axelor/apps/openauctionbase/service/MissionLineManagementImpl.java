@@ -83,9 +83,7 @@ public class MissionLineManagementImpl implements MissionLineManagement {
       IF NOT rValue THEN BEGIN
         EXIT;
       END;*/
-    if (pMissionHeader
-            .getMissionStatus()
-            .equals(MissionHeaderRepository.MISSIONSTATUS_CANCELED)
+    if (pMissionHeader.getMissionStatus().equals(MissionHeaderRepository.MISSIONSTATUS_CANCELED)
         || pMissionHeader
             .getMissionStatus()
             .equals(MissionHeaderRepository.MISSIONSTATUS_FINISHED)) {

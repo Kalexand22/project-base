@@ -217,8 +217,7 @@ public class MissionServiceLineValidate {
     missionServiceLine.setProductNo(productNo);
     missionServiceLine.setDescription(productNo.getDescription());
     if (missionServiceLine.getAuctionBid()) {
-      missionServiceLine.setInvoicingType(
-          MissionServiceLineRepository.INVOICINGTYPE_BILLABLEONBID);
+      missionServiceLine.setInvoicingType(MissionServiceLineRepository.INVOICINGTYPE_BILLABLEONBID);
       missionServiceLine.setChargeable(true);
       missionServiceLine.setQuantity(BigDecimal.ONE);
     } else {

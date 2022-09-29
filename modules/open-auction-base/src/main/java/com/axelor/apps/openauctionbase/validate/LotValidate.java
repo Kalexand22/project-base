@@ -192,8 +192,7 @@ public class LotValidate {
   //END;//
     */
   public Lot validateAddedValueType(Lot lot, String addedValueType) throws AxelorException {
-    if (addedValueType != null
-        && !addedValueType.equals(LotRepository.ADDEDVALUETYPE_FREE)) {
+    if (addedValueType != null && !addedValueType.equals(LotRepository.ADDEDVALUETYPE_FREE)) {
       lot.setFreeReasonCode(null);
     }
     if (!lot.getAddedValueType().equals(lot.getAddedValueType())) {
@@ -457,6 +456,46 @@ public class LotValidate {
   //END;// */
   public Lot validateCurrentMissionNo(Lot lot, MissionHeader currentMissionNo) {
     lot.setCurrentMissionNo(currentMissionNo);
+    return lot;
+  }
+
+  /*
+   * //Lot_Type Option
+   //OnValidateVAR
+   //lMissionLine@1000000000 : Record 8011403;
+                                                              BEGIN
+   //// Tout lot dégroupé devient inutilisable
+   //IF "Lot Type" = "Lot Type"::"Ungrouping Origin Lot" THEN BEGIN
+   //  VALIDATE("Auction Status", "Auction Status"::Ungrouped);
+   //  //VALIDATE("Lot Inventory Status", "Lot Inventory Status"::Ungroup); désactivé isat.zw 21/04/10
+   //END;
+
+
+   //IF "Current Mission No." <> '' THEN BEGIN
+   //  lMissionLine.SETCURRENTKEY("Mission No.",Type,"No.");
+   //  lMissionLine.SETRANGE("Mission No.","Current Mission No.");
+   //  lMissionLine.SETRANGE(Type,lMissionLine.Type::Lot);
+   //  lMissionLine.SETRANGE("No.","No.");
+   //  IF lMissionLine.FINDFIRST THEN BEGIN
+   //    lMissionLine."Lot Type" := "Lot Type";
+   //    lMissionLine.MODIFY;
+   //  END;
+   //END;//
+   */
+  public Lot validateLotType(Lot lot, String lotType) {
+    lot.setLotType(lotType);
+    if (lotType != null) {
+      if (lotType.equals(LotRepository.LOTTYPE_UNGROUPINGORIGINLOT)) {        
+        lot = validateAuctionStatus(lot, LotRepository.AUCTIONSTATUS_UNGROUPED);
+      }
+    }
+    if(lot.getCurrentMissionNo() != null) {
+      MissionLine missionLine = Beans.get(MissionLineRepository.class).all().filter("self.missionHeader = ?1 AND self.typeSelect = ?2 AND self.lot = ?3", lot.getCurrentMissionNo(), MissionLineRepository.TYPE_LOT, lot).fetchOne();
+      if(missionLine != null) {
+        missionLine.setLotType(lotType);
+        Beans.get(MissionLineRepository.class).save(missionLine);
+      }
+    }
     return lot;
   }
 }

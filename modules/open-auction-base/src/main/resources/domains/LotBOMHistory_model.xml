@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<domain-models xmlns="http://axelor.com/xml/ns/domain-models"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/domain-models http://axelor.com/xml/ns/domain-models/domain-models_5.4.xsd">
+  <module name="openauction" package="com.axelor.apps.openauction.db"/>
+  <entity name="LotBOMHistory">
+    <integer name="entryNo" title="N° séquence"/>
+    <many-to-one name="lotNo" title="N° lot" ref="com.axelor.apps.openauction.db.Lot"/>
+    <many-to-one name="childLotNo" title="N° lot enfant"
+      ref="com.axelor.apps.openauction.db.Lot"/>
+    <string name="processType" title="Type transaction"
+      selection="openauction.processType.select.lotbomhistory" default="Meeting"/>
+    <boolean name="cancelled" title="Annulé"/>
+    <extra-code>
+        <![CDATA[
+          //openauction.processType.select.lotbomhistory
+          public static final String PROCESSTYPE_MEETING = "Meeting";
+            public static final String PROCESSTYPE_GROUP = "Group";
+            public static final String PROCESSTYPE_UNGROUP = "Ungroup";
+            public static final String PROCESSTYPE_DUPLICATE = "Duplicate";
+        ]]>
+
+    </extra-code>
+  </entity>
+</domain-models>

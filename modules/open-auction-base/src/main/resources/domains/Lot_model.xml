@@ -394,7 +394,7 @@
       public static final String LOTTYPE_MEETINGSALE = "MeetingSale0";
       public static final String LOTTYPE_GROUPINGONSALE = "GroupingOnSale1";
       public static final String LOTTYPE_LOT = "Lot2";
-      public static final String LOTTYPE_GROUPINGORIGINLOT = "GroupingOriginLot3";
+      public static final String LOTTYPE_UNGROUPINGORIGINLOT = "UnGroupingOriginLot3";
       public static final String LOTTYPE_ORIGINLOTCOMPONENT = "OriginLotComponent4";
 
 
