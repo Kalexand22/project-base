@@ -85,10 +85,10 @@ public class MissionLineManagementImpl implements MissionLineManagement {
       END;*/
     if (pMissionHeader
             .getMissionStatus()
-            .equals(MissionHeaderRepository.MISSIONSTATUS_SELECT_CANCELED)
+            .equals(MissionHeaderRepository.MISSIONSTATUS_CANCELED)
         || pMissionHeader
             .getMissionStatus()
-            .equals(MissionHeaderRepository.MISSIONSTATUS_SELECT_FINISHED)) {
+            .equals(MissionHeaderRepository.MISSIONSTATUS_FINISHED)) {
       throw new AxelorException(
           pMissionHeader,
           TraceBackRepository.CATEGORY_INCONSISTENCY,
@@ -152,7 +152,7 @@ public class MissionLineManagementImpl implements MissionLineManagement {
       lMissionLine.setLotNoMission(getNewLotMissionNo(pMissionHeader));
     }
     lMissionLine.setContactNo(pMissionHeader.getMasterContactNo());
-    lMissionLine.setType(MissionLineRepository.TYPE_SELECT_LOT);
+    lMissionLine.setType(MissionLineRepository.TYPE_LOT);
 
     // validate
     lMissionLine = missionLineValidate.validateNoLot(lMissionLine, pLot);

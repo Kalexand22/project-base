@@ -70,7 +70,7 @@ public class MissionHeaderValidate {
     missionHeader.setMissionStatus(missionStatus);
     if (missionHeader
         .getMissionStatus()
-        .equals(MissionHeaderRepository.MISSIONSTATUS_SELECT_FINISHED)) {
+        .equals(MissionHeaderRepository.MISSIONSTATUS_FINISHED)) {
       if (!missionManagement.ifAllMissionServiceInvoiced(missionHeader)) {
         throw new AxelorException(
             missionHeader,
@@ -86,7 +86,7 @@ public class MissionHeaderValidate {
     }
     if (missionHeader
         .getMissionStatus()
-        .equals(MissionHeaderRepository.MISSIONSTATUS_SELECT_CANCELED)) {
+        .equals(MissionHeaderRepository.MISSIONSTATUS_CANCELED)) {
       missionStatusManagement.cancelMission(missionHeader);
     } else {
       missionStatusManagement.cancelCancelledMission(missionHeader);
@@ -172,7 +172,7 @@ public class MissionHeaderValidate {
   // ContactLawyerManagement.ValidateContact(ContactType::Manager, Manager);//
   public MissionHeader validateManager(MissionHeader missionHeader, Partner manager) {
     missionHeader.setManager(manager);
-    // contactLawyerManagement.validateContact(ContactRepository.CONTACTTYPE_SELECT_MANAGER,
+    // contactLawyerManagement.validateContact(ContactRepository.CONTACTTYPE_MANAGER,
     // missionHeader.getManager());
     return missionHeader;
   }

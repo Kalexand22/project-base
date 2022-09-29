@@ -24,11 +24,11 @@
     <extra-code>
       <![CDATA[
       //ACTIVITYTYPE
-      public static final String ACTIVITYTYPE_SELECT_MISSION = "Mission1";
-      public static final String ACTIVITYTYPE_SELECT_AUCTION = "Auction0";
+      public static final String ACTIVITYTYPE_MISSION = "Mission1";
+      public static final String ACTIVITYTYPE_AUCTION = "Auction0";
 
-      public static final String APPLICABLEON_SELECT_HEADER = "Header0";
-      public static final String APPLICABLEON_SELECT_LINE = "Line1";
+      public static final String APPLICABLEON_HEADER = "Header0";
+      public static final String APPLICABLEON_LINE = "Line1";
       ]]>
     </extra-code>
   </entity>

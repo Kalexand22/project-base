@@ -28,9 +28,9 @@
     <extra-code>
       <![CDATA[
       //toDoApplicableTo
-      public static final String TODOAPPLICABLETO_SELECT_SELLER = "Seller0";
-      public static final String TODOAPPLICABLETO_SELECT_BUYER = "Buyer1";
-      public static final String TODOAPPLICABLETO_SELECT_EMPTY = "Empty2";
+      public static final String TODOAPPLICABLETO_SELLER = "Seller0";
+      public static final String TODOAPPLICABLETO_BUYER = "Buyer1";
+      public static final String TODOAPPLICABLETO_EMPTY = "Empty2";
       ]]>
     </extra-code>
   </entity>

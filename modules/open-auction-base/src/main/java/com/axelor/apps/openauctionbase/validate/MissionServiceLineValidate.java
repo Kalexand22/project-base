@@ -86,7 +86,7 @@ public class MissionServiceLineValidate {
     }
     if (fiscalPosition == null
         && missionServiceLine.getContactImputationType()
-            == MissionServiceLineRepository.CONTACTIMPUTATIONTYPE_SELECT_SELLER
+            == MissionServiceLineRepository.CONTACTIMPUTATIONTYPE_SELLER
         && missionServiceLine.getChargeableContactNo() != null) {
       fiscalPosition = missionServiceLine.getChargeableContactNo().getFiscalPosition();
     }
@@ -129,7 +129,7 @@ public class MissionServiceLineValidate {
     missionServiceLine.setAuctionInclVAT(auctionNo.getPricesIncludingVAT());
     if (missionServiceLine
             .getTransactionType()
-            .equals(MissionServiceLineRepository.TRANSACTIONTYPE_SELECT_VENTE)
+            .equals(MissionServiceLineRepository.TRANSACTIONTYPE_VENTE)
         && missionServiceLine.getPriceDate() != auctionNo.getAuctionDate()) {
       missionServiceLine = this.validatePriceDate(missionServiceLine, auctionNo.getAuctionDate());
     } else {
@@ -137,7 +137,7 @@ public class MissionServiceLineValidate {
       missionServiceLine.setAuctionInclVAT(false);
       if (missionServiceLine
           .getTransactionType()
-          .equals(MissionServiceLineRepository.TRANSACTIONTYPE_SELECT_VENTE)) {
+          .equals(MissionServiceLineRepository.TRANSACTIONTYPE_VENTE)) {
 
         missionServiceLine.setPriceDate(
             Beans.get(AppBaseService.class).getTodayDate(AuthUtils.getUser().getActiveCompany()));
@@ -177,12 +177,12 @@ public class MissionServiceLineValidate {
     missionServiceLine = this.GetMissVATBus(missionServiceLine);
     if (missionServiceLine
         .getTransactionType()
-        .equals(MissionServiceLineRepository.TRANSACTIONTYPE_SELECT_MISSION)) {
+        .equals(MissionServiceLineRepository.TRANSACTIONTYPE_MISSION)) {
       missionServiceLine.setLotPriceGroup(lot.getLotMissionPriceGroup());
       missionServiceLine.setTransactionLineNo(lot.getCurrentMissionLineNo().getLineNo());
     } else if (missionServiceLine
         .getTransactionType()
-        .equals(MissionServiceLineRepository.TRANSACTIONTYPE_SELECT_VENTE)) {
+        .equals(MissionServiceLineRepository.TRANSACTIONTYPE_VENTE)) {
       missionServiceLine.setAuctionLotPriceGroup(lot.getLotAuctionPriceGroup());
     }
     if (missionServiceLine.getProductNo() != null) {
@@ -218,7 +218,7 @@ public class MissionServiceLineValidate {
     missionServiceLine.setDescription(productNo.getDescription());
     if (missionServiceLine.getAuctionBid()) {
       missionServiceLine.setInvoicingType(
-          MissionServiceLineRepository.INVOICINGTYPE_SELECT_BILLABLEONBID);
+          MissionServiceLineRepository.INVOICINGTYPE_BILLABLEONBID);
       missionServiceLine.setChargeable(true);
       missionServiceLine.setQuantity(BigDecimal.ONE);
     } else {
@@ -421,7 +421,7 @@ public class MissionServiceLineValidate {
     if (auctionBid) {
       missionServiceLine =
           this.validateServiceType(
-              missionServiceLine, MissionServiceLineRepository.SERVICETYPE_SELECT_AUCTIONBID);
+              missionServiceLine, MissionServiceLineRepository.SERVICETYPE_AUCTIONBID);
       missionServiceLine.setPriceIncludesVAT(missionServiceLine.getAuctionInclVAT());
     }
     return missionServiceLine;
@@ -466,10 +466,10 @@ public class MissionServiceLineValidate {
     }
     missionServiceLine = this.CheckQuantity(missionServiceLine);
     switch (missionServiceLine.getProductNo().getServicePriceSystem()) {
-      case ProductRepository.SERVICEPRICESYSTEM_SELECT_STANDARD:
+      case ProductRepository.SERVICEPRICESYSTEM_STANDARD:
         if (missionServiceLine
             .getTransactionType()
-            .equals(MissionServiceLineRepository.TRANSACTIONTYPE_SELECT_MISSION)) {
+            .equals(MissionServiceLineRepository.TRANSACTIONTYPE_MISSION)) {
           missionServiceLine =
               missionServicePriceManagement.findMissionServicePrice(missionServiceLine, false);
         } else {
@@ -477,11 +477,11 @@ public class MissionServiceLineValidate {
               auctionServicePriceMgt.updateAuctionServicePrice(missionServiceLine, false);
         }
         break;
-      case ProductRepository.SERVICEPRICESYSTEM_SELECT_TRANSPORT:
+      case ProductRepository.SERVICEPRICESYSTEM_TRANSPORT:
         // missionServiceLine = shippingAgentPriceMgt.findTransportServPrice(missionServiceLine);
         // TODO ShippingAgentPriceMgt
         break;
-      case ProductRepository.SERVICEPRICESYSTEM_SELECT_CARETAKER:
+      case ProductRepository.SERVICEPRICESYSTEM_CARETAKER:
         missionServiceLine =
             caretakerServPriceMgt.findMissionServicePrice(missionServiceLine, false);
         break;
@@ -559,7 +559,7 @@ public class MissionServiceLineValidate {
     missionServiceLine.setChargeableContactNo(chargeableContactNo);
     if (missionServiceLine
         .getTransactionType()
-        .equals(MissionServiceLineRepository.TRANSACTIONTYPE_SELECT_MISSION)) {
+        .equals(MissionServiceLineRepository.TRANSACTIONTYPE_MISSION)) {
       missionServiceLine.setContactPriceGroup(
           missionServiceLine.getChargeableContactNo().getContactMissionPriceGroup());
     } else {
@@ -568,7 +568,7 @@ public class MissionServiceLineValidate {
     }
     if (missionServiceLine
         .getContactImputationType()
-        .equals(MissionServiceLineRepository.CONTACTIMPUTATIONTYPE_SELECT_BUYER)) {
+        .equals(MissionServiceLineRepository.CONTACTIMPUTATIONTYPE_BUYER)) {
       if (!missionServiceLine
           .getBuyerFiscalPosition()
           .equals(missionServiceLine.getChargeableContactNo().getFiscalPosition())) {
@@ -600,7 +600,7 @@ public class MissionServiceLineValidate {
       MissionServiceLine missionServiceLine, LocalDate priceDate) throws AxelorException {
     if (missionServiceLine
         .getTransactionType()
-        .equals(MissionServiceLineRepository.TRANSACTIONTYPE_SELECT_VENTE)) {
+        .equals(MissionServiceLineRepository.TRANSACTIONTYPE_VENTE)) {
       throw new AxelorException(
           missionServiceLine,
           TraceBackRepository.CATEGORY_CONFIGURATION_ERROR,
@@ -752,10 +752,10 @@ public class MissionServiceLineValidate {
     missionServiceLine.setContactImputationType(contactImputationType);
     Partner newContactNo = new Partner();
     switch (missionServiceLine.getContactImputationType()) {
-      case MissionServiceLineRepository.CONTACTIMPUTATIONTYPE_SELECT_SELLER:
+      case MissionServiceLineRepository.CONTACTIMPUTATIONTYPE_SELLER:
         newContactNo = missionServiceLine.getMissionNo().getMasterContactNo();
         break;
-      case MissionServiceLineRepository.CONTACTIMPUTATIONTYPE_SELECT_BUYER:
+      case MissionServiceLineRepository.CONTACTIMPUTATIONTYPE_BUYER:
         if (missionServiceLine.getLotNo() == null) {
           throw new AxelorException(
               missionServiceLine,
@@ -767,7 +767,7 @@ public class MissionServiceLineValidate {
           newContactNo = auctionLine.getBuyerContactNo();
         }
         break;
-      case MissionServiceLineRepository.CONTACTIMPUTATIONTYPE_SELECT_NONE:
+      case MissionServiceLineRepository.CONTACTIMPUTATIONTYPE_NONE:
         newContactNo = null;
         break;
     }
@@ -1049,7 +1049,7 @@ public class MissionServiceLineValidate {
     if (missionServiceLine.getProductFamily() != null
         && missionServiceLine.getContactImputationType() != null
         && missionServiceLine.getContactImputationType()
-            != MissionServiceLineRepository.CONTACTIMPUTATIONTYPE_SELECT_NONE) {
+            != MissionServiceLineRepository.CONTACTIMPUTATIONTYPE_NONE) {
       // Valeur par défaut acheteur
       if (missionServiceLine.getBuyerFiscalPosition() == null) {
         AuctionSetup auctionSetup = Beans.get(AuctionSetupRepository.class).all().fetchOne();
@@ -1105,7 +1105,7 @@ public class MissionServiceLineValidate {
             "Le champ 'Adjudication' doit être coché");
       }
       if (missionServiceLine.getContactImputationType()
-          != MissionServiceLineRepository.CONTACTIMPUTATIONTYPE_SELECT_SELLER) {
+          != MissionServiceLineRepository.CONTACTIMPUTATIONTYPE_SELLER) {
         throw new AxelorException(
             missionServiceLine,
             TraceBackRepository.CATEGORY_INCONSISTENCY,

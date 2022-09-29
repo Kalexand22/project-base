@@ -360,47 +360,47 @@
       <![CDATA[
 
       //openauction.auctionStatus.select.lot
-      public static final String AUCTIONSTATUS_SELECT_INITIAL = "Initial0";
-      public static final String AUCTIONSTATUS_SELECT_TOSIGN = "ToSign1";
-      public static final String AUCTIONSTATUS_SELECT_TOPREPARE = "ToPrepare2";
-      public static final String AUCTIONSTATUS_SELECT_READYTOAUCTION = "ReadyToAuction3";
-      public static final String AUCTIONSTATUS_SELECT_AUCTION = "Auction4";
-      public static final String AUCTIONSTATUS_SELECT_AUCTIONNED = "Auctionned5";
-      public static final String AUCTIONSTATUS_SELECT_RETIRED = "Retired6";
-      public static final String AUCTIONSTATUS_SELECT_NOAUCTION = "NoAuction7";
-      public static final String AUCTIONSTATUS_SELECT_AUCTIONINGROUP = "AuctionInGroup8";
-      public static final String AUCTIONSTATUS_SELECT_UNGROUPED = "Ungrouped9";
+      public static final String AUCTIONSTATUS_INITIAL = "Initial0";
+      public static final String AUCTIONSTATUS_TOSIGN = "ToSign1";
+      public static final String AUCTIONSTATUS_TOPREPARE = "ToPrepare2";
+      public static final String AUCTIONSTATUS_READYTOAUCTION = "ReadyToAuction3";
+      public static final String AUCTIONSTATUS_AUCTION = "Auction4";
+      public static final String AUCTIONSTATUS_AUCTIONNED = "Auctionned5";
+      public static final String AUCTIONSTATUS_RETIRED = "Retired6";
+      public static final String AUCTIONSTATUS_NOAUCTION = "NoAuction7";
+      public static final String AUCTIONSTATUS_AUCTIONINGROUP = "AuctionInGroup8";
+      public static final String AUCTIONSTATUS_UNGROUPED = "Ungrouped9";
 
       //openauction.lotInventoryStatus.select.lot
-      public static final String LOTINVENTORYSTATUS_SELECT_UNKNOWN = "Unkonw";
-      public static final String LOTINVENTORYSTATUS_SELECT_INSTOCK = "InStock";
-      public static final String LOTINVENTORYSTATUS_SELECT_DELIVERED = "Delivered";
-      public static final String LOTINVENTORYSTATUS_SELECT_RESTITUED = "Restitued";
-      public static final String LOTINVENTORYSTATUS_SELECT_UNGROUPED = "Ungrouped";
-      public static final String LOTINVENTORYSTATUS_SELECT_INTRANSIT4 = "InTransit4";
-      public static final String LOTINVENTORYSTATUS_SELECT_TO_PICK = "ToPick";
+      public static final String LOTINVENTORYSTATUS_UNKNOWN = "Unkonw";
+      public static final String LOTINVENTORYSTATUS_INSTOCK = "InStock";
+      public static final String LOTINVENTORYSTATUS_DELIVERED = "Delivered";
+      public static final String LOTINVENTORYSTATUS_RESTITUED = "Restitued";
+      public static final String LOTINVENTORYSTATUS_UNGROUPED = "Ungrouped";
+      public static final String LOTINVENTORYSTATUS_INTRANSIT4 = "InTransit4";
+      public static final String LOTINVENTORYSTATUS_TO_PICK = "ToPick";
 
 
       //openauction.lotGeneralStatus.select.lot
-      public static final String LOTGENERALSTATUS_SELECT_IDENTIFIED = "Identified0";
-      public static final String LOTGENERALSTATUS_SELECT_ONMISSION = "OnMission1";
-      public static final String LOTGENERALSTATUS_SELECT_ONSALE = "OnSale2";
-      public static final String LOTGENERALSTATUS_SELECT_SOLD = "Sold3";
-      public static final String LOTGENERALSTATUS_SELECT_RETURN = "Return4";
-      public static final String LOTGENERALSTATUS_SELECT_CANCELED = "Canceled5";
+      public static final String LOTGENERALSTATUS_IDENTIFIED = "Identified0";
+      public static final String LOTGENERALSTATUS_ONMISSION = "OnMission1";
+      public static final String LOTGENERALSTATUS_ONSALE = "OnSale2";
+      public static final String LOTGENERALSTATUS_SOLD = "Sold3";
+      public static final String LOTGENERALSTATUS_RETURN = "Return4";
+      public static final String LOTGENERALSTATUS_CANCELED = "Canceled5";
 
 
       //openauction.lotType.select.lot
-      public static final String LOTTYPE_SELECT_MEETINGSALE = "MeetingSale0";
-      public static final String LOTTYPE_SELECT_GROUPINGONSALE = "GroupingOnSale1";
-      public static final String LOTTYPE_SELECT_LOT = "Lot2";
-      public static final String LOTTYPE_SELECT_GROUPINGORIGINLOT = "GroupingOriginLot3";
-      public static final String LOTTYPE_SELECT_ORIGINLOTCOMPONENT = "OriginLotComponent4";
+      public static final String LOTTYPE_MEETINGSALE = "MeetingSale0";
+      public static final String LOTTYPE_GROUPINGONSALE = "GroupingOnSale1";
+      public static final String LOTTYPE_LOT = "Lot2";
+      public static final String LOTTYPE_GROUPINGORIGINLOT = "GroupingOriginLot3";
+      public static final String LOTTYPE_ORIGINLOTCOMPONENT = "OriginLotComponent4";
 
 
       //openauction.addedValueType.select.lot
-      public static final String ADDEDVALUETYPE_SELECT_FREE = "Free0";
-      public static final String ADDEDVALUETYPE_SELECT_SPECIFICSUM = "SpecificSum1";
+      public static final String ADDEDVALUETYPE_FREE = "Free0";
+      public static final String ADDEDVALUETYPE_SPECIFICSUM = "SpecificSum1";
 
       ]]>
     </extra-code>

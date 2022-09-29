@@ -88,9 +88,9 @@ public class MissionLineValidate {
     LotValidate lotValidate = Beans.get(LotValidate.class);
     missionLine.setNoLot(lot);
     if (missionLine.getType() == null
-        || missionLine.getType().equals(MissionLineRepository.TYPE_SELECT_EMPTY)) {
+        || missionLine.getType().equals(MissionLineRepository.TYPE_EMPTY)) {
       missionLine.setDescription(lot.getDescription());
-      missionLine.setLotType(LotRepository.LOTTYPE_SELECT_ORIGINLOTCOMPONENT);
+      missionLine.setLotType(LotRepository.LOTTYPE_ORIGINLOTCOMPONENT);
     } else {
       if (lot != null) {
         missionLine.setDescription(lot.getDescription());
@@ -105,7 +105,7 @@ public class MissionLineValidate {
         lot.setCurrentMissionLineNo(missionLine);
         lot =
             lotValidate.validateLotGeneralStatus(
-                lot, LotRepository.LOTGENERALSTATUS_SELECT_ONMISSION);
+                lot, LotRepository.LOTGENERALSTATUS_ONMISSION);
 
         // TODO Laywer Bus. No.
       }

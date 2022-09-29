@@ -59,18 +59,18 @@ public class ActivityManagementImpl implements ActivityManagement {
         log.debug(pActivityHeader.getApplicableOn());
         if (pActivityHeader
             .getApplicableOn()
-            .equals(ActivityHeaderRepository.APPLICABLEON_SELECT_HEADER)) {
+            .equals(ActivityHeaderRepository.APPLICABLEON_HEADER)) {
           lLineToTreat = true;
         }
         if (pActivityHeader
             .getApplicableOn()
-            .equals(ActivityHeaderRepository.APPLICABLEON_SELECT_LINE)) {
+            .equals(ActivityHeaderRepository.APPLICABLEON_LINE)) {
           lLineToTreat =
               line.getLotTemplateFilter().equals(pLotTemplate)
                   || line.getLotTemplateFilter() == null;
         }
         if (line.getToDoApplicableTo()
-            .equals(ActivityLineRepository.TODOAPPLICABLETO_SELECT_SELLER)) {
+            .equals(ActivityLineRepository.TODOAPPLICABLETO_SELLER)) {
           lcontact = pMissionHeader.getMasterContactNo();
         } else {
           lcontact = null;
@@ -166,8 +166,8 @@ public class ActivityManagementImpl implements ActivityManagement {
       lMissionServiceLine.setDocumentNo(0L);
       lMissionServiceLine.setTransactionType(
           pAuctionAct
-              ? MissionServiceLineRepository.TRANSACTIONTYPE_SELECT_VENTE
-              : MissionServiceLineRepository.TRANSACTIONTYPE_SELECT_MISSION);
+              ? MissionServiceLineRepository.TRANSACTIONTYPE_VENTE
+              : MissionServiceLineRepository.TRANSACTIONTYPE_MISSION);
       lMissionServiceLine.setAuctionNo(pAuctionHeader);
       lMissionServiceLine.setMissionNo(pMissionHeader);
       lMissionServiceLine.setLotNo(pLot);

@@ -16,14 +16,14 @@ public class MissionServiceLineRepositoryExt extends MissionServiceLineRepositor
     if (entity.getId() == null) {
       if (entity.getAuctionBid() != null && !entity.getAuctionBid()) {
         if (entity.getAuctionNo() != null) {
-          entity.setTransactionType(MissionServiceLineRepository.TRANSACTIONTYPE_SELECT_VENTE);
+          entity.setTransactionType(MissionServiceLineRepository.TRANSACTIONTYPE_VENTE);
         } else {
-          entity.setTransactionType(MissionServiceLineRepository.TRANSACTIONTYPE_SELECT_MISSION);
+          entity.setTransactionType(MissionServiceLineRepository.TRANSACTIONTYPE_MISSION);
         }
       }
       if (entity.getDocumentNo() == null || entity.getDocumentNo() == 0) {
         entity.setDocumentNo(
-            entity.getTransactionType() == MissionServiceLineRepository.TRANSACTIONTYPE_SELECT_VENTE
+            entity.getTransactionType() == MissionServiceLineRepository.TRANSACTIONTYPE_VENTE
                 ? entity.getAuctionNo().getId()
                 : entity.getMissionNo().getId());
       }
@@ -88,18 +88,18 @@ public class MissionServiceLineRepositoryExt extends MissionServiceLineRepositor
       entity.setChargeable(false);
       return;
     }
-    if (entity.getType().equals(ServiceTemplateLineRepository.TYPE_SELECT_SERVICE)) {
+    if (entity.getType().equals(ServiceTemplateLineRepository.TYPE_SERVICE)) {
       if (entity.getInvoicingType() == null) {
         entity.setChargeable(false);
         return;
       }
       switch (entity.getInvoicingType()) {
-        case MissionServiceLineRepository.INVOICINGTYPE_SELECT_BILLABLE:
+        case MissionServiceLineRepository.INVOICINGTYPE_BILLABLE:
           if (!entity.getChargeable()) entity.setChargeable(true);
           return;
-        case MissionServiceLineRepository.INVOICINGTYPE_SELECT_BILLABLEONBID:
+        case MissionServiceLineRepository.INVOICINGTYPE_BILLABLEONBID:
           if (entity.getTransactionType()
-              == MissionServiceLineRepository.TRANSACTIONTYPE_SELECT_VENTE) {
+              == MissionServiceLineRepository.TRANSACTIONTYPE_VENTE) {
             AuctionLine lAuctionLine = getAuctionLine(entity);
             if (lAuctionLine != null) {
               if (lAuctionLine.getIsAuctionned() != entity.getChargeable()) {
@@ -110,13 +110,13 @@ public class MissionServiceLineRepositoryExt extends MissionServiceLineRepositor
           } else {
             if (entity.getChargeable()
                 != (entity.getLotNo().getAuctionStatus()
-                    == LotRepository.AUCTIONSTATUS_SELECT_AUCTIONNED))
+                    == LotRepository.AUCTIONSTATUS_AUCTIONNED))
               entity.setChargeable(
                   entity.getLotNo().getAuctionStatus()
-                      == LotRepository.AUCTIONSTATUS_SELECT_AUCTIONNED);
+                      == LotRepository.AUCTIONSTATUS_AUCTIONNED);
             return;
           }
-        case MissionServiceLineRepository.INVOICINGTYPE_SELECT_UNBILLABLE:
+        case MissionServiceLineRepository.INVOICINGTYPE_UNBILLABLE:
           if (entity.getChargeable()) entity.setChargeable(false);
           return;
         default:

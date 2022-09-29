@@ -17,6 +17,7 @@ import com.axelor.apps.openauction.db.repo.LotQuickInputJournalRepository;
 import com.axelor.apps.openauction.db.repo.LotRepository;
 import com.axelor.apps.openauction.db.repo.LotValueJournalRepository;
 import com.axelor.apps.openauctionbase.util.TransferFields;
+import com.axelor.apps.openauctionbase.validate.LotValidate;
 import com.axelor.exception.AxelorException;
 import com.axelor.exception.db.repo.TraceBackRepository;
 import com.axelor.inject.Beans;
@@ -39,6 +40,7 @@ public class LotTemplateManagementImpl implements LotTemplateManagement {
   LotRepository lotRepository;
   LotInputJournalRepository lotInputJournalRepository;
   LotQuickInputJournalRepository lotQuickInputJournalRepository;
+  LotValueJournalPostLine lotValueJnlPostLine;
   Lot lot;
 
   @Inject
@@ -50,6 +52,7 @@ public class LotTemplateManagementImpl implements LotTemplateManagement {
     contactLotManagement = Beans.get(ContactLotManagement.class);
     statusManagement = Beans.get(MissionStatusManagement.class);
     missionLineManagement = Beans.get(MissionLineManagement.class);
+    lotValueJnlPostLine = Beans.get(LotValueJournalPostLine.class);
     this.lotRepository = lotRepository;
     this.lotInputJournalRepository = lotInputJournalRepository;
     this.lotQuickInputJournalRepository = lotQuickInputJournalRepository;
@@ -102,7 +105,7 @@ public class LotTemplateManagementImpl implements LotTemplateManagement {
     //   IF lLot.Vehicle THEN
     //     lLot.VALIDATE("Lot Inventory Status", lLot."Lot Inventory Status"::"To Pick");
     if (lLot.getVehicle()) {
-      lLot.setLotInventoryStatus(LotRepository.LOTINVENTORYSTATUS_SELECT_TO_PICK);
+      lLot.setLotInventoryStatus(LotRepository.LOTINVENTORYSTATUS_TO_PICK);
     }
 
     //   lLot."Date To Auction From" := pLotQuickInputJournal."Date To Auction From";   //AP15
@@ -150,9 +153,8 @@ public class LotTemplateManagementImpl implements LotTemplateManagement {
     // IF LotNo <> '' THEN BEGIN
     if (lot != null) {
 
-      if (!lot.getLotGeneralStatus().equals(LotRepository.LOTGENERALSTATUS_SELECT_ONMISSION)) {
-        // TODO OnValidate
-        lot.setLotGeneralStatus(LotRepository.LOTGENERALSTATUS_SELECT_ONMISSION);
+      if (!lot.getLotGeneralStatus().equals(LotRepository.LOTGENERALSTATUS_ONMISSION)) {
+        lot = Beans.get(LotValidate.class).validateLotGeneralStatus(lot, LotRepository.LOTGENERALSTATUS_ONMISSION);        
         lotRepository.save(lot);
       }
     }
@@ -203,7 +205,7 @@ public class LotTemplateManagementImpl implements LotTemplateManagement {
       lLotValueJnlPostLine.RUN(lLotValueJournal);
     END;
        */
-    LotValueJournalPostLine lotValueJnlPostLine = Beans.get(LotValueJournalPostLine.class);
+    
     if (!pLotQuickInputJournal.getGrossReservePrice().equals(BigDecimal.ZERO)
         || !pLotQuickInputJournal.getNetReservePrice().equals(BigDecimal.ZERO)) {
       LotValueJournal lotValueJournal = new LotValueJournal();
@@ -340,7 +342,38 @@ public class LotTemplateManagementImpl implements LotTemplateManagement {
       Lot pLot,
       MissionHeader pMissionHeader,
       MissionLine pMissionLine) {
-    // TODO Auto-generated method stub
+    /*
+     * lLotValueJournal.INIT;
+      lLotValueJournal."Lot No." := pLot."No.";
+      lLotValueJournal."Entry Type" := lLotValueJournal."Entry Type"::"Reserve Price";
+      lLotValueJournal."Document Date" := pLotQuickInputJournal."Document Date";
+      lLotValueJournal."Posting Date" := pLotQuickInputJournal."Posting Date";
+      lLotValueJournal."Mission No." := pMissionHeader."No.";
+      lLotValueJournal."Mission Line No." := pMissionLine."Line No.";
+      lLotValueJournal."Source Type" := lLotValueJournal."Source Type"::Mission;
+      lLotValueJournal.Quantity := pLotQuickInputJournal.Quantity;
+      lLotValueJournal.Amount := pLotQuickInputJournal."Gross Reserve Price";
+      lLotValueJournal."Min Amount" := pLotQuickInputJournal."Net Reserve Price";
+      lLotValueJournal."Currency Code" := pLotQuickInputJournal."Currency Code";
+      lLotValueJournal."Currency Factor" := pLotQuickInputJournal."Currency Factor";
+      lLotValueJournal."Contact No." :=  pLotQuickInputJournal."Expert Contact No."; // AP13 isat.sf
+      lLotValueJnlPostLine.RUN(lLotValueJournal);
+     */
+    LotValueJournal lotValueJournal = new LotValueJournal();
+    lotValueJournal.setLotNo(pLot);
+    lotValueJournal.setEntryType(LotValueJournalRepository.ENTRYTYPE_RESERVEPRICE5);
+    lotValueJournal.setDocumentDate(pLotQuickInputJournal.getDocumentDate());
+    lotValueJournal.setPostingDate(pLotQuickInputJournal.getPostingDate());
+    lotValueJournal.setMissionNo(pMissionHeader);
+    lotValueJournal.setMissionLineNo(pMissionLine);
+    lotValueJournal.setSourceType(LotValueJournalRepository.SOURCETYPE_MISSION0);
+    lotValueJournal.setQuantity(BigDecimal.valueOf(pLotQuickInputJournal.getQuantity()));
+    lotValueJournal.setAmount(pLotQuickInputJournal.getGrossReservePrice());
+    lotValueJournal.setMinAmount(pLotQuickInputJournal.getNetReservePrice());
+    lotValueJournal.setCurrencyCode(pLotQuickInputJournal.getCurrencyCode());
+    lotValueJournal.setCurrencyFactor(pLotQuickInputJournal.getCurrencyFactor());
+    lotValueJournal.setContactNo(pLotQuickInputJournal.getExpertContactNo());
+    lotValueJnlPostLine.run(lotValueJournal);
 
   }
 
@@ -350,7 +383,41 @@ public class LotTemplateManagementImpl implements LotTemplateManagement {
       Lot pLot,
       MissionHeader pMissionHeader,
       MissionLine pMissionLine) {
-    // TODO Auto-generated method stub
+    /*
+     * //Estimation
+      lLotValueJournal.INIT;
+      lLotValueJournal."Lot No." := pLot."No.";
+      lLotValueJournal."Entry Type" := lLotValueJournal."Entry Type"::Estimate;
+      lLotValueJournal."Document Date" := pLotQuickInputJournal."Document Date";
+      lLotValueJournal."Posting Date" := pLotQuickInputJournal."Posting Date";
+      lLotValueJournal."Mission No." := pMissionHeader."No.";
+      lLotValueJournal."Mission Line No." := pMissionLine."Line No.";
+      lLotValueJournal."Source Type" := lLotValueJournal."Source Type"::Mission;
+      lLotValueJournal.Quantity := pLotQuickInputJournal.Quantity;
+      lLotValueJournal.Amount := pLotQuickInputJournal."Estimate Value";
+      lLotValueJournal."Min Amount" := pLotQuickInputJournal."Min. Estimate Value";
+      lLotValueJournal."Max Amount" := pLotQuickInputJournal."Max. Estimate Value";
+      lLotValueJournal."Currency Code" := pLotQuickInputJournal."Currency Code";
+      lLotValueJournal."Currency Factor" := pLotQuickInputJournal."Currency Factor";
+      lLotValueJournal."Contact No." :=  pLotQuickInputJournal."Expert Contact No."; // AP13 isat.sf
+      lLotValueJnlPostLine.RUN(lLotValueJournal);
+     */
+    LotValueJournal lotValueJournal = new LotValueJournal();
+    lotValueJournal.setLotNo(pLot);
+    lotValueJournal.setEntryType(LotValueJournalRepository.ENTRYTYPE_ESTIMATE0);
+    lotValueJournal.setDocumentDate(pLotQuickInputJournal.getDocumentDate());
+    lotValueJournal.setPostingDate(pLotQuickInputJournal.getPostingDate());
+    lotValueJournal.setMissionNo(pMissionHeader);
+    lotValueJournal.setMissionLineNo(pMissionLine);
+    lotValueJournal.setSourceType(LotValueJournalRepository.SOURCETYPE_MISSION0);
+    lotValueJournal.setQuantity(BigDecimal.valueOf(pLotQuickInputJournal.getQuantity()));
+    lotValueJournal.setAmount(pLotQuickInputJournal.getEstimateValue());
+    lotValueJournal.setMinAmount(pLotQuickInputJournal.getMinEstimateValue());
+    lotValueJournal.setMaxAmount(pLotQuickInputJournal.getMaxEstimateValue());
+    lotValueJournal.setCurrencyCode(pLotQuickInputJournal.getCurrencyCode());
+    lotValueJournal.setCurrencyFactor(pLotQuickInputJournal.getCurrencyFactor());
+    lotValueJournal.setContactNo(pLotQuickInputJournal.getExpertContactNo());
+    lotValueJnlPostLine.run(lotValueJournal);
 
   }
 
@@ -360,8 +427,40 @@ public class LotTemplateManagementImpl implements LotTemplateManagement {
       Lot pLot,
       MissionHeader pMissionHeader,
       MissionLine pMissionLine) {
-    // TODO Auto-generated method stub
-
+    /*
+     * 
+      //Estimation vente
+      lLotValueJournal.INIT;
+      lLotValueJournal."Lot No." := pLot."No.";
+      lLotValueJournal."Entry Type" := lLotValueJournal."Entry Type"::"Auction Estimate";
+      lLotValueJournal."Document Date" := pLotQuickInputJournal."Document Date";
+      lLotValueJournal."Posting Date" := pLotQuickInputJournal."Posting Date";
+      lLotValueJournal."Mission No." := pMissionHeader."No.";
+      lLotValueJournal."Mission Line No." := pMissionLine."Line No.";
+      lLotValueJournal."Source Type" := lLotValueJournal."Source Type"::Mission;
+      lLotValueJournal.Quantity := pLotQuickInputJournal.Quantity;
+      lLotValueJournal."Min Amount" := pLotQuickInputJournal."Min Auction Estim. Value";
+      lLotValueJournal."Max Amount" := pLotQuickInputJournal."Max Auction Estim. Value";
+      lLotValueJournal."Currency Code" := pLotQuickInputJournal."Currency Code";
+      lLotValueJournal."Currency Factor" := pLotQuickInputJournal."Currency Factor";
+      lLotValueJournal."Contact No." :=  pLotQuickInputJournal."Expert Contact No."; // AP13 isat.sf
+      lLotValueJnlPostLine.RUN(lLotValueJournal);
+     */
+    LotValueJournal lotValueJournal = new LotValueJournal();
+    lotValueJournal.setLotNo(pLot);
+    lotValueJournal.setEntryType(LotValueJournalRepository.ENTRYTYPE_AUCTIONESTIMATE10);
+    lotValueJournal.setDocumentDate(pLotQuickInputJournal.getDocumentDate());
+    lotValueJournal.setPostingDate(pLotQuickInputJournal.getPostingDate());
+    lotValueJournal.setMissionNo(pMissionHeader);
+    lotValueJournal.setMissionLineNo(pMissionLine);
+    lotValueJournal.setSourceType(LotValueJournalRepository.SOURCETYPE_MISSION0);
+    lotValueJournal.setQuantity(BigDecimal.valueOf(pLotQuickInputJournal.getQuantity()));
+    lotValueJournal.setMinAmount(pLotQuickInputJournal.getMinAuctionEstimValue());
+    lotValueJournal.setMaxAmount(pLotQuickInputJournal.getMaxAuctionEstimValue());
+    lotValueJournal.setCurrencyCode(pLotQuickInputJournal.getCurrencyCode());
+    lotValueJournal.setCurrencyFactor(pLotQuickInputJournal.getCurrencyFactor());
+    lotValueJournal.setContactNo(pLotQuickInputJournal.getExpertContactNo());
+    lotValueJnlPostLine.run(lotValueJournal);    
   }
 
   @Override
@@ -370,8 +469,49 @@ public class LotTemplateManagementImpl implements LotTemplateManagement {
       Lot pLot,
       MissionHeader pMissionHeader,
       MissionLine pMissionLine) {
-    // TODO Auto-generated method stub
-
+    /*
+     * //Expertise
+      lLotValueJournal.INIT;
+      lLotValueJournal."Lot No." := pLot."No.";
+      IF pLotQuickInputJournal."Value Type" = pLotQuickInputJournal."Value Type"::Estimate THEN BEGIN
+        lLotValueJournal."Entry Type" := lLotValueJournal."Entry Type"::Estimate;
+      END ELSE BEGIN
+        lLotValueJournal."Entry Type" := lLotValueJournal."Entry Type"::Appraisal;
+      END;
+      lLotValueJournal."Document Date" := pLotQuickInputJournal."Document Date";
+      lLotValueJournal."Posting Date" := pLotQuickInputJournal."Posting Date";
+      lLotValueJournal."Mission No." := pMissionHeader."No.";
+      lLotValueJournal."Mission Line No." := pMissionLine."Line No.";
+      lLotValueJournal."Source Type" := lLotValueJournal."Source Type"::Mission;
+      lLotValueJournal.Quantity := pLotQuickInputJournal.Quantity;
+      lLotValueJournal.Amount := pLotQuickInputJournal."Appraisal Value";
+      lLotValueJournal."Min Amount" := pLotQuickInputJournal."Min. Appraisal Value";
+      lLotValueJournal."Max Amount" := pLotQuickInputJournal."Max. Appraisal Value";
+      lLotValueJournal."Currency Code" := pLotQuickInputJournal."Currency Code";
+      lLotValueJournal."Currency Factor" := pLotQuickInputJournal."Currency Factor";
+      lLotValueJournal."Contact No." :=  pLotQuickInputJournal."Expert Contact No."; // AP13 isat.sf
+      lLotValueJnlPostLine.RUN(lLotValueJournal);
+     */
+    LotValueJournal lotValueJournal = new LotValueJournal();
+    lotValueJournal.setLotNo(pLot);
+    if (pLotQuickInputJournal.getValueType() == LotQuickInputJournalRepository.VALUETYPE_ESTIMATE) {
+      lotValueJournal.setEntryType(LotValueJournalRepository.ENTRYTYPE_ESTIMATE0);
+    } else {
+      lotValueJournal.setEntryType(LotValueJournalRepository.ENTRYTYPE_APPRAISAL2);
+    }
+    lotValueJournal.setDocumentDate(pLotQuickInputJournal.getDocumentDate());
+    lotValueJournal.setPostingDate(pLotQuickInputJournal.getPostingDate());
+    lotValueJournal.setMissionNo(pMissionHeader);
+    lotValueJournal.setMissionLineNo(pMissionLine);
+    lotValueJournal.setSourceType(LotValueJournalRepository.SOURCETYPE_MISSION0);
+    lotValueJournal.setQuantity(BigDecimal.valueOf(pLotQuickInputJournal.getQuantity()));
+    lotValueJournal.setAmount(pLotQuickInputJournal.getAppraisalValue());
+    lotValueJournal.setMinAmount(pLotQuickInputJournal.getMinAppraisalValue());
+    lotValueJournal.setMaxAmount(pLotQuickInputJournal.getMaxAppraisalValue());
+    lotValueJournal.setCurrencyCode(pLotQuickInputJournal.getCurrencyCode());
+    lotValueJournal.setCurrencyFactor(pLotQuickInputJournal.getCurrencyFactor());
+    lotValueJournal.setContactNo(pLotQuickInputJournal.getExpertContactNo());
+    lotValueJnlPostLine.run(lotValueJournal);
   }
 
   @Override
@@ -380,13 +520,84 @@ public class LotTemplateManagementImpl implements LotTemplateManagement {
       Lot pLot,
       MissionHeader pMissionHeader,
       MissionLine pMissionLine) {
-    // TODO Auto-generated method stub
-
+    /*
+     * //Expertise
+      lLotValueJournal.INIT;
+      lLotValueJournal."Lot No." := pLot."No.";
+      lLotValueJournal."Entry Type" := lLotValueJournal."Entry Type"::Quotation;
+      lLotValueJournal."Document Date" := pLotQuickInputJournal."Document Date";
+      lLotValueJournal."Posting Date" := pLotQuickInputJournal."Posting Date";
+      lLotValueJournal."Mission No." := pMissionHeader."No.";
+      lLotValueJournal."Mission Line No." := pMissionLine."Line No.";
+      lLotValueJournal."Source Type" := lLotValueJournal."Source Type"::Mission;
+      lLotValueJournal.Quantity := pLotQuickInputJournal.Quantity;
+      lLotValueJournal.Amount := pLotQuickInputJournal."Quotation 1";
+      lLotValueJournal."Min Amount" := pLotQuickInputJournal."Quotation 2";
+      lLotValueJournal."Max Amount" := pLotQuickInputJournal."Quotation 3";
+      lLotValueJournal."Currency Code" := pLotQuickInputJournal."Currency Code";
+      lLotValueJournal."Currency Factor" := pLotQuickInputJournal."Currency Factor";
+      lLotValueJournal."Contact No." :=  pLotQuickInputJournal."Expert Contact No."; // AP13 isat.sf
+      lLotValueJnlPostLine.RUN(lLotValueJournal);
+     */
+    LotValueJournal lotValueJournal = new LotValueJournal();
+    lotValueJournal.setLotNo(pLot);
+    lotValueJournal.setEntryType(LotValueJournalRepository.ENTRYTYPE_QUOTATION8);
+    lotValueJournal.setDocumentDate(pLotQuickInputJournal.getDocumentDate());
+    lotValueJournal.setPostingDate(pLotQuickInputJournal.getPostingDate());
+    lotValueJournal.setMissionNo(pMissionHeader);
+    lotValueJournal.setMissionLineNo(pMissionLine);
+    lotValueJournal.setSourceType(LotValueJournalRepository.SOURCETYPE_MISSION0);
+    lotValueJournal.setQuantity(BigDecimal.valueOf(pLotQuickInputJournal.getQuantity()));
+    lotValueJournal.setAmount(pLotQuickInputJournal.getQuotation1());
+    lotValueJournal.setMinAmount(pLotQuickInputJournal.getQuotation2());
+    lotValueJournal.setMaxAmount(pLotQuickInputJournal.getQuotation3());
+    lotValueJournal.setCurrencyCode(pLotQuickInputJournal.getCurrencyCode());
+    lotValueJournal.setCurrencyFactor(pLotQuickInputJournal.getCurrencyFactor());
+    lotValueJournal.setContactNo(pLotQuickInputJournal.getExpertContactNo());
+    lotValueJnlPostLine.run(lotValueJournal);
   }
 
   @Override
   public void createLotInventoryEntry(LotQuickInputJournal pLotQuickInputJournal, Lot pLot) {
-    // TODO Auto-generated method stub
+    /*
+     * IF (pLotQuickInputJournal."Location Code" = '') AND
+         (pLotQuickInputJournal."Bin Code" = '') AND
+         (pLotQuickInputJournal."Auction Room Code" = '')
+      THEN BEGIN
+        EXIT;
+      END;
+      WITH lLotInventoryJournal DO BEGIN
+        INIT;
+        "Journal Template Name" := '';
+        "Journal Batch Name" := '';
+        "Line No." := 0;
+        "Lot No." := pLot."No.";
+        "Entry Type" := "Entry Type"::Deposit;
+        "Posting Date" := WORKDATE;
+        "Document Date" := WORKDATE;
+        "Location Code" := pLotQuickInputJournal."Location Code";
+        "Bin Code" := pLotQuickInputJournal."Bin Code";
+        //"Auction Room Code" := pLotQuickInputJournal."Auction Room Code";
+        Quantity := pLotQuickInputJournal.Quantity;
+        //"Responsibility Center" := pLot."Responsibility Center";
+        "Property Register" := pLot."Property Register";
+        "Noble Metal Register" := pLot."Noble Metal Register";
+        "Weapon Register" := pLot."Weapon Register";
+        "Lot Template Code" := pLotQuickInputJournal."Lot Template Code";
+        "Responsibility Center" := pLot."Responsibility Center";
+        Rubbish := FALSE;
+        "Document No." := lText001;
+        "External Document No." := lText001;
+        lLotInvtJnlPostLine.RUN(lLotInventoryJournal);
+        lLogisticMgt.UpdateLotStatus(pLot."No.",1);
+      END;
+     */
+    if (pLotQuickInputJournal.getLocationCode().isEmpty()
+        && pLotQuickInputJournal.getBinCode().isEmpty()
+        && pLotQuickInputJournal.getAuctionRoomCode() == null) {
+      return;
+        }
+    //TODO : LotInventoryJournal
 
   }
 

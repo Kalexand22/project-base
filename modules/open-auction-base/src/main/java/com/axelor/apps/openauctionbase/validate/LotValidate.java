@@ -62,7 +62,7 @@ public class LotValidate {
   public Lot validateGroupingAuthorization(Lot lot, Boolean groupingAuthorization)
       throws AxelorException {
 
-    if (lot.getLotType() != null && !lot.getLotType().equals(LotRepository.LOTTYPE_SELECT_LOT)) {
+    if (lot.getLotType() != null && !lot.getLotType().equals(LotRepository.LOTTYPE_LOT)) {
       throw new AxelorException(
           lot,
           TraceBackRepository.CATEGORY_CONFIGURATION_ERROR,
@@ -77,7 +77,7 @@ public class LotValidate {
   public Lot validateUngroupingAuthorization(Lot lot, Boolean ungroupingAuthorization)
       throws AxelorException {
 
-    if (lot.getLotType() != null && !lot.getLotType().equals(LotRepository.LOTTYPE_SELECT_LOT)) {
+    if (lot.getLotType() != null && !lot.getLotType().equals(LotRepository.LOTTYPE_LOT)) {
       throw new AxelorException(
           lot,
           TraceBackRepository.CATEGORY_CONFIGURATION_ERROR,
@@ -120,7 +120,7 @@ public class LotValidate {
             .filter(
                 "self.lotNo = ?1 AND self.transactionType = ?2 AND self.lotPriceGroup != ?3 AND self.invoicedQuantity = 0",
                 lot,
-                MissionServiceLineRepository.TRANSACTIONTYPE_SELECT_MISSION,
+                MissionServiceLineRepository.TRANSACTIONTYPE_MISSION,
                 lotMissionPriceGroup)
             .fetch();
 
@@ -166,7 +166,7 @@ public class LotValidate {
             .filter(
                 "self.lotNo = ?1 AND self.transactionType = ?2 AND self.lotPriceGroup != ?3 AND self.invoicedQuantity = 0",
                 lot,
-                MissionServiceLineRepository.TRANSACTIONTYPE_SELECT_VENTE,
+                MissionServiceLineRepository.TRANSACTIONTYPE_VENTE,
                 lotAuctionPriceGroup)
             .fetch();
 
@@ -193,7 +193,7 @@ public class LotValidate {
     */
   public Lot validateAddedValueType(Lot lot, String addedValueType) throws AxelorException {
     if (addedValueType != null
-        && !addedValueType.equals(LotRepository.ADDEDVALUETYPE_SELECT_FREE)) {
+        && !addedValueType.equals(LotRepository.ADDEDVALUETYPE_FREE)) {
       lot.setFreeReasonCode(null);
     }
     if (!lot.getAddedValueType().equals(lot.getAddedValueType())) {
@@ -216,7 +216,7 @@ public class LotValidate {
   public Lot validateFreeReasonCode(Lot lot, FreeReason freeReasonCode) throws AxelorException {
     if (freeReasonCode != null
         && lot.getAddedValueType() != null
-        && !lot.getAddedValueType().equals(LotRepository.ADDEDVALUETYPE_SELECT_FREE)) {
+        && !lot.getAddedValueType().equals(LotRepository.ADDEDVALUETYPE_FREE)) {
       throw new AxelorException(
           lot,
           TraceBackRepository.CATEGORY_INCONSISTENCY,
@@ -430,9 +430,9 @@ public class LotValidate {
   public Lot validateCurrentAuctionNo(Lot lot, AuctionHeader currentAuctionNo) {
     lot.setCurrentAuctionNo(currentAuctionNo);
     if (currentAuctionNo != null) {
-      if (lot.getLotGeneralStatus().equals(LotRepository.LOTGENERALSTATUS_SELECT_IDENTIFIED)
-          || lot.getLotGeneralStatus().equals(LotRepository.LOTGENERALSTATUS_SELECT_ONMISSION)) {
-        lot = validateLotGeneralStatus(lot, LotRepository.LOTGENERALSTATUS_SELECT_ONSALE);
+      if (lot.getLotGeneralStatus().equals(LotRepository.LOTGENERALSTATUS_IDENTIFIED)
+          || lot.getLotGeneralStatus().equals(LotRepository.LOTGENERALSTATUS_ONMISSION)) {
+        lot = validateLotGeneralStatus(lot, LotRepository.LOTGENERALSTATUS_ONSALE);
       }
     }
     return lot;

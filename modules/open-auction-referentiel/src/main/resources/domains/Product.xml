@@ -10,11 +10,11 @@
     <string name="commissionType" title="Type honoraire"
       selection="openauction.commissionType.select.product"/>
     <string name="contactImputationType" title="Type imputation contact"
-      selection="openauction.contactImputationType.select.product"/>
+      selection="openauction.contactImputationType.select.product"/> 
     <string name="lotImputationType" title="Type imputation lot"
       selection="openauction.lotImputationType.select.product"/>
     <string name="serviceType" title="Type prestation"
-      selection="openauction.serviceType.select.product"/>
+      selection="openauction.serviceType.select.product"/> 
     <string name="transactionType" title="Type transaction"
       selection="openauction.transactionType.select.product"/>
     <string name="imputationBase" title="Base Imputation"
@@ -58,77 +58,77 @@
             <![CDATA[
 
               //openauction.invoicingType.select.product
-                public static final String INVOICINGTYPE_SELECT_BILLABLE = "Billable0";
-                public static final String INVOICINGTYPE_SELECT_BILLABLEONBID = "BillableonBid1";
-                public static final String INVOICINGTYPE_SELECT_UNBILLABLE = "Unbillable2";
+                public static final String INVOICINGTYPE_BILLABLE = "Billable0";
+                public static final String INVOICINGTYPE_BILLABLEONBID = "BillableonBid1";
+                public static final String INVOICINGTYPE_UNBILLABLE = "Unbillable2";
 
               //openauction.commissionType.select.product
-                public static final String COMMISSIONTYPE_SELECT_GENERAL = "General0";
-                public static final String COMMISSIONTYPE_SELECT_SPECIFIC = "Specific1";
+                public static final String COMMISSIONTYPE_GENERAL = "General0";
+                public static final String COMMISSIONTYPE_SPECIFIC = "Specific1";
 
 
               //openauction.contactImputationType.select.product
-                public static final String CONTACTIMPUTATIONTYPE_SELECT_SELLER = "Seller0";
-                public static final String CONTACTIMPUTATIONTYPE_SELECT_BUYER = "Buyer1";
-                public static final String CONTACTIMPUTATIONTYPE_SELECT_NONE = "None2";
+                public static final String CONTACTIMPUTATIONTYPE_SELLER = "Seller0";
+                public static final String CONTACTIMPUTATIONTYPE_BUYER = "Buyer1";
+                public static final String CONTACTIMPUTATIONTYPE_NONE = "None2";
 
               //openauction.lotImputationType.select.product
-                public static final String LOTIMPUTATIONTYPE_SELECT_DIRECT = "Direct0";
-                public static final String LOTIMPUTATIONTYPE_SELECT_INDIRECT = "Indirect1";
-                public static final String LOTIMPUTATIONTYPE_SELECT_NONE = "None2";
+                public static final String LOTIMPUTATIONTYPE_DIRECT = "Direct0";
+                public static final String LOTIMPUTATIONTYPE_INDIRECT = "Indirect1";
+                public static final String LOTIMPUTATIONTYPE_NONE = "None2";
 
                 //openauction.serviceType.select.product
-                public static final String SERVICETYPE_SELECT_COMMISSION = "Commission0";
-                public static final String SERVICETYPE_SELECT_EXPENSES = "Expenses1";
-                public static final String SERVICETYPE_SELECT_AUCTIONBID = "AuctionBid2";
+                public static final String SERVICETYPE_COMMISSION = "Commission0";
+                public static final String SERVICETYPE_EXPENSES = "Expenses1";
+                public static final String SERVICETYPE_AUCTIONBID = "AuctionBid2";
 
                 //openauction.transactionType.select.product
-                public static final String TRANSACTIONTYPE_SELECT_AUCTION = "Auction0";
-                public static final String TRANSACTIONTYPE_SELECT_MISSION = "Mission1";
-                public static final String TRANSACTIONTYPE_SELECT_SEGMENT = "Segment2";
+                public static final String TRANSACTIONTYPE_AUCTION = "Auction0";
+                public static final String TRANSACTIONTYPE_MISSION = "Mission1";
+                public static final String TRANSACTIONTYPE_SEGMENT = "Segment2";
 
                 //openauction.imputationBase.select.product
-                public static final String IMPUTATIONBASE_SELECT_QUANTITY = "Quantity0";
-                public static final String IMPUTATIONBASE_SELECT_BIDPRICE = "BidPrice1";
+                public static final String IMPUTATIONBASE_QUANTITY = "Quantity0";
+                public static final String IMPUTATIONBASE_BIDPRICE = "BidPrice1";
 
 
 
                 //openauction.baseCalcBeforeAuction.select.product
-                public static final String BASECALCBEFOREAUCTION_SELECT_RESERVEPRICE = "ReservePrice0";
-                public static final String BASECALCBEFOREAUCTION_SELECT_ESTIMATEDVALUEMIN = "EstimatedValueMin1";
-                public static final String BASECALCBEFOREAUCTION_SELECT_ESTIMATEDVALUEMAX = "EstimatedValueMax2";
-                public static final String BASECALCBEFOREAUCTION_SELECT_MISSIONVALUE = "MissionValue3";
-                public static final String BASECALCBEFOREAUCTION_SELECT_MISSIONADJUST = "MissionAdjust4";
-                public static final String BASECALCBEFOREAUCTION_SELECT_MISSIONINITVALUE = "MissionInitValue5";
-                public static final String BASECALCBEFOREAUCTION_SELECT_POPULARLINESONOPERATING = "PopularLinesOnOperating6";
-                public static final String BASECALCBEFOREAUCTION_SELECT_POPULARLINESMIDOPERATINGREALIZATION = "PopularLinesMidOperatingRealization7";
-                public static final String BASECALCBEFOREAUCTION_SELECT_POPULARLINESONREALIZATION = "PopularLinesOnRealization8";
-                public static final String BASECALCBEFOREAUCTION_SELECT_POPULARLINESMID2 = "PopularLinesMid29";
-                public static final String BASECALCBEFOREAUCTION_SELECT_POPULARLINESONREALIZATION2 = "PopularLinesOnRealization210";
+                public static final String BASECALCBEFOREAUCTION_RESERVEPRICE = "ReservePrice0";
+                public static final String BASECALCBEFOREAUCTION_ESTIMATEDVALUEMIN = "EstimatedValueMin1";
+                public static final String BASECALCBEFOREAUCTION_ESTIMATEDVALUEMAX = "EstimatedValueMax2";
+                public static final String BASECALCBEFOREAUCTION_MISSIONVALUE = "MissionValue3";
+                public static final String BASECALCBEFOREAUCTION_MISSIONADJUST = "MissionAdjust4";
+                public static final String BASECALCBEFOREAUCTION_MISSIONINITVALUE = "MissionInitValue5";
+                public static final String BASECALCBEFOREAUCTION_POPULARLINESONOPERATING = "PopularLinesOnOperating6";
+                public static final String BASECALCBEFOREAUCTION_POPULARLINESMIDOPERATINGREALIZATION = "PopularLinesMidOperatingRealization7";
+                public static final String BASECALCBEFOREAUCTION_POPULARLINESONREALIZATION = "PopularLinesOnRealization8";
+                public static final String BASECALCBEFOREAUCTION_POPULARLINESMID2 = "PopularLinesMid29";
+                public static final String BASECALCBEFOREAUCTION_POPULARLINESONREALIZATION2 = "PopularLinesOnRealization210";
 
 
                 //openauction.baseCalcAfterAuction.select.product
-                public static final String BASECALCAFTERAUCTION_SELECT_BIDPRICE = "BidPrice0";
-                public static final String BASECALCAFTERAUCTION_SELECT_BIDPRICEEXCLVAT = "BidPriceExclVAT1";
-                public static final String BASECALCAFTERAUCTION_SELECT_RESERVEPRICE = "ReservePrice2";
-                public static final String BASECALCAFTERAUCTION_SELECT_BIDPRICEINCLVAT = "BidPriceInclVAT3";
+                public static final String BASECALCAFTERAUCTION_BIDPRICE = "BidPrice0";
+                public static final String BASECALCAFTERAUCTION_BIDPRICEEXCLVAT = "BidPriceExclVAT1";
+                public static final String BASECALCAFTERAUCTION_RESERVEPRICE = "ReservePrice2";
+                public static final String BASECALCAFTERAUCTION_BIDPRICEINCLVAT = "BidPriceInclVAT3";
 
 
                 //openauction.checkChargeAmountRange.select.product
-                public static final String CHECKCHARGEAMOUNTRANGE_SELECT_AFTERBIDDING = "AfterBidding0";
-                public static final String CHECKCHARGEAMOUNTRANGE_SELECT_BEFOREBIDDING = "BeforeBidding1";
-                public static final String CHECKCHARGEAMOUNTRANGE_SELECT_ALWAYS = "Always2";
+                public static final String CHECKCHARGEAMOUNTRANGE_AFTERBIDDING = "AfterBidding0";
+                public static final String CHECKCHARGEAMOUNTRANGE_BEFOREBIDDING = "BeforeBidding1";
+                public static final String CHECKCHARGEAMOUNTRANGE_ALWAYS = "Always2";
 
 
                 //openauction.quantityEvaluation.select.product
-                public static final String QUANTITYEVALUATION_SELECT_EMPTY = "Empty0";
-                public static final String QUANTITYEVALUATION_SELECT_JUDGMENTAUCTIONDELAY = "JudgmentAuctionDelay1";
+                public static final String QUANTITYEVALUATION_EMPTY = "Empty0";
+                public static final String QUANTITYEVALUATION_JUDGMENTAUCTIONDELAY = "JudgmentAuctionDelay1";
 
                 //openauction.servicePriceSystem.select.product
-                public static final String SERVICEPRICESYSTEM_SELECT_STANDARD = "Standard0";
-                public static final String SERVICEPRICESYSTEM_SELECT_TRANSPORT = "Transport1";
-                public static final String SERVICEPRICESYSTEM_SELECT_CARETAKER = "Caretaker2";
-                public static final String SERVICEPRICESYSTEM_SELECT_UNROADWORTHY = "Unroadworthy3";
+                public static final String SERVICEPRICESYSTEM_STANDARD = "Standard0";
+                public static final String SERVICEPRICESYSTEM_TRANSPORT = "Transport1";
+                public static final String SERVICEPRICESYSTEM_CARETAKER = "Caretaker2";
+                public static final String SERVICEPRICESYSTEM_UNROADWORTHY = "Unroadworthy3";
             ]]>
     </extra-code>
   </entity>

@@ -115,32 +115,32 @@
 
 
       //openauction.invoicingType.select.missionserviceline
-      public static final String INVOICINGTYPE_SELECT_BILLABLE = "Billable";
-      public static final String INVOICINGTYPE_SELECT_BILLABLEONBID = "BillableOnBid";
-      public static final String INVOICINGTYPE_SELECT_UNBILLABLE = "Unbillable";
+      public static final String INVOICINGTYPE_BILLABLE = "Billable";
+      public static final String INVOICINGTYPE_BILLABLEONBID = "BillableOnBid";
+      public static final String INVOICINGTYPE_UNBILLABLE = "Unbillable";
 
 
       //openauction.transactionType.select
-      public static final String TRANSACTIONTYPE_SELECT_MISSION = "Mission0";
-      public static final String TRANSACTIONTYPE_SELECT_VENTE = "Auction1";
+      public static final String TRANSACTIONTYPE_MISSION = "Mission0";
+      public static final String TRANSACTIONTYPE_VENTE = "Auction1";
 
 
       //openauction.contactImputationType.select
-      public static final String CONTACTIMPUTATIONTYPE_SELECT_SELLER = "Seller0";
-      public static final String CONTACTIMPUTATIONTYPE_SELECT_BUYER = "Buyer1";
-      public static final String CONTACTIMPUTATIONTYPE_SELECT_NONE = "None2";
+      public static final String CONTACTIMPUTATIONTYPE_SELLER = "Seller0";
+      public static final String CONTACTIMPUTATIONTYPE_BUYER = "Buyer1";
+      public static final String CONTACTIMPUTATIONTYPE_NONE = "None2";
 
 
       //openauction.serviceType.select.missionserviceline
-      public static final String SERVICETYPE_SELECT_COMMISSION = "Commission0";
-      public static final String SERVICETYPE_SELECT_EXPENSE = "Expense1";
-      public static final String SERVICETYPE_SELECT_AUCTIONBID = "AuctionBid2";
+      public static final String SERVICETYPE_COMMISSION = "Commission0";
+      public static final String SERVICETYPE_EXPENSE = "Expense1";
+      public static final String SERVICETYPE_AUCTIONBID = "AuctionBid2";
 
 
       //openauction.type.select.servicetemplateline
-      public static final String TYPE_SELECT_SERVICETEMPLATELINE_SERVICE = "Service0";
-      public static final String TYPE_SELECT_SERVICETEMPLATELINE_RESSOURCE = "Ressource1";
-      public static final String TYPE_SELECT_SERVICETEMPLATELINE_EMPTY = "Empty2";
+      public static final String TYPE_SERVICETEMPLATELINE_SERVICE = "Service0";
+      public static final String TYPE_SERVICETEMPLATELINE_RESSOURCE = "Ressource1";
+      public static final String TYPE_SERVICETEMPLATELINE_EMPTY = "Empty2";
       ]]>
     </extra-code>
   </entity>
