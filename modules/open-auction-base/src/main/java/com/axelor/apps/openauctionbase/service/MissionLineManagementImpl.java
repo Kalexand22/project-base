@@ -47,7 +47,7 @@ public class MissionLineManagementImpl implements MissionLineManagement {
   @Override
   public Boolean isAffectedLotInMission(MissionHeader pMissionHeader, Lot pLot) {
     // TODO Auto-generated method stub
-    return null;
+    return false;
   }
 
   @Override
@@ -171,6 +171,7 @@ public class MissionLineManagementImpl implements MissionLineManagement {
     // TODO setLocationCode setBinCode
     // lMissionLine.setLocationCode(pLot.getCurr());
     // lMissionLine.setBinCode(pLot.getCurrentBinCode());
+
     missionLineRepo.save(lMissionLine);
     return lMissionLine;
   }

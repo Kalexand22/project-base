@@ -14,7 +14,6 @@ import com.axelor.apps.openauction.db.ServiceTemplateLine;
 import com.axelor.apps.openauction.db.repo.LotInputJournalRepository;
 import com.axelor.apps.openauction.db.repo.LotQuickInputJournalRepository;
 import com.axelor.apps.openauction.db.repo.LotRepository;
-import com.axelor.apps.openauctionbase.repository.LotExt;
 import com.axelor.apps.openauctionbase.util.TransferFields;
 import com.axelor.exception.AxelorException;
 import com.axelor.exception.db.repo.TraceBackRepository;
@@ -67,7 +66,7 @@ public class LotTemplateManagementImpl implements LotTemplateManagement {
     lLot = new Lot();
     lLot.setLotTemplateCode(pLotQuickInputJournal.getLotTemplateCode());
     // TODO lLotTemplate.CheckBeforeUsage;
-    lLot = (LotExt) TransferFields.transferFields(lLotTemplate, lLot);
+    lLot = (Lot) TransferFields.transferFields(lLotTemplate, lLot);
     lLot.setDescription(pLotQuickInputJournal.getDescription());
     lLot.setSearchDescription(lLot.getDescription());
     if (pLotQuickInputJournal.getLotNo() != null) {
@@ -109,6 +108,7 @@ public class LotTemplateManagementImpl implements LotTemplateManagement {
     //   //error('++'+format(lLot));
 
     //   lLot.INSERT(TRUE);
+
     lotRepository.save(lLot);
     //   LotNo := lLot."No.";
 
@@ -127,7 +127,6 @@ public class LotTemplateManagementImpl implements LotTemplateManagement {
     contactLotManagement.insertSellerContactbyLot(pContactNo, lLot);
 
     lot = lLot;
-
     return lLot;
   }
 
@@ -513,6 +512,8 @@ public class LotTemplateManagementImpl implements LotTemplateManagement {
     } else {
       missionLineManagement.createCommentMissionLine(pMissionHeader, pLotQuickInputJournal);
     }
-    lotQuickInputJournalRepository.remove(pLotQuickInputJournal);
+    // pMissionHeader.getLotInputJournalList().remove(pLotQuickInputJournal);
+    // Beans.get(MissionHeaderRepository.class).save(pMissionHeader);
+    //    lotQuickInputJournalRepository.remove(pLotQuickInputJournal);
   }
 }

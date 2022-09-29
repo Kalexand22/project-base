@@ -1,11 +1,9 @@
 package com.axelor.apps.openauctionbase.module;
 
 import com.axelor.app.AxelorModule;
-import com.axelor.apps.openauction.db.MissionServiceLine;
 import com.axelor.apps.openauction.db.repo.MissionHeaderRepository;
 import com.axelor.apps.openauction.db.repo.MissionServiceLineRepository;
 import com.axelor.apps.openauctionbase.repository.MissionHeaderOpenAuctionRepo;
-import com.axelor.apps.openauctionbase.repository.MissionServiceLineExt;
 import com.axelor.apps.openauctionbase.repository.MissionServiceLineRepositoryExt;
 import com.axelor.apps.openauctionbase.service.ActivityManagement;
 import com.axelor.apps.openauctionbase.service.ActivityManagementImpl;
@@ -17,6 +15,8 @@ import com.axelor.apps.openauctionbase.service.AuctionServicePriceMgt;
 import com.axelor.apps.openauctionbase.service.AuctionServicePriceMgtImpl;
 import com.axelor.apps.openauctionbase.service.CaretakerServicePriceMgt;
 import com.axelor.apps.openauctionbase.service.CaretakerServicePriceMgtImpl;
+import com.axelor.apps.openauctionbase.service.ClassificationManagement;
+import com.axelor.apps.openauctionbase.service.ClassificationManagementimpl;
 import com.axelor.apps.openauctionbase.service.ContactLotManagement;
 import com.axelor.apps.openauctionbase.service.ContactLotManagementImpl;
 import com.axelor.apps.openauctionbase.service.LotInputJournalPostLine;
@@ -25,6 +25,8 @@ import com.axelor.apps.openauctionbase.service.LotStatusMgt;
 import com.axelor.apps.openauctionbase.service.LotStatusMgtImpl;
 import com.axelor.apps.openauctionbase.service.LotTemplateManagement;
 import com.axelor.apps.openauctionbase.service.LotTemplateManagementImpl;
+import com.axelor.apps.openauctionbase.service.MissionLineManagement;
+import com.axelor.apps.openauctionbase.service.MissionLineManagementImpl;
 import com.axelor.apps.openauctionbase.service.MissionManagement;
 import com.axelor.apps.openauctionbase.service.MissionManagementImpl;
 import com.axelor.apps.openauctionbase.service.MissionServicePriceManagement;
@@ -42,7 +44,6 @@ public class OpenAuctionBaseModule extends AxelorModule {
   protected void configure() {
 
     bind(MissionServiceLineRepository.class).to(MissionServiceLineRepositoryExt.class);
-    bind(MissionServiceLine.class).to(MissionServiceLineExt.class);
     bind(MissionTemplateManagement.class).to(MissionTemplateManagementImpl.class);
     bind(ActivityManagement.class).to(ActivityManagementImpl.class);
     bind(AuctionManagement.class).to(AuctionManagementImpl.class);
@@ -58,5 +59,7 @@ public class OpenAuctionBaseModule extends AxelorModule {
     bind(LotInputJournalPostLine.class).to(LotInputJournalPostLineImpl.class);
     bind(MissionHeaderRepository.class).to(MissionHeaderOpenAuctionRepo.class);
     bind(LotTemplateManagement.class).to(LotTemplateManagementImpl.class);
+    bind(MissionLineManagement.class).to(MissionLineManagementImpl.class);
+    bind(ClassificationManagement.class).to(ClassificationManagementimpl.class);
   }
 }

@@ -37,7 +37,6 @@
   <action-view name="lot.all" title="Lots" model="com.axelor.apps.openauction.db.Lot">
     <view type="grid" name="lots-list-grid"/>
     <view type="form" name="lot-card-form"/>
-    <domain>self.missionLine.auctionMission = TRUE</domain>
   </action-view>
 
   <menuitem name="menu-mission-vente-all" parent="menu-mission"

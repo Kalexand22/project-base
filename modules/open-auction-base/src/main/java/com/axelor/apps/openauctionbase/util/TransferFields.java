@@ -22,7 +22,7 @@ public class TransferFields {
             && !objDescriptorSource.getName().equals("id")
             && !objDescriptorSource.getName().equals("version")
             && !objDescriptorSource.getName().equals("updatedOn")
-            && !objDescriptorSource.getName().equals("updatedOn")
+            && !objDescriptorSource.getName().equals("updatedBy")
             && !objDescriptorSource.getName().equals("createdBy")
             && !objDescriptorSource.getName().equals("createdOn")) {
           try {
