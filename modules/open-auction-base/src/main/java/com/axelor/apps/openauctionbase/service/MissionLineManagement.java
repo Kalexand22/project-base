@@ -22,7 +22,7 @@ public interface MissionLineManagement {
       LotQuickInputJournal pLotQuickInputJournal);
   // PROCEDURE DuplicateMissionLine@1000000002(VAR pMissionLine@1000000000 : Record
   // 8011403;pSameLotNo@1000000006 : Boolean);
-  public void duplicateMissionLine(MissionLine pMissionLine, Boolean pSameLotNo);
+  public void duplicateMissionLine(MissionLine pMissionLine, Boolean pSameLotNo) throws AxelorException;
   // PROCEDURE IsAffectedLotInMission@1000000008(pMissionHeader@1000000002 : Record
   // 8011402;pLot@1000000001 : Record 8011404) rIsAffected : Boolean;
   public Boolean isAffectedLotInMission(MissionHeader pMissionHeader, Lot pLot);
@@ -40,9 +40,9 @@ public interface MissionLineManagement {
   // PROCEDURE CreateCommentMissionLine@1000000006(pMissionHeader@1000000000 : Record
   // 8011402;pLotQuickInputJournal@1000000002 : Record 8011467);
   public void createCommentMissionLine(
-      MissionHeader pMissionHeader, LotQuickInputJournal pLotQuickInputJournal);
-  // PROCEDURE GetMissionLineNo@1000000009(pMissionHeaderNo@1000000001 : Code[20]);
-  public String getMissionLineNo(MissionHeader pMissionHeaderNo);
+      MissionHeader pMissionHeader, LotQuickInputJournal pLotQuickInputJournal)
+      throws AxelorException;
+
   // PROCEDURE ExistPostedBuyerInvoice@1100481000(VAR pMissionNo@1100481000 : Code[20];VAR
   // pLotNo@1100481001 : Code[20]) rExist : Code[20];
   public String existPostedBuyerInvoice(MissionHeader pMissionNo, Lot pLotNo);
