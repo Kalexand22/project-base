@@ -15,7 +15,6 @@ import com.axelor.apps.openauction.db.repo.ActivityHeaderRepository;
 import com.axelor.apps.openauction.db.repo.ActivityLineRepository;
 import com.axelor.apps.openauction.db.repo.MissionActivityLineRepository;
 import com.axelor.apps.openauction.db.repo.MissionServiceLineRepository;
-import com.axelor.apps.openauctionbase.repository.MissionServiceLineExt;
 import com.axelor.apps.openauctionbase.repository.MissionServiceLineRepositoryExt;
 import com.google.inject.Inject;
 import com.google.inject.persist.Transactional;
@@ -142,6 +141,8 @@ public class ActivityManagementImpl implements ActivityManagement {
         pMissionLine.getLineNo());
   }
 
+
+  //TODO onValidate
   @Transactional
   private void CreateMissionService(
       ActivityLine pActivityLine,
@@ -152,7 +153,7 @@ public class ActivityManagementImpl implements ActivityManagement {
       Boolean pAuctionAct,
       Integer pTransactionLineNo) {
     ServiceTemplate missionServiceTemplate;
-    MissionServiceLine lMissionServiceLine = new MissionServiceLineExt();
+    MissionServiceLine lMissionServiceLine = new MissionServiceLine();
 
     if (pActivityLine.getServiceTemplateCode() == null) return;
 
@@ -172,6 +173,7 @@ public class ActivityManagementImpl implements ActivityManagement {
       lMissionServiceLine.setType(missionServiceTemplateLine.getType());
       // TODO setChargeableContactNo
       // lMissionServiceLine.setChargeableContactNo(pContact.getI);
+      //TODO eventuellement revoir le insert(true)
       missionServiceLineRepository.save(lMissionServiceLine);
     }
     /*

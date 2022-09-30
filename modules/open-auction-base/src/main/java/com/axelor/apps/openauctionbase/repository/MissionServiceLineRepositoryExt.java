@@ -1,10 +1,14 @@
 package com.axelor.apps.openauctionbase.repository;
 
+import com.axelor.apps.base.service.app.AppBaseService;
 import com.axelor.apps.openauction.db.AuctionLine;
 import com.axelor.apps.openauction.db.MissionServiceLine;
 import com.axelor.apps.openauction.db.repo.LotRepository;
 import com.axelor.apps.openauction.db.repo.MissionServiceLineRepository;
 import com.axelor.apps.openauction.db.repo.ServiceTemplateLineRepository;
+import com.axelor.auth.AuthUtils;
+import com.axelor.inject.Beans;
+
 import java.time.LocalDate;
 
 public class MissionServiceLineRepositoryExt extends MissionServiceLineRepository {
@@ -51,9 +55,8 @@ public class MissionServiceLineRepositoryExt extends MissionServiceLineRepositor
           entity.setEntryNo(1);
         }
       }
-      if (entity.getPriceDate() == null) {
-        // TODO gestion de la workdate
-        entity.setPriceDate(LocalDate.now());
+      if (entity.getPriceDate() == null) {        
+        entity.setPriceDate(Beans.get(AppBaseService.class).getTodayDate(AuthUtils.getUser().getActiveCompany()));
       }
       if (entity.getBuyerFiscalPosition() == null || entity.getSellerFiscalPosition() == null)
         lMissServLine = FindBidLine(entity);

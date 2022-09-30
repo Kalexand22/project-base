@@ -90,6 +90,7 @@ public class LotValueJournalPostLineImpl implements LotValueJournalPostLine {
     lotValueEntry.setEntryNo(0);
     checkReplaced(lotValueEntry);
 
+    //TODO INSERT(TRUE)
     lotValueEntryRepo.save(lotValueEntry);
     if (pLotValueJnl.getEntryType() == LotValueJournalRepository.ENTRYTYPE_RESERVEPRICE5) {
       createAttachedValues(pLotValueJnl);

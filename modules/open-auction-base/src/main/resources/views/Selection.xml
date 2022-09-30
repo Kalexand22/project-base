@@ -2166,5 +2166,6 @@
   <selection name="sequence.generic.code.select"
     id="openauction.sequence.generic.code.select">
     <option value="Mission">Mission</option>
+    <option value="Lot">Lot</option>
   </selection>
 </object-views>
