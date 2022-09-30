@@ -29,7 +29,6 @@ import com.axelor.exception.db.repo.TraceBackRepository;
 import com.axelor.inject.Beans;
 import com.google.inject.Inject;
 import com.google.inject.persist.Transactional;
-
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -582,9 +581,9 @@ public class LotValidate {
       lotSetup.setLastVehicleCreated(lot.getNo());
       Beans.get(LotSetupRepository.class).save(lotSetup);
     }
-    Beans.get(TransportAnalysisUpdate.class).setSynchroRecord(lot, 8011404, 0); 
+    Beans.get(TransportAnalysisUpdate.class).setSynchroRecord(lot, 8011404, 0);
     if (lot.getWebAuctionable()) {
-       Beans.get(WebSynchroManagement.class).writeSynchro(lot.getNo(), 8011404, "Insert", "");
+      Beans.get(WebSynchroManagement.class).writeSynchro(lot.getNo(), 8011404, "Insert", "");
     }
     return lot;
   }
@@ -604,7 +603,7 @@ public class LotValidate {
    END;
   */
   private Lot initFields(Lot lot) {
-    
+
     lot.setLotType(LotRepository.LOTTYPE_LOT);
     lot.setQuantity(1);
     lot.setOutstandingQuantity(BigDecimal.ONE);
@@ -613,7 +612,7 @@ public class LotValidate {
       lot.setSearchMethod(lotNature.getSearchMethod());
       lot.setValueSearch(lotNature.getValueSearch());
     }
-    
+
     return lot;
   }
 

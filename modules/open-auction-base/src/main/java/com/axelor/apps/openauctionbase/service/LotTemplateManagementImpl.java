@@ -53,7 +53,7 @@ public class LotTemplateManagementImpl implements LotTemplateManagement {
     contactLotManagement = Beans.get(ContactLotManagement.class);
     statusManagement = Beans.get(MissionStatusManagement.class);
     missionLineManagement = Beans.get(MissionLineManagement.class);
-    lotValueJnlPostLine = Beans.get(LotValueJournalPostLine.class); 
+    lotValueJnlPostLine = Beans.get(LotValueJournalPostLine.class);
     this.lotRepository = lotRepository;
     this.lotInputJournalRepository = lotInputJournalRepository;
     this.lotQuickInputJournalRepository = lotQuickInputJournalRepository;
@@ -62,7 +62,8 @@ public class LotTemplateManagementImpl implements LotTemplateManagement {
   }
 
   @Override
-  public Lot createLot(LotQuickInputJournal pLotQuickInputJournal, Partner pContactNo) throws AxelorException {
+  public Lot createLot(LotQuickInputJournal pLotQuickInputJournal, Partner pContactNo)
+      throws AxelorException {
     // lLot@1000000002 : Record 8011404;
     Lot lLot;
     LotTemplate lLotTemplate;
@@ -116,7 +117,7 @@ public class LotTemplateManagementImpl implements LotTemplateManagement {
     //   //error('++'+format(lLot));
 
     //   lLot.INSERT(TRUE);
-    
+
     lLot = lotValidate.onInsert(lLot);
     lotRepository.save(lLot);
     //   LotNo := lLot."No.";
@@ -161,7 +162,7 @@ public class LotTemplateManagementImpl implements LotTemplateManagement {
         lot =
             Beans.get(LotValidate.class)
                 .validateLotGeneralStatus(lot, LotRepository.LOTGENERALSTATUS_ONMISSION);
-        lot= lotValidate.onInsert(lot);
+        lot = lotValidate.onInsert(lot);
         lotRepository.save(lot);
       }
     }
