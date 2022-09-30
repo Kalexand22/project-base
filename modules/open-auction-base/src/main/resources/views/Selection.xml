@@ -777,6 +777,13 @@
     <option value="MaximumBid">Enchère max</option>
   </selection>
 
+  <selection name="openauction.auctionType.select.lotvalueentry">
+    <option value="Empty0"></option>
+    <option value="SellOffPrice">Mise à prix</option>
+    <option value="AbsenteeBid">Ordre d'achat</option>
+    <option value="RetiredPrice">Prix de retrait</option>
+  </selection>
+
   <selection name="openauction.inventoryRemovalDocument.select">
     <option value="ShipmentDocument0">Document expédition</option>
     <option value="FalloftheHammer1">Validation adjudication</option>

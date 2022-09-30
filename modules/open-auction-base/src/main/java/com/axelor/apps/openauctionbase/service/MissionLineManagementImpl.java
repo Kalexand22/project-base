@@ -41,9 +41,10 @@ public class MissionLineManagementImpl implements MissionLineManagement {
   }
 
   @Override
-  public void duplicateMissionLine(MissionLine pMissionLine, Boolean pSameLotNo) throws AxelorException {
+  public void duplicateMissionLine(MissionLine pMissionLine, Boolean pSameLotNo)
+      throws AxelorException {
     /*
-     * 
+     *
     VAR
       lMissionHeader@1000000003 : Record 8011402;
       lMissionLine@1000000005 : Record 8011403;
@@ -102,8 +103,10 @@ public class MissionLineManagementImpl implements MissionLineManagement {
     END;
      */
     MissionHeader lMissionHeader = pMissionLine.getMissionNo();
-    if (lMissionHeader.getMissionStatus().equals(MissionHeaderRepository.MISSIONSTATUS_CANCELED) ||
-        lMissionHeader.getMissionStatus().equals(MissionHeaderRepository.MISSIONSTATUS_FINISHED)) {
+    if (lMissionHeader.getMissionStatus().equals(MissionHeaderRepository.MISSIONSTATUS_CANCELED)
+        || lMissionHeader
+            .getMissionStatus()
+            .equals(MissionHeaderRepository.MISSIONSTATUS_FINISHED)) {
       throw new AxelorException(
           TraceBackRepository.CATEGORY_CONFIGURATION_ERROR,
           "Le statut de la mission ne doit pas être annulé ou terminé");
@@ -116,7 +119,7 @@ public class MissionLineManagementImpl implements MissionLineManagement {
     } else {
       lTempLotQuickInputJournal.setLotNo(null);
     }
-    //TODO finish this method
+    // TODO finish this method
 
   }
 
@@ -159,7 +162,7 @@ public class MissionLineManagementImpl implements MissionLineManagement {
                 null,
                 "")
             .fetch();
-    for (MissionLine missionLine : missionLineList) { 
+    for (MissionLine missionLine : missionLineList) {
       MissionHeader missionHeader = missionLine.getMissionNo();
       if (missionHeader != null) {
         if (missionHeader.getMissionStatus() != MissionHeaderRepository.MISSIONSTATUS_DONE

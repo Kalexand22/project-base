@@ -76,7 +76,8 @@
             public static final String AUCTIONTYPE_EMPTY0 = "Empty0";
             public static final String AUCTIONTYPE_SELLOFFPRICE1 = "SellOffPrice";
             public static final String AUCTIONTYPE_ABSENTEE_BID2 = "AbsenteeBid";
-            public static final String AUCTIONTYPE_MAXIMUM_BID3 = "MaximumBid";
+            public static final String AUCTIONTYPE_MAXIMUM_BID3 = "MaximumBid";         
+            public static final String AUCTIONTYPE_RETIREDPRICE = "RetiredPrice";
         ]]>
     </extra-code>
   </entity>

@@ -137,7 +137,8 @@ public class LotTemplateManagementImpl implements LotTemplateManagement {
   }
 
   @Override
-  public void createLotFromContact(LotQuickInputJournal pLotQuickInputJournal, Partner pContact) {
+  public void createLotFromContact(LotQuickInputJournal pLotQuickInputJournal, Partner pContact)
+      throws AxelorException {
     Lot lLot = new Lot();
     lLot = this.createLot(pLotQuickInputJournal, pContact);
     this.createLotValueEntry(
@@ -183,7 +184,8 @@ public class LotTemplateManagementImpl implements LotTemplateManagement {
       LotQuickInputJournal pLotQuickInputJournal,
       Lot pLot,
       MissionHeader pMissionHeader,
-      MissionLine pMissionLine) {
+      MissionLine pMissionLine)
+      throws AxelorException {
 
     /*
        * //Reserve
@@ -343,7 +345,8 @@ public class LotTemplateManagementImpl implements LotTemplateManagement {
       LotQuickInputJournal pLotQuickInputJournal,
       Lot pLot,
       MissionHeader pMissionHeader,
-      MissionLine pMissionLine) {
+      MissionLine pMissionLine)
+      throws AxelorException {
     /*
     * lLotValueJournal.INIT;
      lLotValueJournal."Lot No." := pLot."No.";
@@ -383,7 +386,8 @@ public class LotTemplateManagementImpl implements LotTemplateManagement {
       LotQuickInputJournal pLotQuickInputJournal,
       Lot pLot,
       MissionHeader pMissionHeader,
-      MissionLine pMissionLine) {
+      MissionLine pMissionLine)
+      throws AxelorException {
     /*
     * //Estimation
      lLotValueJournal.INIT;
@@ -426,7 +430,8 @@ public class LotTemplateManagementImpl implements LotTemplateManagement {
       LotQuickInputJournal pLotQuickInputJournal,
       Lot pLot,
       MissionHeader pMissionHeader,
-      MissionLine pMissionLine) {
+      MissionLine pMissionLine)
+      throws AxelorException {
     /*
     *
      //Estimation vente
@@ -468,7 +473,8 @@ public class LotTemplateManagementImpl implements LotTemplateManagement {
       LotQuickInputJournal pLotQuickInputJournal,
       Lot pLot,
       MissionHeader pMissionHeader,
-      MissionLine pMissionLine) {
+      MissionLine pMissionLine)
+      throws AxelorException {
     /*
     * //Expertise
      lLotValueJournal.INIT;
@@ -519,7 +525,8 @@ public class LotTemplateManagementImpl implements LotTemplateManagement {
       LotQuickInputJournal pLotQuickInputJournal,
       Lot pLot,
       MissionHeader pMissionHeader,
-      MissionLine pMissionLine) {
+      MissionLine pMissionLine)
+      throws AxelorException {
     /*
     * //Expertise
      lLotValueJournal.INIT;

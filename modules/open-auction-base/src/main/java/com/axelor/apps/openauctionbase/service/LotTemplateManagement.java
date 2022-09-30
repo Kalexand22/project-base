@@ -15,7 +15,8 @@ public interface LotTemplateManagement {
   public Lot createLot(LotQuickInputJournal pLotQuickInputJournal, Partner pContactNo);
   // PROCEDURE CreateLotFromContact@1000000005(VAR pLotQuickInputJournal@1000000001 : Record
   // 8011467;pContact@1000000000 : Record 5050);
-  public void createLotFromContact(LotQuickInputJournal pLotQuickInputJournal, Partner pContact);
+  public void createLotFromContact(LotQuickInputJournal pLotQuickInputJournal, Partner pContact)
+      throws AxelorException;
   // PROCEDURE CreateLotFromMission@1000000003(VAR pLotQuickInputJournal@1000000006 : Record
   // 8011467;pMissionHeader@1000000005 : Record 8011402);
   public Lot createLotFromMission(
@@ -39,7 +40,8 @@ public interface LotTemplateManagement {
       LotQuickInputJournal pLotQuickInputJournal,
       Lot pLot,
       MissionHeader pMissionHeader,
-      MissionLine pMissionLine);
+      MissionLine pMissionLine)
+      throws AxelorException;
   // PROCEDURE CreateLotValueEntryReserve@1100481000(VAR pLotQuickInputJournal@1000000000 : Record
   // 8011467;pLot@1000000004 : Record 8011404;pMissionHeader@1000000001 : Record
   // 8011402;pMissionLine@1000000002 : Record 8011403);
@@ -47,7 +49,8 @@ public interface LotTemplateManagement {
       LotQuickInputJournal pLotQuickInputJournal,
       Lot pLot,
       MissionHeader pMissionHeader,
-      MissionLine pMissionLine);
+      MissionLine pMissionLine)
+      throws AxelorException;
   // PROCEDURE CreateLotValueEntryEstimate@1100481001(VAR pLotQuickInputJournal@1000000000 : Record
   // 8011467;pLot@1000000004 : Record 8011404;pMissionHeader@1000000001 : Record
   // 8011402;pMissionLine@1000000002 : Record 8011403);
@@ -55,7 +58,8 @@ public interface LotTemplateManagement {
       LotQuickInputJournal pLotQuickInputJournal,
       Lot pLot,
       MissionHeader pMissionHeader,
-      MissionLine pMissionLine);
+      MissionLine pMissionLine)
+      throws AxelorException;
   // PROCEDURE CreateLotValueEntryAuctEstim@1180113000(VAR pLotQuickInputJournal@1000000000 : Record
   // 8011467;pLot@1000000004 : Record 8011404;pMissionHeader@1000000001 : Record
   // 8011402;pMissionLine@1000000002 : Record 8011403);
@@ -63,7 +67,8 @@ public interface LotTemplateManagement {
       LotQuickInputJournal pLotQuickInputJournal,
       Lot pLot,
       MissionHeader pMissionHeader,
-      MissionLine pMissionLine);
+      MissionLine pMissionLine)
+      throws AxelorException;
   // PROCEDURE CreateLotValueEntryAppraisal@1100481002(VAR pLotQuickInputJournal@1000000000 : Record
   // 8011467;pLot@1000000004 : Record 8011404;pMissionHeader@1000000001 : Record
   // 8011402;pMissionLine@1000000002 : Record 8011403);
@@ -71,7 +76,8 @@ public interface LotTemplateManagement {
       LotQuickInputJournal pLotQuickInputJournal,
       Lot pLot,
       MissionHeader pMissionHeader,
-      MissionLine pMissionLine);
+      MissionLine pMissionLine)
+      throws AxelorException;
   // PROCEDURE CreateLotValueEntryQuotation@1100481010(VAR pLotQuickInputJournal@1000000000 : Record
   // 8011467;pLot@1000000004 : Record 8011404;pMissionHeader@1000000001 : Record
   // 8011402;pMissionLine@1000000002 : Record 8011403);
@@ -79,7 +85,8 @@ public interface LotTemplateManagement {
       LotQuickInputJournal pLotQuickInputJournal,
       Lot pLot,
       MissionHeader pMissionHeader,
-      MissionLine pMissionLine);
+      MissionLine pMissionLine)
+      throws AxelorException;
   // PROCEDURE CreateLotInventoryEntry@1000000004(VAR pLotQuickInputJournal@1000000003 : Record
   // 8011467;pLot@1000000002 : Record 8011404);
   public void createLotInventoryEntry(LotQuickInputJournal pLotQuickInputJournal, Lot pLot);

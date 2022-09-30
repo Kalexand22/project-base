@@ -22,7 +22,8 @@ public interface MissionLineManagement {
       LotQuickInputJournal pLotQuickInputJournal);
   // PROCEDURE DuplicateMissionLine@1000000002(VAR pMissionLine@1000000000 : Record
   // 8011403;pSameLotNo@1000000006 : Boolean);
-  public void duplicateMissionLine(MissionLine pMissionLine, Boolean pSameLotNo) throws AxelorException;
+  public void duplicateMissionLine(MissionLine pMissionLine, Boolean pSameLotNo)
+      throws AxelorException;
   // PROCEDURE IsAffectedLotInMission@1000000008(pMissionHeader@1000000002 : Record
   // 8011402;pLot@1000000001 : Record 8011404) rIsAffected : Boolean;
   public Boolean isAffectedLotInMission(MissionHeader pMissionHeader, Lot pLot);
