@@ -172,4 +172,74 @@ public class MissionHeaderValidate {
     // missionHeader.getManager());
     return missionHeader;
   }
+
+
+  /*
+   * 
+    OnInsert=VAR
+               lMissionArchiveMgt@1000000000 : Codeunit 8011338;
+               lMissionTemplate@1100481000 : Record 8011419;
+             BEGIN
+               MissionSetup.FINDSET(TRUE);
+
+               IF ("No." = '') THEN BEGIN
+                 TestNoSeries;
+                 NoSeriesMgt.InitSeries(GetNoSeriesCode,xRec."No. Series",0D,"No.","No. Series");
+               END;
+
+               {DIMENSION
+               DimMgt.InsertDocDim(
+                 DATABASE::"Sales Header","Document Type","No.",0,
+                 "Shortcut Dimension 1 Code","Shortcut Dimension 2 Code");
+               }
+
+               "Doc. No. Occurrence" := lMissionArchiveMgt.GetNextOccurrenceNo(DATABASE::"Mission Header","No.");
+
+               TESTFIELD("Mission Template Code");
+
+               //<<AP08.ISAT.SC
+               MissionSetup.GET; // AP60 isat.sf
+               MissionSetup."Last Mission Created" := "No.";
+               MissionSetup.MODIFY;
+               //>>AP08.ISAT.SC
+
+               //<< AP23 isat.sf
+               IF "Lawyer Bus. No." <> '' THEN BEGIN
+                 TESTFIELD(Judicial);   //debug isat.sf 030909
+               END;
+               lMissionTemplate.GET("Mission Template Code");
+               VALIDATE(Judicial,lMissionTemplate."Judicial Mission");
+               VALIDATE(Inventory,lMissionTemplate."Inventory Mission");
+               VALIDATE(Vehicle,lMissionTemplate."Vehicle Mission");   //debug isat.sf 030909
+               VALIDATE("Equipment Mission",lMissionTemplate."Equipment Mission");   //debug isat.sf 030909
+               //>> AP23 isat.sf
+
+
+               //<< AP39 isat.sf
+               IF MissionSetup."Auto Shelving Attribution" THEN BEGIN
+                 IF "Process Type" = "Process Type"::Recovery THEN BEGIN
+                   AttributeEmplacement;
+                 END;
+               END;
+               //>> AP39 isat.sf
+
+               //<< AP43 isat.sf
+               IF "Process Type" = "Process Type"::Recovery THEN BEGIN
+                 IF "Mission Date" = 0D THEN
+                   "Mission Date" := WORKDATE;
+               END;
+               //>> AP43 isat.sf
+
+               TouchRecord(TRUE);
+               IF Vehicle THEN
+                 TransportAnalysisMgt.SetSynchroRecord(Rec."No.",8011402,0); // AP63 isat.sf
+               LawyerAnalysisMgt.SetSynchroRecord(Rec."No.",Rec."Lawyer Bus. No.",0,8011402,0); // AP64 isat.sf
+
+               "Mission Date" := WORKDATE;
+             END;
+   */
+  public MissionHeader onInsert(MissionHeader missionHeader) {
+    
+    return missionHeader;
+  }
 }

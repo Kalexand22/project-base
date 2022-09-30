@@ -295,7 +295,7 @@ public class MissionLineManagementImpl implements MissionLineManagement {
     // lMissionLine.setLocationCode(pLot.getCurr());
     // lMissionLine.setBinCode(pLot.getCurrentBinCode());
 
-    // TODO INSERT(TRUE)
+    lMissionLine = missionLineValidate.onInsert(lMissionLine);
     missionLineRepo.save(lMissionLine);
     return lMissionLine;
   }
@@ -325,7 +325,7 @@ public class MissionLineManagementImpl implements MissionLineManagement {
       lMissionLine.Quantity := pLotQuickInputJournal.Quantity;
       lMissionLine.INSERT(TRUE);
     END; */
-
+    MissionLineValidate missionLineValidate = new MissionLineValidate();
     if (pMissionHeader.getMissionStatus().equals(MissionHeaderRepository.MISSIONSTATUS_CANCELED)
         || pMissionHeader
             .getMissionStatus()
@@ -347,7 +347,7 @@ public class MissionLineManagementImpl implements MissionLineManagement {
     lMissionLine.setSortingSequenceNo(sortingSequenceNo);
 
     lMissionLine.setQuantity(BigDecimal.valueOf(pLotQuickInputJournal.getQuantity()));
-    // TODO INSERT(TRUE)
+    lMissionLine = missionLineValidate.onInsert(lMissionLine);
     missionLineRepo.save(lMissionLine);
   }
 

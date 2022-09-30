@@ -22,11 +22,15 @@ import com.axelor.apps.openauction.db.repo.LotSetupRepository;
 import com.axelor.apps.openauction.db.repo.MissionLineRepository;
 import com.axelor.apps.openauction.db.repo.MissionServiceLineRepository;
 import com.axelor.apps.openauctionbase.service.LotStatusMgt;
+import com.axelor.apps.openauctionbase.service.TransportAnalysisUpdate;
+import com.axelor.apps.openauctionbase.service.WebSynchroManagement;
 import com.axelor.exception.AxelorException;
 import com.axelor.exception.db.repo.TraceBackRepository;
 import com.axelor.inject.Beans;
 import com.google.inject.Inject;
 import com.google.inject.persist.Transactional;
+
+import java.math.BigDecimal;
 import java.util.List;
 
 public class LotValidate {
@@ -578,9 +582,9 @@ public class LotValidate {
       lotSetup.setLastVehicleCreated(lot.getNo());
       Beans.get(LotSetupRepository.class).save(lotSetup);
     }
-    // lot = analyseMgtSetSynchroRecord(lot);
+    Beans.get(TransportAnalysisUpdate.class).setSynchroRecord(lot, 8011404, 0); 
     if (lot.getWebAuctionable()) {
-      // lot = webSynchroMgtWriteSynchro(lot, WebServiceRepository.INSERTION);
+       Beans.get(WebSynchroManagement.class).writeSynchro(lot.getNo(), 8011404, "Insert", "");
     }
     return lot;
   }
@@ -600,16 +604,16 @@ public class LotValidate {
    END;
   */
   private Lot initFields(Lot lot) {
-    /*
+    
     lot.setLotType(LotRepository.LOTTYPE_LOT);
-    lot.setQuantity(BigDecimal.ONE);
+    lot.setQuantity(1);
     lot.setOutstandingQuantity(BigDecimal.ONE);
     LotNature lotNature = lot.getLotNatureCode();
     if (lotNature != null) {
       lot.setSearchMethod(lotNature.getSearchMethod());
       lot.setValueSearch(lotNature.getValueSearch());
     }
-    */
+    
     return lot;
   }
 

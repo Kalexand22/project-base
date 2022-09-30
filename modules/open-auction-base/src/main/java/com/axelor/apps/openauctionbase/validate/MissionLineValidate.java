@@ -5,6 +5,7 @@ import com.axelor.apps.openauction.db.Lot;
 import com.axelor.apps.openauction.db.MissionLine;
 import com.axelor.apps.openauction.db.repo.LotRepository;
 import com.axelor.apps.openauction.db.repo.MissionLineRepository;
+import com.axelor.apps.openauctionbase.service.MissionLineManagement;
 import com.axelor.exception.AxelorException;
 import com.axelor.exception.db.repo.TraceBackRepository;
 import com.axelor.inject.Beans;
@@ -108,6 +109,52 @@ public class MissionLineValidate {
         // TODO Laywer Bus. No.
       }
     }
+    return missionLine;
+  }
+
+  /*
+   * 
+    OnInsert=VAR
+               lMissionHeader@1000000001 : Record 8011402;
+               lLot@1000000002 : Record 8011404;
+             BEGIN
+
+               IF Type = Type::Lot THEN BEGIN
+                 IF NOT lMissionHeader.GET("Mission No.") THEN
+                   CLEAR(lMissionHeader);
+                 IF NOT lLot.GET("No.") THEN
+                   CLEAR(lLot);
+                 IF MissionLineManagement.IsAffectedLotInMission(lMissionHeader,lLot) THEN BEGIN
+                   ERROR(STRSUBSTNO(Text8011400,"No."));
+                 END;
+               END;
+
+               GetMission;
+               "Responsibility Center" := MissionHeader."Responsibility Center";
+               "Template Mission Code" := MissionHeader."Mission Template Code";
+               //<<AP10.ST
+               //IF "Lot No./Mission" <> '' THEN
+               //  EVALUATE("Lot Mission No.","Lot No./Mission");
+               //>>AP10.ST
+
+               TouchRecord(TRUE);
+             END;
+   */
+  public MissionLine onInsert(MissionLine missionLine) throws AxelorException {
+    if (missionLine.getType() != null
+        && missionLine.getType().equals(MissionLineRepository.TYPE_LOT)) {
+      
+        MissionLineManagement missionLineManagement = Beans.get(MissionLineManagement.class);
+        if (missionLineManagement.isAffectedLotInMission(
+            missionLine.getMissionNo(), missionLine.getNoLot())) {
+          throw new AxelorException(missionLine, TraceBackRepository.CATEGORY_INCONSISTENCY,
+              String.format(
+                  "Le lot %s est déjà affecté à une mission", missionLine.getNoLot().getNo()));
+        }       
+      
+    }
+    missionLine.setResponsibilityCenter(missionLine.getMissionNo().getResponsibilityCenter());
+    missionLine.setTemplateMissionCode(missionLine.getMissionNo().getMissionTemplateCode());
     return missionLine;
   }
 }

@@ -185,7 +185,7 @@ public class MissionTemplateManagementImpl implements MissionTemplateManagement 
       // TODO Méthode à compléter?
     }
 
-    // TODO INSERT(TRUE)
+    pMissionHeader = Beans.get(MissionHeaderValidate.class).onInsert(pMissionHeader);
     missionHeaderRepository.save(pMissionHeader);
 
     if (!SkipActivity) {

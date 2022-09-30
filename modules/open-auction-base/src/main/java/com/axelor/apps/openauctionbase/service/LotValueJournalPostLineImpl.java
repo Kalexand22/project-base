@@ -5,6 +5,7 @@ import com.axelor.apps.openauction.db.LotValueJournal;
 import com.axelor.apps.openauction.db.repo.LotValueEntryRepository;
 import com.axelor.apps.openauction.db.repo.LotValueJournalRepository;
 import com.axelor.apps.openauctionbase.util.TransferFields;
+import com.axelor.apps.openauctionbase.validate.LotValueEntryValidate;
 import com.axelor.exception.AxelorException;
 import com.axelor.exception.db.repo.TraceBackRepository;
 import com.google.inject.Inject;
@@ -90,7 +91,8 @@ public class LotValueJournalPostLineImpl implements LotValueJournalPostLine {
     lotValueEntry.setEntryNo(0);
     checkReplaced(lotValueEntry);
 
-    // TODO INSERT(TRUE)
+    LotValueEntryValidate lotValueEntryValidate = new LotValueEntryValidate();
+    lotValueEntry = lotValueEntryValidate.onInsert(lotValueEntry);
     lotValueEntryRepo.save(lotValueEntry);
     if (pLotValueJnl.getEntryType() == LotValueJournalRepository.ENTRYTYPE_RESERVEPRICE5) {
       createAttachedValues(pLotValueJnl);

@@ -39,6 +39,10 @@ import com.axelor.apps.openauctionbase.service.MissionTemplateManagement;
 import com.axelor.apps.openauctionbase.service.MissionTemplateManagementImpl;
 import com.axelor.apps.openauctionbase.service.ToolsMissionChange;
 import com.axelor.apps.openauctionbase.service.ToolsMissionChangeImpl;
+import com.axelor.apps.openauctionbase.service.TransportAnalysisUpdate;
+import com.axelor.apps.openauctionbase.service.TransportAnalysisUpdateImpl;
+import com.axelor.apps.openauctionbase.service.WebSynchroManagement;
+import com.axelor.apps.openauctionbase.service.WebSynchroManagementImpl;
 
 public class OpenAuctionBaseModule extends AxelorModule {
 
@@ -64,5 +68,7 @@ public class OpenAuctionBaseModule extends AxelorModule {
     bind(MissionLineManagement.class).to(MissionLineManagementImpl.class);
     bind(ClassificationManagement.class).to(ClassificationManagementimpl.class);
     bind(LotValueJournalPostLine.class).to(LotValueJournalPostLineImpl.class);
+    bind(TransportAnalysisUpdate.class).to(TransportAnalysisUpdateImpl.class);
+    bind(WebSynchroManagement.class).to(WebSynchroManagementImpl.class);
   }
 }
