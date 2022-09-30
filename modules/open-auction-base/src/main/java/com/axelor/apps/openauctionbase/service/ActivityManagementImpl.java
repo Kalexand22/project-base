@@ -141,8 +141,7 @@ public class ActivityManagementImpl implements ActivityManagement {
         pMissionLine.getLineNo());
   }
 
-
-  //TODO onValidate
+  // TODO onValidate
   @Transactional
   private void CreateMissionService(
       ActivityLine pActivityLine,
@@ -173,7 +172,7 @@ public class ActivityManagementImpl implements ActivityManagement {
       lMissionServiceLine.setType(missionServiceTemplateLine.getType());
       // TODO setChargeableContactNo
       // lMissionServiceLine.setChargeableContactNo(pContact.getI);
-      //TODO eventuellement revoir le insert(true)
+      // TODO eventuellement revoir le insert(true)
       missionServiceLineRepository.save(lMissionServiceLine);
     }
     /*

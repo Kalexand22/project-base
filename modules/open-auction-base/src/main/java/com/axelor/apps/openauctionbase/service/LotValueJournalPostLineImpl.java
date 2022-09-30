@@ -90,7 +90,7 @@ public class LotValueJournalPostLineImpl implements LotValueJournalPostLine {
     lotValueEntry.setEntryNo(0);
     checkReplaced(lotValueEntry);
 
-    //TODO INSERT(TRUE)
+    // TODO INSERT(TRUE)
     lotValueEntryRepo.save(lotValueEntry);
     if (pLotValueJnl.getEntryType() == LotValueJournalRepository.ENTRYTYPE_RESERVEPRICE5) {
       createAttachedValues(pLotValueJnl);
@@ -150,48 +150,48 @@ public class LotValueJournalPostLineImpl implements LotValueJournalPostLine {
               lotValueEntryRepo.save(lotValueEntry2);
             });
 
-            // TODO : check if the following code is needed
-            /*
-             *  IF (pLotValueEntry."Entry Type"=pLotValueEntry."Entry Type"::Auction) AND
-          (pLotValueEntry."Auction Type"=pLotValueEntry."Auction Type"::"Absentee Bid Form") THEN
-         pLotValueEntry.SETRANGE("Contact No.",pLotValueEntry."Contact No.");
-             */
+    // TODO : check if the following code is needed
+    /*
+        *  IF (pLotValueEntry."Entry Type"=pLotValueEntry."Entry Type"::Auction) AND
+     (pLotValueEntry."Auction Type"=pLotValueEntry."Auction Type"::"Absentee Bid Form") THEN
+    pLotValueEntry.SETRANGE("Contact No.",pLotValueEntry."Contact No.");
+        */
   }
 
   /*
-   * 
-    PROCEDURE FindDuplicate@1100281000(pLotValueEntry@1100281000 : Record 8011461) : Boolean;
-    BEGIN
-      // Evite les doublons sur vente (retrait ou adj)
-      WITH pLotValueEntry DO BEGIN
-        IF ("Auction No." = '') THEN EXIT(FALSE);
-        CASE "Entry Type" OF
-          "Entry Type"::Auction :
-            IF NOT (pLotValueEntry."Auction Type" IN [pLotValueEntry."Auction Type"::"Selling-off price",
-                                                      pLotValueEntry."Auction Type"::"Retired Price"])
-            THEN EXIT(FALSE);
-          "Entry Type"::"Bid Price" : BEGIN
-            // Dans tous les cas
-          END;
-          ELSE
-            EXIT(FALSE);
-        END; // CASE
-      END; // WITH
-      WITH LotValueEntry DO BEGIN
-        RESET;
-        SETCURRENTKEY("Lot No.","Entry Type",Replaced);
-        SETRANGE("Lot No.",pLotValueEntry."Lot No.");
-        SETRANGE("Entry Type", pLotValueEntry."Entry Type");
-        SETRANGE("Auction Type", pLotValueEntry."Auction Type");
-        SETRANGE("Auction No.", pLotValueEntry."Auction No.");
-        SETRANGE(Replaced,FALSE);
-        SETRANGE("Base Amount", pLotValueEntry."Base Amount");
-        SETRANGE("Contact No.", pLotValueEntry."Contact No.");
-        EXIT(NOT ISEMPTY);
-      END;
-    END;
+  *
+   PROCEDURE FindDuplicate@1100281000(pLotValueEntry@1100281000 : Record 8011461) : Boolean;
+   BEGIN
+     // Evite les doublons sur vente (retrait ou adj)
+     WITH pLotValueEntry DO BEGIN
+       IF ("Auction No." = '') THEN EXIT(FALSE);
+       CASE "Entry Type" OF
+         "Entry Type"::Auction :
+           IF NOT (pLotValueEntry."Auction Type" IN [pLotValueEntry."Auction Type"::"Selling-off price",
+                                                     pLotValueEntry."Auction Type"::"Retired Price"])
+           THEN EXIT(FALSE);
+         "Entry Type"::"Bid Price" : BEGIN
+           // Dans tous les cas
+         END;
+         ELSE
+           EXIT(FALSE);
+       END; // CASE
+     END; // WITH
+     WITH LotValueEntry DO BEGIN
+       RESET;
+       SETCURRENTKEY("Lot No.","Entry Type",Replaced);
+       SETRANGE("Lot No.",pLotValueEntry."Lot No.");
+       SETRANGE("Entry Type", pLotValueEntry."Entry Type");
+       SETRANGE("Auction Type", pLotValueEntry."Auction Type");
+       SETRANGE("Auction No.", pLotValueEntry."Auction No.");
+       SETRANGE(Replaced,FALSE);
+       SETRANGE("Base Amount", pLotValueEntry."Base Amount");
+       SETRANGE("Contact No.", pLotValueEntry."Contact No.");
+       EXIT(NOT ISEMPTY);
+     END;
+   END;
 
-   */
+  */
   @Override
   public Boolean findDuplicate(LotValueEntry pLotValueEntry) {
     if (pLotValueEntry.getAuctionNo() == null) {
@@ -199,43 +199,43 @@ public class LotValueJournalPostLineImpl implements LotValueJournalPostLine {
     }
     if (pLotValueEntry.getEntryType() == LotValueJournalRepository.ENTRYTYPE_AUCTION6) {
       if (!pLotValueEntry
-          .getAuctionType()
-          .equals(LotValueJournalRepository.AUCTIONTYPE_SELLOFFPRICE1)
+              .getAuctionType()
+              .equals(LotValueJournalRepository.AUCTIONTYPE_SELLOFFPRICE1)
           && !pLotValueEntry
               .getAuctionType()
               .equals(LotValueJournalRepository.AUCTIONTYPE_RETIREDPRICE)) {
         return false;
       }
-      if(!pLotValueEntry.getEntryType().equals(LotValueJournalRepository.ENTRYTYPE_BIDPRICE3)) {
+      if (!pLotValueEntry.getEntryType().equals(LotValueJournalRepository.ENTRYTYPE_BIDPRICE3)) {
         return false;
       }
     }
     return lotValueEntryRepo
-        .all()
-        .filter(
-            "self.lot = ?1 AND self.entryType = ?2 AND self.auctionType = ?3 AND self.auctionNo = ?4 AND self.replaced = ?5 AND self.baseAmount = ?6 AND self.contactNo = ?7",
-            pLotValueEntry.getLotNo(),
-            pLotValueEntry.getEntryType(),
-            pLotValueEntry.getAuctionType(),
-            pLotValueEntry.getAuctionNo(),
-            false,
-            pLotValueEntry.getBaseAmount(),
-            pLotValueEntry.getContactNo())
-        .fetch()
-        .size()
+            .all()
+            .filter(
+                "self.lot = ?1 AND self.entryType = ?2 AND self.auctionType = ?3 AND self.auctionNo = ?4 AND self.replaced = ?5 AND self.baseAmount = ?6 AND self.contactNo = ?7",
+                pLotValueEntry.getLotNo(),
+                pLotValueEntry.getEntryType(),
+                pLotValueEntry.getAuctionType(),
+                pLotValueEntry.getAuctionNo(),
+                false,
+                pLotValueEntry.getBaseAmount(),
+                pLotValueEntry.getContactNo())
+            .fetch()
+            .size()
         > 0;
   }
 
   /*
-   * PROCEDURE CancelLotValue@1100481000(pLotValueEntry@1100481000 : Record 8011461);
-    BEGIN
-      //AP02.ST
-      WITH pLotValueEntry DO BEGIN
-        Replaced := TRUE;
-        MODIFY;
-      END;
-    END;
-   */
+  * PROCEDURE CancelLotValue@1100481000(pLotValueEntry@1100481000 : Record 8011461);
+   BEGIN
+     //AP02.ST
+     WITH pLotValueEntry DO BEGIN
+       Replaced := TRUE;
+       MODIFY;
+     END;
+   END;
+  */
   @Override
   public void cancelLotValue(LotValueEntry pLotValueEntry) {
     pLotValueEntry.setReplaced(true);

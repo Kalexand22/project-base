@@ -185,7 +185,7 @@ public class MissionTemplateManagementImpl implements MissionTemplateManagement 
       // TODO Méthode à compléter?
     }
 
-    //TODO INSERT(TRUE)
+    // TODO INSERT(TRUE)
     missionHeaderRepository.save(pMissionHeader);
 
     if (!SkipActivity) {

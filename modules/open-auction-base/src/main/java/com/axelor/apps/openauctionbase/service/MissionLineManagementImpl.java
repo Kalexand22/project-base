@@ -295,7 +295,7 @@ public class MissionLineManagementImpl implements MissionLineManagement {
     // lMissionLine.setLocationCode(pLot.getCurr());
     // lMissionLine.setBinCode(pLot.getCurrentBinCode());
 
-    //TODO INSERT(TRUE)
+    // TODO INSERT(TRUE)
     missionLineRepo.save(lMissionLine);
     return lMissionLine;
   }
@@ -347,7 +347,7 @@ public class MissionLineManagementImpl implements MissionLineManagement {
     lMissionLine.setSortingSequenceNo(sortingSequenceNo);
 
     lMissionLine.setQuantity(BigDecimal.valueOf(pLotQuickInputJournal.getQuantity()));
-    //TODO INSERT(TRUE)
+    // TODO INSERT(TRUE)
     missionLineRepo.save(lMissionLine);
   }
 

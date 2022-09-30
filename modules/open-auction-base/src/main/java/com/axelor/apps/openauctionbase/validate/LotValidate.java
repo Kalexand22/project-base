@@ -132,7 +132,7 @@ public class LotValidate {
       missionServiceLine =
           missionServiceLineValidate.validateLotPriceGroup(
               missionServiceLine, lotMissionPriceGroup);
-      //TODO MODIFY(TRUE)
+      // TODO MODIFY(TRUE)
       missionServiceLineRepo.save(missionServiceLine);
     }
     return lot;
@@ -179,7 +179,7 @@ public class LotValidate {
       missionServiceLine =
           missionServiceLineValidate.validateAuctionLotPriceGroup(
               missionServiceLine, lotAuctionPriceGroup);
-              //TODO MODIFY(TRUE)
+      // TODO MODIFY(TRUE)
       missionServiceLineRepo.save(missionServiceLine);
     }
     return lot;
@@ -514,94 +514,93 @@ public class LotValidate {
   }
 
   /*
-   * 
-    OnInsert=VAR
-               lLotSetup@1180113000 : Record 8011418;
-             BEGIN
-               GetSetup(FALSE);
-               IF "No." = '' THEN BEGIN
-                 LotSetup.TESTFIELD("Lot Nos.");
-                 NoSeriesMgt.InitSeries(LotSetup."Lot Nos.",xRec."No. Series",0D,"No.","No. Series");
-               END;
+  *
+   OnInsert=VAR
+              lLotSetup@1180113000 : Record 8011418;
+            BEGIN
+              GetSetup(FALSE);
+              IF "No." = '' THEN BEGIN
+                LotSetup.TESTFIELD("Lot Nos.");
+                NoSeriesMgt.InitSeries(LotSetup."Lot Nos.",xRec."No. Series",0D,"No.","No. Series");
+              END;
 
-               TESTFIELD("Lot Template Code");
-               TESTFIELD("Lot Nature Code");
+              TESTFIELD("Lot Template Code");
+              TESTFIELD("Lot Nature Code");
 
-               InitFields;
-               TouchRecord(TRUE);
+              InitFields;
+              TouchRecord(TRUE);
 
-               DimMgt.UpdateDefaultDim(
-                 DATABASE::Lot,"No.",
-                 "Global Dimension 1 Code",
-                 "Global Dimension 2 Code");
+              DimMgt.UpdateDefaultDim(
+                DATABASE::Lot,"No.",
+                "Global Dimension 1 Code",
+                "Global Dimension 2 Code");
 
-               //<<AP13.ISAT.SC
-               //LotSetup."Last Lot Created" := "No.";
-               IF Vehicle THEN BEGIN
-                 lLotSetup.FINDSET(TRUE);                                   //ap59 isat.zw
-                 lLotSetup."Last Vehicle Created" := "No.";       //ap59 isat.zw
-                 lLotSetup.MODIFY;
-               END;
-               //>>AP13.ISAT.SC
+              //<<AP13.ISAT.SC
+              //LotSetup."Last Lot Created" := "No.";
+              IF Vehicle THEN BEGIN
+                lLotSetup.FINDSET(TRUE);                                   //ap59 isat.zw
+                lLotSetup."Last Vehicle Created" := "No.";       //ap59 isat.zw
+                lLotSetup.MODIFY;
+              END;
+              //>>AP13.ISAT.SC
 
-               AnalyseMgt.SetSynchroRecord(Rec."No.",8011404,0); // AP63 isat.sf
+              AnalyseMgt.SetSynchroRecord(Rec."No.",8011404,0); // AP63 isat.sf
 
-               IF "Web Auctionable" THEN BEGIN
-                 WebSynchroMgt.WriteSynchro("No.",8011404,gOption::Insertion,'');
-               END;
-             END;
-   */
-  public Lot onInsert(Lot lot) {
+              IF "Web Auctionable" THEN BEGIN
+                WebSynchroMgt.WriteSynchro("No.",8011404,gOption::Insertion,'');
+              END;
+            END;
+  */
+  public Lot onInsert(Lot lot) throws AxelorException {
     getSetup(false);
-    if(lotSetup.getLotNos() == null) {
-      throw new AxelorException(lotSetup,
+    if (lotSetup.getLotNos() == null) {
+      throw new AxelorException(
+          lotSetup,
           TraceBackRepository.CATEGORY_CONFIGURATION_ERROR,
           "La séquence des numéro de lots n'est pas configurée");
     }
     if (lot.getNo() == null) {
-      lot.setNo(Beans.get(SequenceService.class)
-              .getSequenceNumber(lotSetup.getLotNos()));
+      lot.setNo(Beans.get(SequenceService.class).getSequenceNumber(lotSetup.getLotNos()));
     }
-    if(lot.getLotTemplateCode() == null) {
+    if (lot.getLotTemplateCode() == null) {
       throw new AxelorException(
-          TraceBackRepository.CATEGORY_MISSING_FIELD,
-          "Le champ modèle de lot est obligatoire");
+          TraceBackRepository.CATEGORY_MISSING_FIELD, "Le champ modèle de lot est obligatoire");
     }
-    if(lot.getLotNatureCode() == null) {
+    if (lot.getLotNatureCode() == null) {
       throw new AxelorException(
-          TraceBackRepository.CATEGORY_MISSING_FIELD,
-          "Le champ nature de lot est obligatoire");
+          TraceBackRepository.CATEGORY_MISSING_FIELD, "Le champ nature de lot est obligatoire");
     }
 
     lot = initFields(lot);
-    
+
     if (lot.getVehicle()) {
       LotSetup lotSetup = Beans.get(LotSetupRepository.class).all().fetchOne();
       lotSetup.setLastVehicleCreated(lot.getNo());
       Beans.get(LotSetupRepository.class).save(lotSetup);
     }
-    lot = analyseMgtSetSynchroRecord(lot);
+    // lot = analyseMgtSetSynchroRecord(lot);
     if (lot.getWebAuctionable()) {
-      lot = webSynchroMgtWriteSynchro(lot, WebServiceRepository.INSERTION);
+      // lot = webSynchroMgtWriteSynchro(lot, WebServiceRepository.INSERTION);
     }
     return lot;
   }
 
   /*
-   * PROCEDURE InitFields@1000000004();
-    VAR
-      lLotNature@1000000000 : Record 8011308;
-    BEGIN
-      "Lot Type" := "Lot Type"::Lot;
-      Quantity := 1;
-      "Outstanding Quantity" := 1;
-      IF lLotNature.GET("Lot Nature Code") THEN BEGIN
-        "Search Method" := lLotNature."Search Method";
-        "Value Search" := lLotNature."Value Search";
-      END;
-    END;
-   */
+  * PROCEDURE InitFields@1000000004();
+   VAR
+     lLotNature@1000000000 : Record 8011308;
+   BEGIN
+     "Lot Type" := "Lot Type"::Lot;
+     Quantity := 1;
+     "Outstanding Quantity" := 1;
+     IF lLotNature.GET("Lot Nature Code") THEN BEGIN
+       "Search Method" := lLotNature."Search Method";
+       "Value Search" := lLotNature."Value Search";
+     END;
+   END;
+  */
   private Lot initFields(Lot lot) {
+    /*
     lot.setLotType(LotRepository.LOTTYPE_LOT);
     lot.setQuantity(BigDecimal.ONE);
     lot.setOutstandingQuantity(BigDecimal.ONE);
@@ -610,11 +609,11 @@ public class LotValidate {
       lot.setSearchMethod(lotNature.getSearchMethod());
       lot.setValueSearch(lotNature.getValueSearch());
     }
+    */
     return lot;
   }
 
   private void getSetup(boolean b) {
     lotSetup = Beans.get(LotSetupRepository.class).all().fetchOne();
   }
-
 }

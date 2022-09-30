@@ -9,8 +9,6 @@ import com.axelor.apps.openauction.db.repo.ServiceTemplateLineRepository;
 import com.axelor.auth.AuthUtils;
 import com.axelor.inject.Beans;
 
-import java.time.LocalDate;
-
 public class MissionServiceLineRepositoryExt extends MissionServiceLineRepository {
 
   @Override
@@ -55,8 +53,9 @@ public class MissionServiceLineRepositoryExt extends MissionServiceLineRepositor
           entity.setEntryNo(1);
         }
       }
-      if (entity.getPriceDate() == null) {        
-        entity.setPriceDate(Beans.get(AppBaseService.class).getTodayDate(AuthUtils.getUser().getActiveCompany()));
+      if (entity.getPriceDate() == null) {
+        entity.setPriceDate(
+            Beans.get(AppBaseService.class).getTodayDate(AuthUtils.getUser().getActiveCompany()));
       }
       if (entity.getBuyerFiscalPosition() == null || entity.getSellerFiscalPosition() == null)
         lMissServLine = FindBidLine(entity);

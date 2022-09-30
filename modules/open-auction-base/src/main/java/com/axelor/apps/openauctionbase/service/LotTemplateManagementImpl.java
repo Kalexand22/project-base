@@ -114,7 +114,7 @@ public class LotTemplateManagementImpl implements LotTemplateManagement {
     //   //error('++'+format(lLot));
 
     //   lLot.INSERT(TRUE);
-    //TODO INSERT(TRUE)
+    // TODO INSERT(TRUE)
     lotRepository.save(lLot);
     //   LotNo := lLot."No.";
 
@@ -158,7 +158,7 @@ public class LotTemplateManagementImpl implements LotTemplateManagement {
         lot =
             Beans.get(LotValidate.class)
                 .validateLotGeneralStatus(lot, LotRepository.LOTGENERALSTATUS_ONMISSION);
-        //TODO INSERT(TRUE)
+        // TODO INSERT(TRUE)
         lotRepository.save(lot);
       }
     }
