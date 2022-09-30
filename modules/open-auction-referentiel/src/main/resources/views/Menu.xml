@@ -24,4 +24,14 @@
     <view type="form" name="lot-nature-form"/>
   </action-view>
 
+
+  <menuitem name="menu-lot-setup-view" parent="menu-administration"
+    title="Lot setup" action="action-lot-setup-view"/>
+
+  <action-view name="action-lot-setup-view" title="Lot setup"
+    model="com.axelor.apps.openauction.db.LotSetup">
+    <view type="grid" name="lot-setup-grid"/>
+    <view type="form" name="lot-setup-form"/>
+  </action-view>
+
 </object-views>

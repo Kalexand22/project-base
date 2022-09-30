@@ -5,6 +5,7 @@ import com.axelor.apps.openauction.db.Lot;
 import com.axelor.apps.openauction.db.LotInputJournal;
 import com.axelor.apps.openauction.db.LotQuickInputJournal;
 import com.axelor.apps.openauction.db.MissionHeader;
+import com.axelor.apps.openauction.db.repo.LotInputJournalRepository;
 import com.axelor.apps.openauction.db.repo.LotRepository;
 import com.axelor.apps.openauctionbase.util.TransferFields;
 import com.axelor.apps.openauctionbase.validate.LotQuickJournalInputValidate;
@@ -104,5 +105,8 @@ public class LotInputJournalPostLineImpl implements LotInputJournalPostLine {
     // lot = transferFields(lotInputJournal, lot);
     lot = (Lot) TransferFields.transferFields(lotInputJournal, lot);
     lotRepo.save(lot);
+
+    LotInputJournalRepository lotInputJournalRepo = Beans.get(LotInputJournalRepository.class);
+    lotInputJournalRepo.remove(lotInputJournal);
   }
 }

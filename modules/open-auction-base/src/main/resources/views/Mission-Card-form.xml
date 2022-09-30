@@ -57,12 +57,12 @@
       <panel-related title="Liste des lignes de missions" field="missionLineList"
         editable="true" canNew="false">
         <field name="lotNoMission"/>
-        <field name="lot.description"/>
+        <field name="noLot.description"/>
         <field name="priority"/>
         <field name="lotStatus"/>
-        <field name="lot.minimumValue" title="Estimation basse"/>
-        <field name="lot.maximumValue" title="Estimation haute"/>
-        <field name="lot.auctionNo"/>
+        <field name="noLot.minimumValue" title="Estimation basse"/>
+        <field name="noLot.maximumValue" title="Estimation haute"/>
+        <field name="noLot.auctionNo"/>
         <field name="canceled"/>
         <field name="canceledReason"/>
 

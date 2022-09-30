@@ -156,13 +156,14 @@ public class MissionLineManagementImpl implements MissionLineManagement {
         missionLineRepo
             .all()
             .filter(
-                "self.typeSelect = ?1 AND self.lot = ?2 AND (self.transferedToMissionNo = ?3 OR self.transferedToMissionNo = ?4)",
+                "self.type = ?1 AND self.noLot = ?2 AND (self.transferedToMissionNo = ?3 OR self.transferedToMissionNo = ?4)",
                 MissionLineRepository.TYPE_LOT,
                 pLot,
                 null,
                 "")
             .fetch();
     for (MissionLine missionLine : missionLineList) {
+      
       MissionHeader missionHeader = missionLine.getMissionNo();
       if (missionHeader != null) {
         if (missionHeader.getMissionStatus() != MissionHeaderRepository.MISSIONSTATUS_DONE

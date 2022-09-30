@@ -138,7 +138,7 @@ public class LotValueJournalPostLineImpl implements LotValueJournalPostLine {
     lotValueEntryRepo
         .all()
         .filter(
-            "self.lot = ?1 AND self.entryType IN ( ?2, ?3) AND self.replaced = ?3",
+            "self.lotNo = ?1 AND self.entryType IN ( ?2, ?3) AND self.replaced = ?4",
             lotValueEntry.getLotNo(),
             lotValueEntry.getEntryType(),
             lotValueEntry.getEntryType().equals(LotValueJournalRepository.ENTRYTYPE_APPRAISAL2)
