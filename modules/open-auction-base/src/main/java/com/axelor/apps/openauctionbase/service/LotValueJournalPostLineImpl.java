@@ -135,16 +135,17 @@ public class LotValueJournalPostLineImpl implements LotValueJournalPostLine {
   */
   private void checkReplaced(LotValueEntry lotValueEntry) {
 
+    String entryType = lotValueEntry.getEntryType();
     lotValueEntryRepo
         .all()
         .filter(
-            "self.lotNo = ?1 AND self.entryType IN ( ?2, ?3) AND self.replaced = ?4",
-            lotValueEntry.getLotNo(),
-            lotValueEntry.getEntryType(),
-            lotValueEntry.getEntryType().equals(LotValueJournalRepository.ENTRYTYPE_APPRAISAL2)
-                ? LotValueJournalRepository.ENTRYTYPE_ESTIMATE0
-                : lotValueEntry.getEntryType(),
-            false)
+            "self.lotNo = :lot AND self.entryType IN ( :entryType, :entryTypeEstimate) AND self.replaced = :replaced")        
+        .bind("lot", lotValueEntry.getLotNo())
+        .bind("entryType", entryType)
+        .bind("entryTypeEstimate", entryType.equals(LotValueJournalRepository.ENTRYTYPE_APPRAISAL2)
+        ? LotValueJournalRepository.ENTRYTYPE_ESTIMATE0
+        : entryType)
+        .bind( "replaced", false)
         .fetch()
         .forEach(
             lotValueEntry2 -> {
