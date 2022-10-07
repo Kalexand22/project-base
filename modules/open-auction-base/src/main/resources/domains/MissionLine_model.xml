@@ -62,7 +62,7 @@
     <many-to-one name="auctionMissionNo" title="N° mission vente"
       ref="com.axelor.apps.openauction.db.MissionHeader"/>
     <many-to-one name="originalMissionNo" title="N° mission origine"
-      ref="com.axelor.apps.openauction.db.MissionHeader"/> 
+      ref="com.axelor.apps.openauction.db.MissionHeader"/>
     <string name="transferedToMissionNo" title="N° mission destination"/>
     <many-to-one name="auctionRoomCode" title="Code salle de vente"
       ref="com.axelor.apps.openauction.db.AuctionRoom"/>

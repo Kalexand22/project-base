@@ -139,13 +139,15 @@ public class LotValueJournalPostLineImpl implements LotValueJournalPostLine {
     lotValueEntryRepo
         .all()
         .filter(
-            "self.lotNo = :lot AND self.entryType IN ( :entryType, :entryTypeEstimate) AND self.replaced = :replaced")        
+            "self.lotNo = :lot AND self.entryType IN ( :entryType, :entryTypeEstimate) AND self.replaced = :replaced")
         .bind("lot", lotValueEntry.getLotNo())
         .bind("entryType", entryType)
-        .bind("entryTypeEstimate", entryType.equals(LotValueJournalRepository.ENTRYTYPE_APPRAISAL2)
-        ? LotValueJournalRepository.ENTRYTYPE_ESTIMATE0
-        : entryType)
-        .bind( "replaced", false)
+        .bind(
+            "entryTypeEstimate",
+            entryType.equals(LotValueJournalRepository.ENTRYTYPE_APPRAISAL2)
+                ? LotValueJournalRepository.ENTRYTYPE_ESTIMATE0
+                : entryType)
+        .bind("replaced", false)
         .fetch()
         .forEach(
             lotValueEntry2 -> {

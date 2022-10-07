@@ -16,7 +16,7 @@
     <many-to-one name="missionManagerCode" title="Responsable mission"
       ref="com.axelor.auth.db.User"/>
     <many-to-one name="managerEntryCode" title="Responsable de saisie"
-      ref="com.axelor.auth.db.User"/> 
+      ref="com.axelor.auth.db.User"/>
     <string name="sortingMethod" title="Méthode de tri"
       selection="openauction.sortingMethod.select"/>
     <boolean name="auctionMission" title="Mission de vente"/>

@@ -25,8 +25,8 @@
   </action-view>
 
 
-  <menuitem name="menu-lot-setup-view" parent="menu-administration"
-    title="Lot setup" action="action-lot-setup-view"/>
+  <menuitem name="menu-lot-setup-view" parent="menu-administration" title="Lot setup"
+    action="action-lot-setup-view"/>
 
   <action-view name="action-lot-setup-view" title="Lot setup"
     model="com.axelor.apps.openauction.db.LotSetup">

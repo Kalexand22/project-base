@@ -163,7 +163,7 @@ public class MissionLineManagementImpl implements MissionLineManagement {
                 "")
             .fetch();
     for (MissionLine missionLine : missionLineList) {
-      
+
       MissionHeader missionHeader = missionLine.getMissionNo();
       if (missionHeader != null) {
         if (missionHeader.getMissionStatus() != MissionHeaderRepository.MISSIONSTATUS_DONE
