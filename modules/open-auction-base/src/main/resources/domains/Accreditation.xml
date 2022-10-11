@@ -11,4 +11,5 @@
     <string name="typeaccreditation" title="Type d'accrédiation"
       selection="openauction.typeaccreditation.select"/>
   </entity>
+  
 </domain-models>
