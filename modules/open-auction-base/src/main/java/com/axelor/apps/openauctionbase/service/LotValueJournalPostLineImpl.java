@@ -1,5 +1,6 @@
 package com.axelor.apps.openauctionbase.service;
 
+import com.axelor.apps.account.db.Invoice;
 import com.axelor.apps.openauction.db.LotValueEntry;
 import com.axelor.apps.openauction.db.LotValueJournal;
 import com.axelor.apps.openauction.db.repo.LotValueEntryRepository;
@@ -14,6 +15,8 @@ import java.math.BigDecimal;
 public class LotValueJournalPostLineImpl implements LotValueJournalPostLine {
 
   LotValueEntryRepository lotValueEntryRepo;
+
+  
 
   @Inject
   public LotValueJournalPostLineImpl(LotValueEntryRepository lotValueEntryRepo) {

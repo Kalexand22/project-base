@@ -16,6 +16,7 @@
     <field name="masterContactNo.mobilePhone"/>
     <field name="masterContactNo.emailAddress"/>
     <field name="masterContactNo.fixedPhone"/>
+    <field name="missionStatus"/>
   </grid>
   <form name="mission-header-form" title="Mission"
     model="com.axelor.apps.openauction.db.MissionHeader" width="large" canNew="false">
