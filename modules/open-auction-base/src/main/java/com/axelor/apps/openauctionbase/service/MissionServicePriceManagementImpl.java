@@ -17,6 +17,8 @@ import com.axelor.apps.openauction.db.TariffScale;
 import com.axelor.apps.openauction.db.repo.LotResaleRightsRepository;
 import com.axelor.apps.openauction.db.repo.MissionServiceLineRepository;
 import com.axelor.apps.openauction.db.repo.MissionServicePriceRepository;
+import com.axelor.apps.openauctionbase.validate.MissionServiceLineValidate;
+import com.axelor.exception.AxelorException;
 import com.axelor.inject.Beans;
 
 import java.math.BigDecimal;
@@ -71,6 +73,7 @@ public class MissionServicePriceManagementImpl implements MissionServicePriceMan
   BigDecimal baseAmount;
   MissionServicePrice missionServicePrice;
   AccesBuffer tempAccesBuffer;
+  List<AccesBuffer> tempAccesBufferList;
   Boolean lTariffFound;
   LotResaleRights lLotResaleRights;
   Boolean referenceCalcAmountOk;
@@ -85,10 +88,12 @@ public class MissionServicePriceManagementImpl implements MissionServicePriceMan
   Boolean hideDialog;
   Boolean lJudInvCalculated;
   MissionManagement missionMgt;
+  MissionServiceLineValidate missionServiceLineValidate;
 
   public MissionServicePriceManagementImpl()
   {
     missionMgt = Beans.get(MissionManagement.class);
+    missionServiceLineValidate = Beans.get(MissionServiceLineValidate.class);
   }
 
 /*
@@ -340,7 +345,7 @@ public class MissionServicePriceManagementImpl implements MissionServicePriceMan
  */
    @Override
   public MissionServiceLine findMissionServicePrice(
-      MissionServiceLine pMissionServiceLine, Boolean pEstimated) {
+      MissionServiceLine pMissionServiceLine, Boolean pEstimated) throws AxelorException {
     
     if (pMissionServiceLine.getType() == MissionServiceLineRepository.TYPE_SERVICE) {
       if (pMissionServiceLine.getFixedAmount()) {
@@ -360,12 +365,69 @@ public class MissionServicePriceManagementImpl implements MissionServicePriceMan
         pMissionServiceLine = applyTariff(pMissionServiceLine, pEstimated);
       }
       else {
-        pMissionServiceLine = calcWhenNoTariff(pMissionServiceLine);
-        
+        pMissionServiceLine = calcWhenNoTariff(pMissionServiceLine);        
       }
+      baseAmount = baseAmount.abs();
+      pMissionServiceLine.setReferenceAmount(baseAmount.multiply(lBaseFactor));
+      if(!lJudInvCalculated) {
+        //TODO pMissionServiceLine.setPriceIncludesVat(product.getPriceIncludesVat());
+      }
+
+      if(product.getSalePrice() != BigDecimal.ZERO)
+      {
+        pMissionServiceLine.setCalculationType(MissionServicePriceRepository.CALCULATIONTYPE_UNITPRICE);
+        pMissionServiceLine = missionServiceLineValidate.validateUnitPrice(pMissionServiceLine, product.getSalePrice().multiply(lPriceFactor));
+        
+        tempAccesBuffer = new AccesBuffer();
+        tempAccesBuffer.setCode("Prix unitaire");
+        tempAccesBuffer.setDecimal1(BigDecimal.ZERO);
+        tempAccesBuffer.setDecimal2(BigDecimal.ZERO);
+        tempAccesBuffer.setDecimal3(pMissionServiceLine.getReferenceAmount());
+        tempAccesBuffer.setDecimal4(BigDecimal.ZERO);
+        tempAccesBuffer.setDecimal5(pMissionServiceLine.getUnitPrice());
+        tempAccesBuffer.setDecimal6(pMissionServiceLine.getUnitPrice());
+        tempAccesBufferList.add(tempAccesBuffer);
+        pMissionServiceLine.setServicePercent(BigDecimal.ZERO);
+      }
+      else if(product.getServicePercent() != BigDecimal.ZERO)
+      {
+        pMissionServiceLine.setCalculationType(MissionServicePriceRepository.CALCULATIONTYPE_SERVICE);
+        pMissionServiceLine = missionServiceLineValidate.validateUnitPrice(pMissionServiceLine, pMissionServiceLine.getReferenceAmount().multiply(product.getServicePercent().divide(new BigDecimal(100))).multiply(lPriceFactor));
+        pMissionServiceLine.setServicePercent(product.getServicePercent().multiply(lPriceFactor));
+        tempAccesBuffer = new AccesBuffer();
+        tempAccesBuffer.setCode("Commission");
+        tempAccesBuffer.setDecimal1(BigDecimal.ZERO);
+        tempAccesBuffer.setDecimal2(BigDecimal.ZERO);
+        tempAccesBuffer.setDecimal3(pMissionServiceLine.getReferenceAmount());
+        tempAccesBuffer.setDecimal4(product.getServicePercent().multiply(lPriceFactor));
+        tempAccesBuffer.setDecimal5(pMissionServiceLine.getReferenceAmount().multiply(product.getServicePercent().divide(new BigDecimal(100))).multiply(lPriceFactor));
+        tempAccesBuffer.setDecimal6(pMissionServiceLine.getReferenceAmount().multiply(product.getServicePercent().divide(new BigDecimal(100))).multiply(lPriceFactor));
+        tempAccesBufferList.add(tempAccesBuffer);
+      }
+      else if (product.getTariffScale()!= null)
+      {
+        if(!lJudInvCalculated) {
+          pMissionServiceLine.setCalculationType(MissionServicePriceRepository.CALCULATIONTYPE_COMMISSIONSCALE);
+          tariffScale = product.getTariffScale();
+          List<AccesBuffer> accesBuffersList = getTariffScaleAmount(pMissionServiceLine.getReferenceAmount(), tariffScale);
+          BigDecimal lTempAmount = BigDecimal.ZERO;
+          for (AccesBuffer lAccesBuffer : accesBuffersList) {
+            if(accesBuffersList != null) {
+              lTempAmount = lTempAmount.add(lAccesBuffer.getDecimal5());
+            }
+          }     
+          pMissionServiceLine = missionServiceLineValidate.validateUnitPrice(pMissionServiceLine, lTempAmount.multiply(lPriceFactor));
+          pMissionServiceLine.setServicePercent(BigDecimal.ZERO);
+        }
+      }
+      else {
+        pMissionServiceLine = missionServiceLineValidate.validateUnitPrice(pMissionServiceLine, BigDecimal.ZERO);
+        pMissionServiceLine.setServicePercent(BigDecimal.ZERO);
+      }
+      pMissionServiceLine.setEstimatedValue(pEstimated);
+      checkAmount(pMissionServiceLine, missionServicePrice, product);
+      VATConvert(product, pMissionServiceLine);
     }
-   
-    
     return pMissionServiceLine;
   }
   /*
@@ -434,7 +496,7 @@ public class MissionServicePriceManagementImpl implements MissionServicePriceMan
           tempAccesBuffer.setDecimal5(pMissionServiceLine.getUnitPrice());
           tempAccesBuffer.setDecimal6(pMissionServiceLine.getUnitPrice());
           tempAccesBuffer.setDecimal4(BigDecimal.ZERO);
-          
+          tempAccesBufferList.add(tempAccesBuffer);
           pMissionServiceLine.setServicePercent(BigDecimal.ZERO);
           break;
         case MissionServicePriceRepository.CALCULATIONTYPE_SERVICE:
@@ -448,7 +510,7 @@ public class MissionServicePriceManagementImpl implements MissionServicePriceMan
           tempAccesBuffer.setDecimal4(missionServicePrice.getServicePercent().multiply(lPriceFactor));
           tempAccesBuffer.setDecimal5(pMissionServiceLine.getReferenceAmount().multiply(missionServicePrice.getServicePercent().divide(new BigDecimal(100))).multiply(lPriceFactor));
           tempAccesBuffer.setDecimal6(pMissionServiceLine.getReferenceAmount().multiply(missionServicePrice.getServicePercent().divide(new BigDecimal(100))).multiply(lPriceFactor));
-          
+          tempAccesBufferList.add(tempAccesBuffer);
           pMissionServiceLine.setServicePercent(missionServicePrice.getServicePercent());
           break;
         case MissionServicePriceRepository.CALCULATIONTYPE_COMMISSIONSCALE:
@@ -903,9 +965,8 @@ public class MissionServicePriceManagementImpl implements MissionServicePriceMan
   }
 
   @Override
-  public void getTariffScaleDetail(String pAccesBuffer) {
-    // TODO Auto-generated method stub
-
+  public List<AccesBuffer> getTariffScaleDetail() {
+    return tempAccesBufferList;
   }
 
   @Override

@@ -11,6 +11,7 @@ import com.axelor.apps.openauction.db.MissionServiceLine;
 import com.axelor.apps.openauction.db.MissionServicePrice;
 import com.axelor.apps.openauction.db.MissionTemplate;
 import com.axelor.apps.openauction.db.TariffScale;
+import com.axelor.exception.AxelorException;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -20,7 +21,7 @@ public interface MissionServicePriceManagement {
   // PROCEDURE FindMissionServicePrice@1000000001(VAR pMissionServiceLine@1000000000 : Record
   // 8011449;pEstimated@1000000004 : Boolean);
   public MissionServiceLine findMissionServicePrice(
-      MissionServiceLine pMissionServiceLine, Boolean pEstimated);
+      MissionServiceLine pMissionServiceLine, Boolean pEstimated) throws AxelorException;
   // PROCEDURE FindMissServPWithBaseAmount@1100481001(VAR pMissionServiceLine@1000000000 : Record
   // 8011449;pBaseAmount@1100481000 : Decimal;pEstimated@1000000004 : Boolean);
   public void findMissServPWithBaseAmount(
@@ -49,7 +50,7 @@ public interface MissionServicePriceManagement {
   // : Code[20];VAR pAccesBuffer@1000000000 : Record 8011477);
   public List<AccesBuffer>  getTariffScaleAmount(BigDecimal pAmount, TariffScale pTariffScale);
   // PROCEDURE GetTariffScaleDetail@1000000002(VAR pAccesBuffer@1000000000 : Record 8011477);
-  public void getTariffScaleDetail(String pAccesBuffer);
+  public List<AccesBuffer> getTariffScaleDetail();
   // PROCEDURE GetBaseAMount@1000000004() : Decimal;
   public Double getBaseAMount();
   // PROCEDURE SearchBidLine@1000000007(pMissionHeaderNo@1000000002 : Code[20];pLotNo@1000000000 :
