@@ -10,6 +10,7 @@ import com.axelor.apps.openauction.db.repo.LawyerBusinessRepository;
 import com.axelor.apps.openauction.db.repo.MissionHeaderRepository;
 import com.axelor.apps.openauctionbase.util.TransferFields;
 import com.axelor.apps.openauctionbase.validate.MissionHeaderValidate;
+import com.axelor.exception.AxelorException;
 import com.axelor.inject.Beans;
 import com.google.inject.Inject;
 import com.google.inject.persist.Transactional;
@@ -33,7 +34,7 @@ public class MissionTemplateManagementImpl implements MissionTemplateManagement 
       MissionHeader pMissionHeader,
       MissionTemplate pMissionTemplate,
       Boolean pJudicialFilter,
-      String pLawyerBusNo) {
+      String pLawyerBusNo) throws AxelorException {
     MissionHeaderValidate missionHeaderValidate = Beans.get(MissionHeaderValidate.class);
 
     /*
@@ -216,15 +217,15 @@ public class MissionTemplateManagementImpl implements MissionTemplateManagement 
 
   @Override
   @Transactional
-  public void createActivity(MissionHeader pMissionHeader, ActivityHeader pActivityCodeToHeader) {
+  public void createActivity(MissionHeader pMissionHeader, ActivityHeader pActivityCodeToHeader) throws AxelorException {
     MissionLine lMissionLine = new MissionLine();
     ActivityManagement activityManagement = Beans.get(ActivityManagement.class);
     if (pActivityCodeToHeader != null) {
-      activityManagement.CreateActivityLineFromMission(
+      activityManagement.createActivityLineFromMission(
           pActivityCodeToHeader, pMissionHeader, lMissionLine, false);
     } else {
       if (pMissionHeader.getActivityCodeToHeader() != null) {
-        activityManagement.CreateActivityLineFromMission(
+        activityManagement.createActivityLineFromMission(
             pMissionHeader.getActivityCodeToHeader(), pMissionHeader, lMissionLine, false);
       }
     }

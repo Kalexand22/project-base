@@ -882,7 +882,7 @@ public class LotTemplateManagementImpl implements LotTemplateManagement {
       }
 
       if (pMissionHeader.getActivityCodeToLines() != null) {
-        activityManagement.CreateActivityLineFromMission(
+        activityManagement.createActivityLineFromMission(
             pMissionHeader.getActivityCodeToLines(), pMissionHeader, lMissionLine, false);
       } else {
         statusManagement.checkStatus(lMissionLine);
