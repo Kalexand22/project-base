@@ -27,15 +27,15 @@
     <integer name="activityLineNo" title="N° ligne activité"/>
     <many-to-one name="previousMissionNo" title="N° mission précédente"
       ref="com.axelor.apps.openauction.db.MissionHeader"/>
-      <extra-code>
+    <extra-code>
         <![CDATA[
 
-       
+
         //openauction.type.select.missionactivityline
         public static final String TYPE_TODO = "Todo";
         public static final String TYPE_SERVICE = "Service";
         public static final String TYPE_INTERACTION = "Interaction";
         ]]>
-      </extra-code>
+    </extra-code>
   </entity>
 </domain-models>

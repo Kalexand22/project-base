@@ -44,7 +44,6 @@ public class MissionManagementImpl implements MissionManagement {
   public Boolean ifAllTodoMissionCompleted(MissionHeader pMissionHeader) {
     // TODO Auto-generated method stub
 
-    
     return null;
   }
 

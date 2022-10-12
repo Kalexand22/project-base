@@ -34,7 +34,8 @@ public class MissionTemplateManagementImpl implements MissionTemplateManagement 
       MissionHeader pMissionHeader,
       MissionTemplate pMissionTemplate,
       Boolean pJudicialFilter,
-      String pLawyerBusNo) throws AxelorException {
+      String pLawyerBusNo)
+      throws AxelorException {
     MissionHeaderValidate missionHeaderValidate = Beans.get(MissionHeaderValidate.class);
 
     /*
@@ -217,7 +218,8 @@ public class MissionTemplateManagementImpl implements MissionTemplateManagement 
 
   @Override
   @Transactional
-  public void createActivity(MissionHeader pMissionHeader, ActivityHeader pActivityCodeToHeader) throws AxelorException {
+  public void createActivity(MissionHeader pMissionHeader, ActivityHeader pActivityCodeToHeader)
+      throws AxelorException {
     MissionLine lMissionLine = new MissionLine();
     ActivityManagement activityManagement = Beans.get(ActivityManagement.class);
     if (pActivityCodeToHeader != null) {

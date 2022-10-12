@@ -18,7 +18,8 @@ public interface ActivityManagement {
       LotTemplate pLotTemplate,
       Boolean pIsAuction,
       Boolean pIsActionOnly,
-      Integer pTransactionMineNo) throws AxelorException;
+      Integer pTransactionMineNo)
+      throws AxelorException;
 
   public void removeActivityLines(
       ActivityHeader pActivityHeader,
@@ -40,5 +41,6 @@ public interface ActivityManagement {
       ActivityHeader pActivityHeader,
       MissionHeader pMissionHeader,
       MissionLine pMissionLine,
-      Boolean pActionOnly) throws AxelorException;
+      Boolean pActionOnly)
+      throws AxelorException;
 }

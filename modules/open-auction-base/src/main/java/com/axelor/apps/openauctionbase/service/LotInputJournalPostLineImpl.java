@@ -82,7 +82,7 @@ public class LotInputJournalPostLineImpl implements LotInputJournalPostLine {
     lTempLotQuickInputJournal.setLineType(lotInputJournal.getLineType());
     lTempLotQuickInputJournal.setLocationCode(lotInputJournal.getLocationCode());
     lTempLotQuickInputJournal.setBinCode(lotInputJournal.getBinCode());
-    lTempLotQuickInputJournal.setAuctionRoomCode(lotInputJournal.getAuctionRoomCode()); 
+    lTempLotQuickInputJournal.setAuctionRoomCode(lotInputJournal.getAuctionRoomCode());
     lTempLotQuickInputJournal.setOriginCountryCode(lotInputJournal.getOriginCountryCode());
     lTempLotQuickInputJournal.setResponsibilityCenter(lMissionHeader.getResponsibilityCenter());
     lTempLotQuickInputJournal.setMainTextEntryNo(lotInputJournal.getMainTextEntryNo());

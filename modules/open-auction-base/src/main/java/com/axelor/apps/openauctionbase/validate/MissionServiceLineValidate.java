@@ -1197,27 +1197,25 @@ public class MissionServiceLineValidate {
     return missionServiceLine;
   }
 
-  public MissionServiceLine validateTransactionLineNo(MissionServiceLine lMissionServiceLine,
-      Integer pTransactionLineNo) {
+  public MissionServiceLine validateTransactionLineNo(
+      MissionServiceLine lMissionServiceLine, Integer pTransactionLineNo) {
     lMissionServiceLine.setTransactionLineNo(pTransactionLineNo);
     return lMissionServiceLine;
   }
 
-public MissionServiceLine validateType(MissionServiceLine lMissionServiceLine, String type) {
+  public MissionServiceLine validateType(MissionServiceLine lMissionServiceLine, String type) {
     lMissionServiceLine.setType(type);
     return lMissionServiceLine;
-}
+  }
 
-public MissionServiceLine validateTransactionType(MissionServiceLine lMissionServiceLine,
-        String transactiontypeMission) {
+  public MissionServiceLine validateTransactionType(
+      MissionServiceLine lMissionServiceLine, String transactiontypeMission) {
     lMissionServiceLine.setTransactionType(transactiontypeMission);
     return lMissionServiceLine;
-}
+  }
 
-public MissionServiceLine onInsert(MissionServiceLine lMissionServiceLine) {
-  //TODO à implémenter
-  return lMissionServiceLine;
-}
-
-
+  public MissionServiceLine onInsert(MissionServiceLine lMissionServiceLine) {
+    // TODO à implémenter
+    return lMissionServiceLine;
+  }
 }
