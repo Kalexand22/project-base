@@ -438,7 +438,7 @@ public class MissionServicePriceManagementImpl implements MissionServicePriceMan
         pMissionServiceLine.setServicePercent(BigDecimal.ZERO);
       }
       pMissionServiceLine.setEstimatedValue(pEstimated);
-      checkAmount(pMissionServiceLine, missionServicePrice, product);
+      pMissionServiceLine = checkAmount(pMissionServiceLine, missionServicePrice, product);
       VATConvert(product, pMissionServiceLine);
     }
     return pMissionServiceLine;
@@ -494,8 +494,8 @@ public class MissionServicePriceManagementImpl implements MissionServicePriceMan
              CheckAmount(pMissionServiceLine, MissionServicePrice, Item); //AP15.ST
              VATConvert(Item, pMissionServiceLine); //AP16.ST
   */
-  private MissionServiceLine applyTariff(
-      MissionServiceLine pMissionServiceLine, Boolean pEstimated) {
+  private MissionServiceLine applyTariff(MissionServiceLine pMissionServiceLine, Boolean pEstimated)
+      throws AxelorException {
     pMissionServiceLine.setPriceIncludesVAT(missionServicePrice.getPriceIncludesVAT());
     switch (missionServicePrice.getCalculationType()) {
       case MissionServicePriceRepository.CALCULATIONTYPE_UNITPRICE:
@@ -558,7 +558,7 @@ public class MissionServicePriceManagementImpl implements MissionServicePriceMan
         break;
     }
     pMissionServiceLine.setEstimatedValue(pEstimated);
-    checkAmount(pMissionServiceLine, missionServicePrice, product);
+    pMissionServiceLine = checkAmount(pMissionServiceLine, missionServicePrice, product);
     VATConvert(product, pMissionServiceLine);
 
     return pMissionServiceLine;
@@ -678,10 +678,99 @@ public class MissionServicePriceManagementImpl implements MissionServicePriceMan
     return pMissionServiceLine;
   }
 
-  private void checkAmount(
+  /*
+  * LOCAL PROCEDURE CheckAmount@1100481006(VAR pMissServLine@1100481000 : Record 8011449;pServPrice@1100481001 : Record 8011469;pItem@1100481002 : Record 27);
+   BEGIN
+     //AP16.ST
+     IF pMissServLine."Auction Bid" THEN
+       EXIT;
+     IF ((Item."Check Charge Amount Range" = Item."Check Charge Amount Range"::AfterBidding) AND (NOT IsApplyOnBidPrice)) OR
+        ((Item."Check Charge Amount Range" = Item."Check Charge Amount Range"::BeforeBidding) AND IsApplyOnBidPrice) THEN
+       EXIT;
+     WITH pServPrice DO BEGIN
+       IF ("Minimum Charge Amount" <> 0) OR ("Maximum Charge Amount" <> 0) THEN BEGIN
+         // Controle que l'on a dans le min-max
+         IF PriceRangeChange(pMissServLine."Unit Price", "Minimum Charge Amount", "Maximum Charge Amount") THEN BEGIN
+           pMissServLine."Calculation Type" := pMissServLine."Calculation Type"::UnitPrice;
+           pMissServLine."Service %" := 0;
+           pMissServLine."Commission %" := 0;
+           pMissServLine.VALIDATE("Unit Price");
+         END;
+         EXIT;
+       END;
+     END;
+     WITH pItem DO BEGIN
+       IF ("Minimum Charge Amount" <> 0) OR ("Maximum Charge Amount" <> 0) THEN BEGIN
+         // Controle que l'on a dans le min-max
+         IF PriceRangeChange(pMissServLine."Unit Price", "Minimum Charge Amount", "Maximum Charge Amount") THEN BEGIN
+           pMissServLine."Calculation Type" := pMissServLine."Calculation Type"::UnitPrice;
+           pMissServLine."Service %" := 0;
+           pMissServLine."Commission %" := 0;
+           pMissServLine.VALIDATE("Unit Price");
+         END;
+         EXIT;
+       END;
+     END;
+   END;
+
+  */
+  private MissionServiceLine checkAmount(
       MissionServiceLine pMissionServiceLine,
       MissionServicePrice missionServicePrice2,
-      Product product2) {}
+      Product product2)
+      throws AxelorException {
+    if (pMissionServiceLine.getAuctionBid()) return pMissionServiceLine;
+    if (product2.getCheckChargeAmountRange()
+            == ProductRepository.CHECKCHARGEAMOUNTRANGE_AFTERBIDDING
+        && !isApplyOnBidPrice) return pMissionServiceLine;
+    if (product2.getCheckChargeAmountRange()
+            == ProductRepository.CHECKCHARGEAMOUNTRANGE_BEFOREBIDDING
+        && isApplyOnBidPrice) return pMissionServiceLine;
+    if (missionServicePrice2.getMinimumChargeAmount().compareTo(BigDecimal.ZERO) != 0
+        || missionServicePrice2.getMaximumChargeAmount().compareTo(BigDecimal.ZERO) != 0) {
+
+      if (priceRangeChange(
+          pMissionServiceLine.getUnitPrice(),
+          missionServicePrice2.getMinimumChargeAmount(),
+          missionServicePrice2.getMaximumChargeAmount())) {
+        pMissionServiceLine.setCalculationType(
+            MissionServicePriceRepository.CALCULATIONTYPE_UNITPRICE);
+        pMissionServiceLine.setServicePercent(BigDecimal.ZERO);
+        pMissionServiceLine.setCommissionPercent(BigDecimal.ZERO);
+        pMissionServiceLine =
+            missionServiceLineValidate.validateUnitPrice(
+                pMissionServiceLine, pMissionServiceLine.getUnitPrice());
+      }
+      return pMissionServiceLine;
+    }
+
+    if (product2.getMinimumChargeAmount().compareTo(BigDecimal.ZERO) != 0
+        || product2.getMaximumChargeAmount().compareTo(BigDecimal.ZERO) != 0) {
+
+      if (priceRangeChange(
+          pMissionServiceLine.getUnitPrice(),
+          product2.getMinimumChargeAmount(),
+          product2.getMaximumChargeAmount())) {
+        pMissionServiceLine.setCalculationType(
+            MissionServicePriceRepository.CALCULATIONTYPE_UNITPRICE);
+        pMissionServiceLine.setServicePercent(BigDecimal.ZERO);
+        pMissionServiceLine.setCommissionPercent(BigDecimal.ZERO);
+        pMissionServiceLine =
+            missionServiceLineValidate.validateUnitPrice(
+                pMissionServiceLine, pMissionServiceLine.getUnitPrice());
+      }
+
+      return pMissionServiceLine;
+    }
+
+    return pMissionServiceLine;
+  }
+
+  private boolean priceRangeChange(
+      BigDecimal unitPrice, BigDecimal minimumChargeAmount, BigDecimal maximumChargeAmount) {
+    return false;
+  }
+
   /*
   * lPriceFactor := 1;
            lBaseFactor := 1;
