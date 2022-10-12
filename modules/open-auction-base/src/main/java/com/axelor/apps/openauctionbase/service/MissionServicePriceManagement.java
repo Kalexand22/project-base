@@ -1,10 +1,20 @@
 package com.axelor.apps.openauctionbase.service;
 
+import com.axelor.apps.base.db.Partner;
 import com.axelor.apps.base.db.Product;
+import com.axelor.apps.openauction.db.AccesBuffer;
 import com.axelor.apps.openauction.db.Lot;
+import com.axelor.apps.openauction.db.MissionContactPriceGroup;
 import com.axelor.apps.openauction.db.MissionHeader;
+import com.axelor.apps.openauction.db.MissionLotPriceGroup;
 import com.axelor.apps.openauction.db.MissionServiceLine;
+import com.axelor.apps.openauction.db.MissionServicePrice;
+import com.axelor.apps.openauction.db.MissionTemplate;
+import com.axelor.apps.openauction.db.TariffScale;
+
+import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 public interface MissionServicePriceManagement {
   // PROCEDURE FindMissionServicePrice@1000000001(VAR pMissionServiceLine@1000000000 : Record
@@ -20,13 +30,13 @@ public interface MissionServicePriceManagement {
   // Code[10];LotCode@1000000003 : Code[20];ContactGroup@1000000002 :
   // Code[10];ContactCode@1000000001 : Code[20]) : Boolean;
   public Boolean testPrice(
-      MissionServiceLine pServiceMissionPrice,
-      String DocTemplate,
-      String DocNo,
-      String LotGroup,
-      String LotCode,
-      String ContactGroup,
-      String ContactCode);
+        MissionServicePrice pServiceMissionPrice,
+      MissionTemplate DocTemplate,
+      MissionHeader DocNo,
+      MissionLotPriceGroup LotGroup,
+      Lot LotCode,
+      MissionContactPriceGroup ContactGroup,
+      Partner ContactCode);
   // PROCEDURE GetLotAmount@1000000005(pMissionHeaderNo@1000000001 : Code[20];pLotNo@1000000000 :
   // Code[20]);
   public Double getLotAmount(MissionHeader pMissionHeaderNo, Lot pLotNo);
@@ -37,7 +47,7 @@ public interface MissionServicePriceManagement {
   public void getTempServiceMissionPrice(MissionServiceLine pMissionServicePrice);
   // PROCEDURE GetTariffScaleAmount@1000000009(pAmount@1000000002 : Decimal;pTariffScale@1000000001
   // : Code[20];VAR pAccesBuffer@1000000000 : Record 8011477);
-  public Double getTariffScaleAmount(Double pAmount, String pTariffScale, String pAccesBuffer);
+  public List<AccesBuffer>  getTariffScaleAmount(BigDecimal pAmount, TariffScale pTariffScale);
   // PROCEDURE GetTariffScaleDetail@1000000002(VAR pAccesBuffer@1000000000 : Record 8011477);
   public void getTariffScaleDetail(String pAccesBuffer);
   // PROCEDURE GetBaseAMount@1000000004() : Decimal;

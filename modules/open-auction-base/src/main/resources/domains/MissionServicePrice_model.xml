@@ -6,10 +6,12 @@
   <entity name="MissionServicePrice">
     <many-to-one name="itemNo" title="N° article" ref="com.axelor.apps.base.db.Product"/>
     <string name="missionType" title="Type mission"
-      selection="openauction.missionType.select"/>
-    <string name="lotType" title="Type de lot" selection="openauction.lotType.select"/>
+      selection="openauction.missionType.select.missionserviceprice"/>
+    <many-to-one ref="com.axelor.apps.openauction.db.MissionHeader" name="missionHeader"/>
+    <many-to-one ref="com.axelor.apps.openauction.db.MissionTemplate" name="missionTemplate"/>
+    <string name="lotType" title="Type de lot" selection="openauction.lotType.select.missionserviceprice"/>
     <string name="contactType" title="Type contact"
-      selection="openauction.contactType.select"/>
+      selection="openauction.contactType.select.missionserviceprice"/>
     <many-to-one name="currencyCode" title="Code devise"
       ref="com.axelor.apps.base.db.Currency"/>
     <date name="startingDate" title="Date début"/>
@@ -25,6 +27,10 @@
     <boolean name="allowInvoiceDisc" title="Remise facture autorisée"/>
     <decimal name="minimumBaseAmount" title="Montant base minimum"/>
     <decimal name="maximumBaseAmount" title="Montant base maximum"/>
+    <many-to-one ref="com.axelor.apps.openauction.db.Lot" name="lot"/>
+    <many-to-one ref="com.axelor.apps.openauction.db.MissionLotPriceGroup" name="lotPriceGroup"/>
+    <many-to-one ref="com.axelor.apps.base.db.Partner" name="contact"/>
+    <many-to-one ref="com.axelor.apps.openauction.db.MissionContactPriceGroup" name="contactPriceGroup"/>
     <string name="commBaseCalc" title="Base calcul prestation"
       selection="openauction.commBaseCalc.select"/>
     <boolean name="budgetedCostReinvoicing" title="Refacturation coût budget-"/>
@@ -36,5 +42,32 @@
     <integer name="pricePriority" title="Priorité prix"/>
     <decimal name="minimumChargeAmount" title="Montant minimum"/>
     <decimal name="maximumChargeAmount" title="Montant maximum"/>
+    <extra-code>
+      <![CDATA[ 
+      
+      //openauction.missionType.select.missionserviceprice
+      public static final String MISSIONTYPE_ALLMISSION = "AllMission";
+      public static final String MISSIONTYPE_MISSIONTEMPLATE = "MissionTemplate";
+      public static final String MISSIONTYPE_MISSION = "Mission";
+
+     
+      //openauction.lotType.select.missionserviceprice
+      public static final String LOTTYPE_ALLLOT = "AllLot";
+      public static final String LOTTYPE_LOTPRICEGROUP = "LotPriceGroup";
+      public static final String LOTTYPE_LOT = "Lot";
+
+      //openauction.contactType.select.missionserviceprice
+      public static final String CONTACTTYPE_ALLCONTACT = "AllContact";
+      public static final String CONTACTTYPE_CONTACTPRICEGROUP = "ContactPriceGroup";
+      public static final String CONTACTTYPE_CONTACT = "Contact";
+
+     
+      //openauction.calculationType.select
+      public static final String CALCULATIONTYPE_UNITPRICE = "UnitPrice0";
+      public static final String CALCULATIONTYPE_SERVICE = "Service1";
+      public static final String CALCULATIONTYPE_COMMISSIONSCALE = "CommissionScale2";
+
+      ]]>
+    </extra-code>
   </entity>
 </domain-models>

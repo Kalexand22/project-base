@@ -294,7 +294,7 @@ public class ActivityManagementImpl implements ActivityManagement {
       lMissionServiceLine.setActivityHeader(pActivityLine.getActivityCode());
       lMissionServiceLine.setActivityLine(pActivityLine.getLineNo());
 
-      updatePrice(lMissionServiceLine);
+      lMissionServiceLine = missionServiceLineValidate.updatePrice(lMissionServiceLine);
       lMissionServiceLine = missionServiceLineValidate.onInsert(lMissionServiceLine);
       missionServiceLineRepository.save(lMissionServiceLine);
 
@@ -320,5 +320,5 @@ public class ActivityManagementImpl implements ActivityManagement {
   }
 
   // TODO onValidate
-  private void updatePrice(MissionServiceLine lMissionServiceLine) {}
+  
 }

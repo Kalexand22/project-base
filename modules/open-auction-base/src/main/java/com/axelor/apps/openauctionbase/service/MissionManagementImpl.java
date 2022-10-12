@@ -5,6 +5,7 @@ import com.axelor.apps.openauction.db.AuctionHeader;
 import com.axelor.apps.openauction.db.Lot;
 import com.axelor.apps.openauction.db.MissionHeader;
 import com.axelor.apps.openauction.db.MissionLine;
+import com.axelor.apps.openauction.db.MissionServiceLine;
 import com.axelor.apps.openauction.db.MissionTemplate;
 
 public class MissionManagementImpl implements MissionManagement {
@@ -116,9 +117,9 @@ public class MissionManagementImpl implements MissionManagement {
   }
 
   @Override
-  public void calcJudInvService(MissionLine pMissionServiceLine) {
-    // TODO Auto-generated method stub
-
+  public MissionServiceLine calcJudInvService(MissionServiceLine pMissionServiceLine) {
+    // TODO prioritaire
+    return pMissionServiceLine;
   }
 
   @Override
@@ -199,7 +200,7 @@ public class MissionManagementImpl implements MissionManagement {
   }
 
   @Override
-  public void getMissionJudInvScale(String pMissionNo, MissionLine pMissionServiceLine) {
+  public void getMissionJudInvScale(String pMissionNo, MissionServiceLine pMissionServiceLine) {
     // TODO Auto-generated method stub
 
   }

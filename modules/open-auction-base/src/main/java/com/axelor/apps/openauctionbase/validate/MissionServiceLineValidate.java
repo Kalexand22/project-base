@@ -453,7 +453,7 @@ public class MissionServiceLineValidate {
      //<<ap36 isat.zw
    END;
   */
-  private MissionServiceLine UpdatePrice(MissionServiceLine missionServiceLine) {
+  public MissionServiceLine updatePrice(MissionServiceLine missionServiceLine) {
     MissionServicePriceManagement missionServicePriceManagement =
         Beans.get(MissionServicePriceManagement.class);
     AuctionServicePriceMgt auctionServicePriceMgt = Beans.get(AuctionServicePriceMgt.class);
@@ -498,14 +498,14 @@ public class MissionServiceLineValidate {
   public MissionServiceLine validateLotPriceGroup(
       MissionServiceLine missionServiceLine, MissionLotPriceGroup lotPriceGroup) {
     missionServiceLine.setLotPriceGroup(lotPriceGroup);
-    missionServiceLine = this.UpdatePrice(missionServiceLine);
+    missionServiceLine = this.updatePrice(missionServiceLine);
     return missionServiceLine;
   }
 
   public MissionServiceLine validateAuctionLotPriceGroup(
       MissionServiceLine missionServiceLine, AuctionLotPriceGroup lotPriceGroup) {
     missionServiceLine.setAuctionLotPriceGroup(lotPriceGroup);
-    missionServiceLine = this.UpdatePrice(missionServiceLine);
+    missionServiceLine = this.updatePrice(missionServiceLine);
     return missionServiceLine;
   }
 
@@ -516,7 +516,7 @@ public class MissionServiceLineValidate {
   public MissionServiceLine validateContactPriceGroup(
       MissionServiceLine missionServiceLine, MissionContactPriceGroup contactPriceGroup) {
     missionServiceLine.setContactPriceGroup(contactPriceGroup);
-    missionServiceLine = this.UpdatePrice(missionServiceLine);
+    missionServiceLine = this.updatePrice(missionServiceLine);
     return missionServiceLine;
   }
 
@@ -606,7 +606,7 @@ public class MissionServiceLineValidate {
           "Vous ne pouvez pas changer la date pour cette ligne");
     }
     missionServiceLine.setPriceDate(priceDate);
-    missionServiceLine = this.UpdatePrice(missionServiceLine);
+    missionServiceLine = this.updatePrice(missionServiceLine);
     return missionServiceLine;
   }
 
@@ -1218,4 +1218,6 @@ public class MissionServiceLineValidate {
     // TODO à implémenter
     return lMissionServiceLine;
   }
+
+  
 }

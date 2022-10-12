@@ -5,6 +5,7 @@ import com.axelor.apps.openauction.db.AuctionHeader;
 import com.axelor.apps.openauction.db.Lot;
 import com.axelor.apps.openauction.db.MissionHeader;
 import com.axelor.apps.openauction.db.MissionLine;
+import com.axelor.apps.openauction.db.MissionServiceLine;
 import com.axelor.apps.openauction.db.MissionTemplate;
 
 public interface MissionManagement {
@@ -66,7 +67,7 @@ public interface MissionManagement {
   // PROCEDURE RenumLotNoInMission@1100481008(VAR pMissionHeader@1100481000 : Record 8011402);
   public void renumLotNoInMission(MissionHeader pMissionHeader);
   // PROCEDURE CalcJudInvService@1180113001(VAR pMissionServiceLine@1100481000 : Record 8011449);
-  public void calcJudInvService(MissionLine pMissionServiceLine);
+  public MissionServiceLine calcJudInvService(MissionServiceLine pMissionServiceLine);
   // PROCEDURE LoadJudInvServiceBuffer@1180113002(VAR pMissionHeader@1100481000 : Record 8011402;VAR
   // pRoof@1100481001 : ARRAY [4] OF Decimal;VAR pUnivBuffer@1100481002 : TEMPORARY Record
   // 8011709;pMidValueCalc@1180113000 : '0,1,2,3,4');
@@ -114,7 +115,7 @@ public interface MissionManagement {
       MissionLine pMissionLineSelection, MissionLine pToMissionLine, Boolean pUp);
   // PROCEDURE GetMissionJudInvScale@1180113003(VAR pMissionNo@1180113002 : Code[20];VAR
   // pMissionServiceLine@1180113000 : Record 8011449);
-  public void getMissionJudInvScale(String pMissionNo, MissionLine pMissionServiceLine);
+  public void getMissionJudInvScale(String pMissionNo, MissionServiceLine pMissionServiceLine);
   // PROCEDURE TransferInvLines@1180113005(pOriginMissionNo@1180113000 :
   // Code[20];pDestMissionNo@1180113001 : Code[20]);
   public void transferInvLines(String pOriginMissionNo, String pDestMissionNo);

@@ -144,6 +144,13 @@
     <option value="Companies1">Sociétés</option>
     <option value="People2">Personnes</option>
   </selection>
+
+  <selection name="openauction.contactType.select.missionserviceprice">
+    <option value="AllContact">Tous les contacts</option>
+    <option value="ContactPriceGroup">Groupe prix contact</option>
+    <option value="Contact">Contact</option>
+  </selection>
+
   <selection name="openauction.priority.select">
     <option value="VeryLow0">Très faible</option>
     <option value="Low1">Faible</option>
@@ -456,6 +463,11 @@
     <option value="Quote0">Devis</option>
     <option value="Order1">Commande</option>
   </selection>
+  <selection name="openauction.missionType.select.missionserviceprice">
+    <option value="AllMission">Toutes les missions</option>
+    <option value="MissionTemplate">Modèle mission</option>
+    <option value="Mission">Mission</option>
+  </selection>
   <selection name="openauction.missionStatus.select">
     <option value="Initial0">Initial</option>
     <option value="Current1">En cours</option>
@@ -520,6 +532,11 @@
     <option value="Lot2">Lot</option>
     <option value="UnGroupingOriginLot3">Lot origine dégroupement</option>
     <option value="OriginLotComponent4">Composant lot origine</option>
+  </selection>
+  <selection name="openauction.lotType.select.missionserviceprice">
+    <option value="AllLot">Tous les lots</option>
+    <option value="LotPriceGroup">Groupe de prix lot</option>
+    <option value="Lot">Lot</option>
   </selection>
   <selection name="openauction.bidInvoicingStatus.select">
     <option value="NotInvoiced0">Non facturé</option>

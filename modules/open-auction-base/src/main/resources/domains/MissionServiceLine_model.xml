@@ -139,9 +139,9 @@
 
 
       //openauction.type.select.servicetemplateline
-      public static final String TYPE_SERVICETEMPLATELINE_SERVICE = "Service0";
-      public static final String TYPE_SERVICETEMPLATELINE_RESSOURCE = "Ressource1";
-      public static final String TYPE_SERVICETEMPLATELINE_EMPTY = "Empty2";
+      public static final String TYPE_SERVICE = "Service0";
+      public static final String TYPE_RESSOURCE = "Ressource1";
+      public static final String TYPE_EMPTY = "Empty2";
       ]]>
     </extra-code>
   </entity>
