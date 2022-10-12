@@ -109,6 +109,7 @@
     <string name="overheadInvoiceNo" title="N° facture FG"/>
     <decimal name="overheadInvoicedAmount" title="Montant facturé FG"/>
     <boolean name="cancelled" title="Annulé"/>
+    <many-to-one ref="com.axelor.apps.openauction.db.SiteAuction" name="webSite"></many-to-one> 
     <extra-code>
       <![CDATA[
 

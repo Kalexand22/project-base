@@ -6,6 +6,7 @@ import com.axelor.apps.openauction.db.ActivityLine;
 import com.axelor.apps.openauction.db.AuctionHeader;
 import com.axelor.apps.openauction.db.Lot;
 import com.axelor.apps.openauction.db.LotTemplate;
+import com.axelor.apps.openauction.db.MissionActivityLine;
 import com.axelor.apps.openauction.db.MissionHeader;
 import com.axelor.apps.openauction.db.MissionLine;
 import com.axelor.apps.openauction.db.MissionServiceLine;
@@ -16,9 +17,14 @@ import com.axelor.apps.openauction.db.repo.ActivityLineRepository;
 import com.axelor.apps.openauction.db.repo.MissionActivityLineRepository;
 import com.axelor.apps.openauction.db.repo.MissionServiceLineRepository;
 import com.axelor.apps.openauctionbase.repository.MissionServiceLineRepositoryExt;
+import com.axelor.apps.openauctionbase.validate.MissionServiceLineValidate;
+import com.axelor.exception.AxelorException;
+import com.google.api.services.people.v1.PeopleService.ContactGroups.Update;
 import com.google.inject.Inject;
 import com.google.inject.persist.Transactional;
 import java.lang.invoke.MethodHandles;
+import java.math.BigDecimal;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,7 +42,7 @@ public class ActivityManagementImpl implements ActivityManagement {
   }
 
   @Override
-  public void CreateActivityLines(
+  public void createActivityLines(
       ActivityHeader pActivityHeader,
       AuctionHeader pAuctionHeader,
       MissionHeader pMissionHeader,
@@ -44,7 +50,7 @@ public class ActivityManagementImpl implements ActivityManagement {
       LotTemplate pLotTemplate,
       Boolean pIsAuction,
       Boolean pIsActionOnly,
-      Integer pTransactionLineNo) {
+      Integer pTransactionLineNo) throws AxelorException {
 
     Boolean lLineToTreat = false;
     Partner lcontact = pMissionHeader != null ? pMissionHeader.getMasterContactNo() : null;
@@ -62,9 +68,9 @@ public class ActivityManagementImpl implements ActivityManagement {
           lLineToTreat = true;
         }
         if (pActivityHeader.getApplicableOn().equals(ActivityHeaderRepository.APPLICABLEON_LINE)) {
-          lLineToTreat =
-              line.getLotTemplateFilter().equals(pLotTemplate)
-                  || line.getLotTemplateFilter() == null;
+          lLineToTreat = line.getLotTemplateFilter() == null ||
+              line.getLotTemplateFilter().equals(pLotTemplate);
+                  
         }
         if (line.getToDoApplicableTo().equals(ActivityLineRepository.TODOAPPLICABLETO_SELLER)) {
           lcontact = pMissionHeader.getMasterContactNo();
@@ -74,7 +80,7 @@ public class ActivityManagementImpl implements ActivityManagement {
 
         if (lLineToTreat) {
           if (line.getServiceTemplateCode() != null)
-            CreateMissionService(
+            createMissionService(
                 line,
                 pAuctionHeader,
                 pMissionHeader,
@@ -99,7 +105,7 @@ public class ActivityManagementImpl implements ActivityManagement {
 
   @Override
   @Transactional
-  public void RemoveActivityLines(
+  public void removeActivityLines(
       ActivityHeader pActivityHeader,
       AuctionHeader pAuctionHeader,
       MissionHeader pMissionHeader,
@@ -110,7 +116,7 @@ public class ActivityManagementImpl implements ActivityManagement {
 
   @Override
   @Transactional
-  public void CreateTodo(
+  public void createTodo(
       ActivityHeader pActivityHeader,
       AuctionHeader pAuctionHeader,
       MissionHeader pMissionHeader,
@@ -123,14 +129,14 @@ public class ActivityManagementImpl implements ActivityManagement {
   }
 
   @Override
-  public void CreateActivityLineFromMission(
+  public void createActivityLineFromMission(
       ActivityHeader pActivityHeader,
       MissionHeader pMissionHeader,
       MissionLine pMissionLine,
-      Boolean pActionOnly) {
+      Boolean pActionOnly) throws AxelorException {
     Lot lLot = pMissionLine.getNoLot();
     LotTemplate lLotTemplate = lLot == null ? null : lLot.getLotTemplateCode();
-    CreateActivityLines(
+    createActivityLines(
         pActivityHeader,
         null,
         pMissionHeader,
@@ -141,40 +147,7 @@ public class ActivityManagementImpl implements ActivityManagement {
         pMissionLine.getLineNo());
   }
 
-  // TODO onValidate
-  @Transactional
-  private void CreateMissionService(
-      ActivityLine pActivityLine,
-      AuctionHeader pAuctionHeader,
-      MissionHeader pMissionHeader,
-      Lot pLot,
-      Partner pContact,
-      Boolean pAuctionAct,
-      Integer pTransactionLineNo) {
-    ServiceTemplate missionServiceTemplate;
-    MissionServiceLine lMissionServiceLine = new MissionServiceLine();
-
-    if (pActivityLine.getServiceTemplateCode() == null) return;
-
-    missionServiceTemplate = pActivityLine.getServiceTemplateCode();
-    for (ServiceTemplateLine missionServiceTemplateLine :
-        missionServiceTemplate.getTemplateLineList()) {
-      lMissionServiceLine.setEntryNo(0);
-      lMissionServiceLine.setDocumentNo(0L);
-      lMissionServiceLine.setTransactionType(
-          pAuctionAct
-              ? MissionServiceLineRepository.TRANSACTIONTYPE_VENTE
-              : MissionServiceLineRepository.TRANSACTIONTYPE_MISSION);
-      lMissionServiceLine.setAuctionNo(pAuctionHeader);
-      lMissionServiceLine.setMissionNo(pMissionHeader);
-      lMissionServiceLine.setLotNo(pLot);
-      lMissionServiceLine.setTransactionLineNo(pTransactionLineNo);
-      lMissionServiceLine.setType(missionServiceTemplateLine.getType());
-      // TODO setChargeableContactNo
-      // lMissionServiceLine.setChargeableContactNo(pContact.getI);
-      // TODO eventuellement revoir le insert(true)
-      missionServiceLineRepository.save(lMissionServiceLine);
-    }
+ 
     /*
      * LOCAL PROCEDURE CreateMissionService@1000000019(pActivityLine@1000000000 : Record 8011406;pMissionNo@1000000014 : Code[20];pAuctionNo@1000000013 : Code[20];pLotNo@1000000006 : Code[20];pContactNo@1000000009 : Code[20];pAuctionAct@1100481000 : Boolean;pTransactionLineNo@1100481001 : Integer);
     VAR
@@ -186,73 +159,156 @@ public class ActivityManagementImpl implements ActivityManagement {
       lValidateOK@1000000008 : Boolean;
       NameDataTypeSubtypeLength@1000000005 : Integer;
     BEGIN
-      //AP02.ISAT.ST
-      IF pActivityLine."Service Template Code" = '' THEN BEGIN
-        EXIT;
+      
+IF pActivityLine."Service Template Code" = '' THEN BEGIN
+  EXIT;
+END;
+
+//InitGlobalServiceEntryNo(gLastServiceEntryNo); //ap20 isat.zw
+
+lValidateOK := pActivityLine."Todo Template Code" = '';
+lMissionServiceTemplateLine.RESET;
+lMissionServiceTemplateLine.SETRANGE("Service Template Code",pActivityLine."Service Template Code");
+IF lMissionServiceTemplateLine.FIND('-') THEN BEGIN
+  REPEAT
+    //gLastServiceEntryNo += 1;
+    WITH lMissionServiceLine DO BEGIN
+      INIT;
+      //"Entry No." := gLastServiceEntryNo; //ap20 isat.zw
+      "Entry No." := 0; //ap20 isat.zw
+      "Document No." := ''; //ap20 isat.zw
+
+//<<ISAT.ST avant validation du lot
+      IF pAuctionAct THEN
+        VALIDATE("Transaction Type", "Transaction Type"::Auction)
+      ELSE
+        VALIDATE("Transaction Type", "Transaction Type"::Mission);
+//>>ISAT.ST
+      VALIDATE("Mission No.", pMissionNo);
+      VALIDATE("Auction No.",pAuctionNo);
+      VALIDATE("Lot No.",pLotNo);
+      VALIDATE("Transaction Line No.",pTransactionLineNo);//AP09
+      VALIDATE(Type,lMissionServiceTemplateLine.Type);
+      VALIDATE("No.",lMissionServiceTemplateLine."No.");
+      VALIDATE("Chargeable Contact No.",pContactNo);
+      VALIDATE("Contact Imputation Type"); //AP17.ST
+      IF lMissionServiceTemplateLine.Description <> '' THEN BEGIN
+        Description := lMissionServiceTemplateLine.Description;
       END;
-
-      //InitGlobalServiceEntryNo(gLastServiceEntryNo); //ap20 isat.zw
-
-
-      //<<ISAT.ST avant validation du lot
-            IF pAuctionAct THEN
-              VALIDATE("Transaction Type", "Transaction Type"::Auction)
-            ELSE
-              VALIDATE("Transaction Type", "Transaction Type"::Mission);
-      //>>ISAT.ST
-            VALIDATE("Mission No.", pMissionNo);
-            VALIDATE("Auction No.",pAuctionNo);
-            VALIDATE("Lot No.",pLotNo);
-            VALIDATE("Transaction Line No.",pTransactionLineNo);//AP09
-            VALIDATE(Type,lMissionServiceTemplateLine.Type);
-            VALIDATE("No.",lMissionServiceTemplateLine."No.");
-            VALIDATE("Chargeable Contact No.",pContactNo);
-            VALIDATE("Contact Imputation Type"); //AP17.ST
-            IF lMissionServiceTemplateLine.Description <> '' THEN BEGIN
-              Description := lMissionServiceTemplateLine.Description;
-            END;
-            IF lMissionServiceTemplateLine."Unit of Measure Code" <> '' THEN BEGIN
-              "Unit of Measure Code" := lMissionServiceTemplateLine."Unit of Measure Code";
-            END;
-            "Mis. Service Template Code" := lMissionServiceTemplateLine."Service Template Code";
-            VALIDATE(Quantity,1);
-            "Accept To Invoice" := TRUE;
-            "Activity Header" := pActivityLine."Activity Code";
-            "Activity Line" := pActivityLine."Line No.";
-            "Web Site Code" := lMissionServiceTemplateLine."Web Site Code"; // AP22
-
-        //** A revoir : CG -> mission ou auction
-        //**    "Responsibility Center" := pMissionHeader."Responsibility Center";
-            UpdatePrice;
-            //VALIDATE(lMissionServiceLine."Price Includes VAT",TRUE); // isat.sf AP12 //désactivé ap19 isat.zw
-            INSERT(TRUE);
-          END;
-
-          //InitGlobalActivityEntryNo(gLastActivityEntryNo);   //ap20 isat.zw
-          WITH lMissionActivityLine DO BEGIN
-            //gLastActivityEntryNo += 1;
-            INIT;
-            //"Entry No." := gLastActivityEntryNo; //ap20 isat.zw
-            "Entry No." := 0; //ap20 isat.zw
-            "Document No." := ''; //ap20 isat.zw
-
-            "Mission No." := pMissionNo;
-            "Auction No." := pAuctionNo;
-            "Lot No." := pLotNo;
-            "Transaction Line No." := pTransactionLineNo;//AP09
-            "Activity Code" := pActivityLine."Activity Code";
-            "Activity Line No." := pActivityLine."Line No.";
-            Type := Type::Service;
-            "To-do No." := '';
-            "Mission Service Entry No." := lMissionServiceLine."Entry No.";
-            "Mission Service Doc. No." := lMissionServiceLine."Document No."; //ap20 isat.zw
-            "Interaction Template Code" := '';
-            "Previous Mission No." := '';
-            INSERT(TRUE);
-          END;
-        UNTIL lMissionServiceTemplateLine.NEXT = 0;
+      IF lMissionServiceTemplateLine."Unit of Measure Code" <> '' THEN BEGIN
+        "Unit of Measure Code" := lMissionServiceTemplateLine."Unit of Measure Code";
       END;
+      "Mis. Service Template Code" := lMissionServiceTemplateLine."Service Template Code";
+      VALIDATE(Quantity,1);
+      "Accept To Invoice" := TRUE;
+      "Activity Header" := pActivityLine."Activity Code";
+      "Activity Line" := pActivityLine."Line No.";
+      "Web Site Code" := lMissionServiceTemplateLine."Web Site Code"; // AP22
+
+      UpdatePrice;
+      INSERT(TRUE);
     END;
+
+    WITH lMissionActivityLine DO BEGIN
+      INIT;
+      "Entry No." := 0; //ap20 isat.zw
+      "Document No." := ''; //ap20 isat.zw
+
+      "Mission No." := pMissionNo;
+      "Auction No." := pAuctionNo;
+      "Lot No." := pLotNo;
+      "Transaction Line No." := pTransactionLineNo;//AP09
+      "Activity Code" := pActivityLine."Activity Code";
+      "Activity Line No." := pActivityLine."Line No.";
+      Type := Type::Service;
+      "To-do No." := '';
+      "Mission Service Entry No." := lMissionServiceLine."Entry No.";
+      "Mission Service Doc. No." := lMissionServiceLine."Document No."; //ap20 isat.zw
+      "Interaction Template Code" := '';
+      "Previous Mission No." := '';
+      INSERT(TRUE);
+    END;
+  UNTIL lMissionServiceTemplateLine.NEXT = 0;
+END;
      */
+
+  private void createMissionService(
+      ActivityLine pActivityLine,
+      AuctionHeader pAuctionHeader,
+      MissionHeader pMissionHeader,      
+      Lot pLot,
+      Partner pContact,
+      Boolean pAuctionAct,
+      Integer pTransactionLineNo) throws AxelorException {
+    if (pActivityLine.getServiceTemplateCode() == null) return;
+    ServiceTemplate missionServiceTemplate;
+    MissionServiceLineValidate missionServiceLineValidate = new MissionServiceLineValidate();
+    missionServiceTemplate = pActivityLine.getServiceTemplateCode();
+    for (ServiceTemplateLine lMissionServiceTemplateLine :
+        missionServiceTemplate.getTemplateLineList()) {
+        MissionServiceLine lMissionServiceLine = new MissionServiceLine();
+
+        lMissionServiceLine.setEntryNo(0);
+        lMissionServiceLine.setDocumentNo(null);
+
+        if(pAuctionAct)
+          lMissionServiceLine = missionServiceLineValidate.validateTransactionType(lMissionServiceLine, MissionServiceLineRepository.TRANSACTIONTYPE_VENTE);
+        else
+          lMissionServiceLine = missionServiceLineValidate.validateTransactionType(lMissionServiceLine, MissionServiceLineRepository.TRANSACTIONTYPE_MISSION);
+        lMissionServiceLine = missionServiceLineValidate.validateMissionNo(lMissionServiceLine, pMissionHeader);
+        lMissionServiceLine = missionServiceLineValidate.validateAuctionNo(lMissionServiceLine, pAuctionHeader);
+        lMissionServiceLine = missionServiceLineValidate.validateLotNo(lMissionServiceLine, pLot);
+        lMissionServiceLine = missionServiceLineValidate.validateTransactionLineNo(lMissionServiceLine, pTransactionLineNo);
+        lMissionServiceLine = missionServiceLineValidate.validateType(lMissionServiceLine, lMissionServiceTemplateLine.getType());
+        lMissionServiceLine = missionServiceLineValidate.validateNo(lMissionServiceLine, lMissionServiceTemplateLine.getProduct());
+        lMissionServiceLine = missionServiceLineValidate.validateChargeableContactNo(lMissionServiceLine, pContact);
+        lMissionServiceLine = missionServiceLineValidate.validateContactImputationType(lMissionServiceLine, lMissionServiceLine.getContactImputationType());
+
+
+        if (lMissionServiceTemplateLine.getDescription() != null) {
+          lMissionServiceLine.setDescription(lMissionServiceTemplateLine.getDescription());
+        }
+        if (lMissionServiceTemplateLine.getUnitOfMeasure() != null) {
+          lMissionServiceLine.setUnitofMeasureCode(lMissionServiceTemplateLine.getUnitOfMeasure());
+        }
+        lMissionServiceLine.setMisServiceTemplateCode(
+            lMissionServiceTemplateLine.getServiceTemplateCode());
+        lMissionServiceLine = missionServiceLineValidate.validateQuantity(lMissionServiceLine, BigDecimal.ONE);
+        lMissionServiceLine.setAcceptToInvoice(true);
+        lMissionServiceLine.setWebSite(lMissionServiceTemplateLine.getWebSite());
+        lMissionServiceLine.setActivityHeader(pActivityLine.getActivityCode());
+        lMissionServiceLine.setActivityLine(pActivityLine.getLineNo());
+        
+        updatePrice(lMissionServiceLine);
+        lMissionServiceLine =  missionServiceLineValidate.onInsert(lMissionServiceLine);
+        missionServiceLineRepository.save(lMissionServiceLine);
+
+
+        MissionActivityLine lMissionActivityLine = new MissionActivityLine();
+        lMissionActivityLine.setEntryNo(0);
+       
+        lMissionActivityLine.setMissionNo(pMissionHeader);
+        lMissionActivityLine.setAuctionNo(pAuctionHeader);
+        lMissionActivityLine.setLotNo(pLot);
+        lMissionActivityLine.setTransactionLineNo(pTransactionLineNo);
+        lMissionActivityLine.setActivityCode(pActivityLine.getActivityCode());
+        lMissionActivityLine.setActivityLineNo(pActivityLine.getLineNo());
+        lMissionActivityLine.setType(MissionActivityLineRepository.TYPE_SERVICE);
+        //TODO Interaction
+        //lMissionActivityLine.setTodoNo(null);
+        //lMissionActivityLine.setInteractionTemplateCode(null);
+        lMissionActivityLine.setMissionServiceEntryNo(lMissionServiceLine);
+        
+        lMissionActivityLine.setPreviousMissionNo(null);
+        // TODO eventuellement revoir le insert(true)
+        missionActivityLineRepository.save(lMissionActivityLine);
+      }
+    }
+
+
+     // TODO onValidate
+  private void updatePrice(MissionServiceLine lMissionServiceLine) {
   }
+
+
 }

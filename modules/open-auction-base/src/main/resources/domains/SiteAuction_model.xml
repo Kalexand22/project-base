@@ -6,7 +6,7 @@
   <entity name="SiteAuction">
     <many-to-one name="auctionNo" title="N° vente"
       ref="com.axelor.apps.openauction.db.AuctionHeader"/>
-    <many-to-one name="codeWebSite" ref="com.axelor.apps.openauction.db.WebSite"/>
+    <many-to-one name="codebSite" ref="com.axelor.apps.openauction.db.WebSite"/>
     <string name="contractNo" title="N° contrat"/>
     <string name="externalAuctionNo" title="N° vente site"/>
     <string name="auctionType" title="Type vente" selection="openauction.auctionType.select"/>
