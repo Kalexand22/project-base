@@ -453,7 +453,8 @@ public class MissionServiceLineValidate {
      //<<ap36 isat.zw
    END;
   */
-  public MissionServiceLine updatePrice(MissionServiceLine missionServiceLine) {
+  public MissionServiceLine updatePrice(MissionServiceLine missionServiceLine)
+      throws AxelorException {
     MissionServicePriceManagement missionServicePriceManagement =
         Beans.get(MissionServicePriceManagement.class);
     AuctionServicePriceMgt auctionServicePriceMgt = Beans.get(AuctionServicePriceMgt.class);
@@ -496,14 +497,16 @@ public class MissionServiceLineValidate {
   // OnValidateBEGIN
   // UpdatePrice; //AP23.ST//
   public MissionServiceLine validateLotPriceGroup(
-      MissionServiceLine missionServiceLine, MissionLotPriceGroup lotPriceGroup) {
+      MissionServiceLine missionServiceLine, MissionLotPriceGroup lotPriceGroup)
+      throws AxelorException {
     missionServiceLine.setLotPriceGroup(lotPriceGroup);
     missionServiceLine = this.updatePrice(missionServiceLine);
     return missionServiceLine;
   }
 
   public MissionServiceLine validateAuctionLotPriceGroup(
-      MissionServiceLine missionServiceLine, AuctionLotPriceGroup lotPriceGroup) {
+      MissionServiceLine missionServiceLine, AuctionLotPriceGroup lotPriceGroup)
+      throws AxelorException {
     missionServiceLine.setAuctionLotPriceGroup(lotPriceGroup);
     missionServiceLine = this.updatePrice(missionServiceLine);
     return missionServiceLine;
@@ -514,7 +517,8 @@ public class MissionServiceLineValidate {
     //UpdatePrice; //AP23.ST//
   */
   public MissionServiceLine validateContactPriceGroup(
-      MissionServiceLine missionServiceLine, MissionContactPriceGroup contactPriceGroup) {
+      MissionServiceLine missionServiceLine, MissionContactPriceGroup contactPriceGroup)
+      throws AxelorException {
     missionServiceLine.setContactPriceGroup(contactPriceGroup);
     missionServiceLine = this.updatePrice(missionServiceLine);
     return missionServiceLine;
@@ -1218,6 +1222,4 @@ public class MissionServiceLineValidate {
     // TODO à implémenter
     return lMissionServiceLine;
   }
-
-  
 }

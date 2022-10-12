@@ -12,7 +12,6 @@ import com.axelor.apps.openauction.db.MissionServicePrice;
 import com.axelor.apps.openauction.db.MissionTemplate;
 import com.axelor.apps.openauction.db.TariffScale;
 import com.axelor.exception.AxelorException;
-
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -31,7 +30,7 @@ public interface MissionServicePriceManagement {
   // Code[10];LotCode@1000000003 : Code[20];ContactGroup@1000000002 :
   // Code[10];ContactCode@1000000001 : Code[20]) : Boolean;
   public Boolean testPrice(
-        MissionServicePrice pServiceMissionPrice,
+      MissionServicePrice pServiceMissionPrice,
       MissionTemplate DocTemplate,
       MissionHeader DocNo,
       MissionLotPriceGroup LotGroup,
@@ -48,7 +47,7 @@ public interface MissionServicePriceManagement {
   public void getTempServiceMissionPrice(MissionServiceLine pMissionServicePrice);
   // PROCEDURE GetTariffScaleAmount@1000000009(pAmount@1000000002 : Decimal;pTariffScale@1000000001
   // : Code[20];VAR pAccesBuffer@1000000000 : Record 8011477);
-  public List<AccesBuffer>  getTariffScaleAmount(BigDecimal pAmount, TariffScale pTariffScale);
+  public List<AccesBuffer> getTariffScaleAmount(BigDecimal pAmount, TariffScale pTariffScale);
   // PROCEDURE GetTariffScaleDetail@1000000002(VAR pAccesBuffer@1000000000 : Record 8011477);
   public List<AccesBuffer> getTariffScaleDetail();
   // PROCEDURE GetBaseAMount@1000000004() : Decimal;

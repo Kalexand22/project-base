@@ -320,5 +320,5 @@ public class ActivityManagementImpl implements ActivityManagement {
   }
 
   // TODO onValidate
-  
+
 }

@@ -8,8 +8,10 @@
     <string name="missionType" title="Type mission"
       selection="openauction.missionType.select.missionserviceprice"/>
     <many-to-one ref="com.axelor.apps.openauction.db.MissionHeader" name="missionHeader"/>
-    <many-to-one ref="com.axelor.apps.openauction.db.MissionTemplate" name="missionTemplate"/>
-    <string name="lotType" title="Type de lot" selection="openauction.lotType.select.missionserviceprice"/>
+    <many-to-one ref="com.axelor.apps.openauction.db.MissionTemplate"
+      name="missionTemplate"/>
+    <string name="lotType" title="Type de lot"
+      selection="openauction.lotType.select.missionserviceprice"/>
     <string name="contactType" title="Type contact"
       selection="openauction.contactType.select.missionserviceprice"/>
     <many-to-one name="currencyCode" title="Code devise"
@@ -28,9 +30,11 @@
     <decimal name="minimumBaseAmount" title="Montant base minimum"/>
     <decimal name="maximumBaseAmount" title="Montant base maximum"/>
     <many-to-one ref="com.axelor.apps.openauction.db.Lot" name="lot"/>
-    <many-to-one ref="com.axelor.apps.openauction.db.MissionLotPriceGroup" name="lotPriceGroup"/>
+    <many-to-one ref="com.axelor.apps.openauction.db.MissionLotPriceGroup"
+      name="lotPriceGroup"/>
     <many-to-one ref="com.axelor.apps.base.db.Partner" name="contact"/>
-    <many-to-one ref="com.axelor.apps.openauction.db.MissionContactPriceGroup" name="contactPriceGroup"/>
+    <many-to-one ref="com.axelor.apps.openauction.db.MissionContactPriceGroup"
+      name="contactPriceGroup"/>
     <string name="commBaseCalc" title="Base calcul prestation"
       selection="openauction.commBaseCalc.select"/>
     <boolean name="budgetedCostReinvoicing" title="Refacturation coût budget-"/>
@@ -43,14 +47,14 @@
     <decimal name="minimumChargeAmount" title="Montant minimum"/>
     <decimal name="maximumChargeAmount" title="Montant maximum"/>
     <extra-code>
-      <![CDATA[ 
-      
+      <![CDATA[
+
       //openauction.missionType.select.missionserviceprice
       public static final String MISSIONTYPE_ALLMISSION = "AllMission";
       public static final String MISSIONTYPE_MISSIONTEMPLATE = "MissionTemplate";
       public static final String MISSIONTYPE_MISSION = "Mission";
 
-     
+
       //openauction.lotType.select.missionserviceprice
       public static final String LOTTYPE_ALLLOT = "AllLot";
       public static final String LOTTYPE_LOTPRICEGROUP = "LotPriceGroup";
@@ -61,7 +65,7 @@
       public static final String CONTACTTYPE_CONTACTPRICEGROUP = "ContactPriceGroup";
       public static final String CONTACTTYPE_CONTACT = "Contact";
 
-     
+
       //openauction.calculationType.select
       public static final String CALCULATIONTYPE_UNITPRICE = "UnitPrice0";
       public static final String CALCULATIONTYPE_SERVICE = "Service1";

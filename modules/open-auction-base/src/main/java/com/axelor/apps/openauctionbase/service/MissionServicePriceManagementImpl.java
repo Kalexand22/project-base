@@ -20,51 +20,49 @@ import com.axelor.apps.openauction.db.repo.MissionServicePriceRepository;
 import com.axelor.apps.openauctionbase.validate.MissionServiceLineValidate;
 import com.axelor.exception.AxelorException;
 import com.axelor.inject.Beans;
-
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
 public class MissionServicePriceManagementImpl implements MissionServicePriceManagement {
 
-  
   /*
-   * MissionMgt@1180113000 : Codeunit 8011366;
-      Currency@1000000031 : Record 4;
-      PricesInCurrency@1000000000 : Boolean;
-      CurrencyFactor@1000000007 : Decimal;
-      ExchRateDate@1000000008 : Date;
-      GLSetup@1000000009 : Record 98;
-      PricesInclVAT@1000000013 : Boolean;
-      VATPerCent@1000000012 : Decimal;
-      VATBusPostingGr@1000000010 : Code[10];
-      LineDiscPerCent@1000000018 : Decimal;
-      AllowLineDisc@1000000017 : Boolean;
-      AllowInvDisc@1000000016 : Boolean;
-      Text010@1000000021 : TextConst 'ENU=Prices including VAT cannot be calculated when %1 is %2.;FRA=Les prix TTC ne peuvent pas être calculés quand %1 est identique à %2.;NLB=Prijzen inclusief BTW kunnen niet berekend worden als %1 %2 is.';
-      VATCalcType@1000000023 : 'Normal VAT,Reverse Charge VAT,Full VAT,Sales Tax';
-      MissionServicePrice@1000000024 : Record 8011469;
-      TempAccesBuffer@1000000006 : TEMPORARY Record 8011477;
-      Item@1000000001 : Record 27;
-      Lot@1000000026 : Record 8011404;
-      Currency2@1000000005 : Record 4;
-      BaseAmount@1000000034 : Decimal;
-      ReserveAmount@1000000025 : Decimal;
-      EstimatedMinAmount@1000000029 : Decimal;
-      EstimatedMaxAmount@1000000030 : Decimal;
-      BidReferenceAmount@1180113002 : Decimal;
-      BidPriceInclVAT@1000000038 : Decimal;
-      BidPrice@1000000039 : Decimal;
-      MissionValue@1100481001 : Decimal;
-      ReferenceAmountCalcOk@1000000027 : Boolean;
-      PricesInCurrency2@1000000033 : Boolean;
-      Text8011400@1000000035 : TextConst 'ENU=Unit Price;FRA=Prix unitaire';
-      Text8011401@1000000036 : TextConst 'ENU=Commision;FRA=Commision';
-      IsApplyOnBidPrice@1000000041 : Boolean;
-      Text001@1100481000 : TextConst 'ENU=Update services lines \@1@@@@@@@@@@@@@@@@@@@@@@@@@\;FRA=Mise à jour des prestations \@1@@@@@@@@@@@@@@@@@@@@@@@@@\';
-      Text8011402@1100481002 : TextConst 'ENU=Mission value is not definied for this mission type.;FRA=Le montant mission n''est pas défini pour ce type de mission.';
-      HideDialog@1180113001 : Boolean;
-   */
+  * MissionMgt@1180113000 : Codeunit 8011366;
+     Currency@1000000031 : Record 4;
+     PricesInCurrency@1000000000 : Boolean;
+     CurrencyFactor@1000000007 : Decimal;
+     ExchRateDate@1000000008 : Date;
+     GLSetup@1000000009 : Record 98;
+     PricesInclVAT@1000000013 : Boolean;
+     VATPerCent@1000000012 : Decimal;
+     VATBusPostingGr@1000000010 : Code[10];
+     LineDiscPerCent@1000000018 : Decimal;
+     AllowLineDisc@1000000017 : Boolean;
+     AllowInvDisc@1000000016 : Boolean;
+     Text010@1000000021 : TextConst 'ENU=Prices including VAT cannot be calculated when %1 is %2.;FRA=Les prix TTC ne peuvent pas être calculés quand %1 est identique à %2.;NLB=Prijzen inclusief BTW kunnen niet berekend worden als %1 %2 is.';
+     VATCalcType@1000000023 : 'Normal VAT,Reverse Charge VAT,Full VAT,Sales Tax';
+     MissionServicePrice@1000000024 : Record 8011469;
+     TempAccesBuffer@1000000006 : TEMPORARY Record 8011477;
+     Item@1000000001 : Record 27;
+     Lot@1000000026 : Record 8011404;
+     Currency2@1000000005 : Record 4;
+     BaseAmount@1000000034 : Decimal;
+     ReserveAmount@1000000025 : Decimal;
+     EstimatedMinAmount@1000000029 : Decimal;
+     EstimatedMaxAmount@1000000030 : Decimal;
+     BidReferenceAmount@1180113002 : Decimal;
+     BidPriceInclVAT@1000000038 : Decimal;
+     BidPrice@1000000039 : Decimal;
+     MissionValue@1100481001 : Decimal;
+     ReferenceAmountCalcOk@1000000027 : Boolean;
+     PricesInCurrency2@1000000033 : Boolean;
+     Text8011400@1000000035 : TextConst 'ENU=Unit Price;FRA=Prix unitaire';
+     Text8011401@1000000036 : TextConst 'ENU=Commision;FRA=Commision';
+     IsApplyOnBidPrice@1000000041 : Boolean;
+     Text001@1100481000 : TextConst 'ENU=Update services lines \@1@@@@@@@@@@@@@@@@@@@@@@@@@\;FRA=Mise à jour des prestations \@1@@@@@@@@@@@@@@@@@@@@@@@@@\';
+     Text8011402@1100481002 : TextConst 'ENU=Mission value is not definied for this mission type.;FRA=Le montant mission n''est pas défini pour ce type de mission.';
+     HideDialog@1180113001 : Boolean;
+  */
   Product product;
   TariffScale tariffScale;
   Boolean lUseJudicialTariff;
@@ -90,263 +88,262 @@ public class MissionServicePriceManagementImpl implements MissionServicePriceMan
   MissionManagement missionMgt;
   MissionServiceLineValidate missionServiceLineValidate;
 
-  public MissionServicePriceManagementImpl()
-  {
+  public MissionServicePriceManagementImpl() {
     missionMgt = Beans.get(MissionManagement.class);
     missionServiceLineValidate = Beans.get(MissionServiceLineValidate.class);
   }
 
-/*
- * PROCEDURE FindMissionServicePrice@1000000001(VAR pMissionServiceLine@1000000000 : Record 8011449;pEstimated@1000000004 : Boolean);
-    VAR
-      lTariffScale@1000000005 : Record 8011428;
-      lTempAmount@1000000001 : Decimal;
-      lTariffFound@1000000003 : Boolean;
-      lUseJudicialTariff@1000000002 : Boolean;
-      lLotResaleRights@1100281000 : Record 8011499;
-      lPriceFactor@1100281001 : Decimal;
-      lBaseFactor@1100281002 : Decimal;
-      lJudInvCalculated@1180113000 : Boolean;
-    BEGIN
-      ReferenceAmountCalcOk := FALSE;
+  /*
+  * PROCEDURE FindMissionServicePrice@1000000001(VAR pMissionServiceLine@1000000000 : Record 8011449;pEstimated@1000000004 : Boolean);
+     VAR
+       lTariffScale@1000000005 : Record 8011428;
+       lTempAmount@1000000001 : Decimal;
+       lTariffFound@1000000003 : Boolean;
+       lUseJudicialTariff@1000000002 : Boolean;
+       lLotResaleRights@1100281000 : Record 8011499;
+       lPriceFactor@1100281001 : Decimal;
+       lBaseFactor@1100281002 : Decimal;
+       lJudInvCalculated@1180113000 : Boolean;
+     BEGIN
+       ReferenceAmountCalcOk := FALSE;
 
-      WITH pMissionServiceLine DO BEGIN
+       WITH pMissionServiceLine DO BEGIN
 
-      // AP13 isat.Sf aucun update sur les lignes de débours coché "report de somme"
-      IF pMissionServiceLine.Type = pMissionServiceLine.Type::Service THEN BEGIN
-        //IF Item.GET(pMissionServiceLine."No.") THEN BEGIN
-        //  IF Item."Outlay Sum By Deferring" THEN
-        //    EXIT;
-        //END;
-        IF pMissionServiceLine."Fixed Amount" THEN BEGIN
-          EXIT;
-        END;
-      END;
+       // AP13 isat.Sf aucun update sur les lignes de débours coché "report de somme"
+       IF pMissionServiceLine.Type = pMissionServiceLine.Type::Service THEN BEGIN
+         //IF Item.GET(pMissionServiceLine."No.") THEN BEGIN
+         //  IF Item."Outlay Sum By Deferring" THEN
+         //    EXIT;
+         //END;
+         IF pMissionServiceLine."Fixed Amount" THEN BEGIN
+           EXIT;
+         END;
+       END;
 
-      // Calcul estimation : pas de test Chargeable
-      //  IF NOT Chargeable THEN BEGIN
-      //    EXIT;
-      //  END;
-        CASE Type OF
-          Type::Service : BEGIN
-            IF Item."No." <> "No." THEN BEGIN
-              Item.GET("No.");
-            END;
+       // Calcul estimation : pas de test Chargeable
+       //  IF NOT Chargeable THEN BEGIN
+       //    EXIT;
+       //  END;
+         CASE Type OF
+           Type::Service : BEGIN
+             IF Item."No." <> "No." THEN BEGIN
+               Item.GET("No.");
+             END;
 
-            IF lTariffScale.GET(Item."Tariff Scale") THEN BEGIN
-              lUseJudicialTariff := lTariffScale."Scale Type" = lTariffScale."Scale Type"::"Judicial Inventory";
-            END;
+             IF lTariffScale.GET(Item."Tariff Scale") THEN BEGIN
+               lUseJudicialTariff := lTariffScale."Scale Type" = lTariffScale."Scale Type"::"Judicial Inventory";
+             END;
 
-      //<<AP02.ISAT.SC
-            lPriceFactor := 1;
-            lBaseFactor := 1;
-            IF "Resale Right" THEN BEGIN
-              lLotResaleRights.INIT;
-              IF lLotResaleRights.GET(pMissionServiceLine."Lot No.",pMissionServiceLine."Organization Contact") THEN BEGIN
-                lPriceFactor := lLotResaleRights."Organization Distribution"/100;
-                lBaseFactor := lLotResaleRights."Auction Bid Percentage"/100;
-              END;
-            END;
-      //>>AP02.ISAT.SC
+       //<<AP02.ISAT.SC
+             lPriceFactor := 1;
+             lBaseFactor := 1;
+             IF "Resale Right" THEN BEGIN
+               lLotResaleRights.INIT;
+               IF lLotResaleRights.GET(pMissionServiceLine."Lot No.",pMissionServiceLine."Organization Contact") THEN BEGIN
+                 lPriceFactor := lLotResaleRights."Organization Distribution"/100;
+                 lBaseFactor := lLotResaleRights."Auction Bid Percentage"/100;
+               END;
+             END;
+       //>>AP02.ISAT.SC
 
-            IF NOT lUseJudicialTariff THEN BEGIN
-              lTariffFound :=
-                FindServicePrice(
-                   "No.","Mission Template Code","Mission No.",
-                   "Lot Price Group","Lot No.",
-                   "Contact Price Group","Chargeable Contact No.",
-                   GetPriceDate(pMissionServiceLine),
-                   "Responsibility Center");
-            END;
+             IF NOT lUseJudicialTariff THEN BEGIN
+               lTariffFound :=
+                 FindServicePrice(
+                    "No.","Mission Template Code","Mission No.",
+                    "Lot Price Group","Lot No.",
+                    "Contact Price Group","Chargeable Contact No.",
+                    GetPriceDate(pMissionServiceLine),
+                    "Responsibility Center");
+             END;
 
-            "Reference Amount" := BaseAmount * lBaseFactor;
+             "Reference Amount" := BaseAmount * lBaseFactor;
 
-            IF lTariffFound AND NOT lUseJudicialTariff THEN BEGIN
-              "Price Includes VAT" := MissionServicePrice."Price Includes VAT"; //AP03
-              CASE MissionServicePrice."Calculation Type" OF
-                MissionServicePrice."Calculation Type"::UnitPrice : BEGIN
-                 "Calculation Type" := "Calculation Type"::UnitPrice;
-                  VALIDATE("Unit Price",MissionServicePrice."Unit Price" * lPriceFactor);
-                  TempAccesBuffer.DELETEALL;
-                  TempAccesBuffer.INIT;
-                  TempAccesBuffer.Code := Text8011400;
-                  TempAccesBuffer."Decimal 1" := 0;
-                  TempAccesBuffer."Decimal 2" := 0;
-                  TempAccesBuffer."Decimal 3" := "Reference Amount";
-                  TempAccesBuffer."Decimal 5" := "Unit Price";
-                  TempAccesBuffer."Decimal 6" := "Unit Price";
-                  TempAccesBuffer."Decimal 4" := 0;
-                  TempAccesBuffer.INSERT;
-                  "Service %" := 0; //ap07 isat.zw
-                END;
-                MissionServicePrice."Calculation Type"::"Service%" : BEGIN
-                 "Calculation Type" := "Calculation Type"::"Service%";
-                  VALIDATE("Unit Price", "Reference Amount" * (MissionServicePrice."Service %" / 100) * lPriceFactor);
-                  TempAccesBuffer.DELETEALL;
-                  TempAccesBuffer.INIT;
-                  TempAccesBuffer.Code := Text8011401;
-                  TempAccesBuffer."Decimal 1" := 0;
-                  TempAccesBuffer."Decimal 2" := 0;
-                  TempAccesBuffer."Decimal 3" := "Reference Amount" ;
-                  TempAccesBuffer."Decimal 4" := MissionServicePrice."Service %" * lPriceFactor;
-                  TempAccesBuffer."Decimal 5" := "Reference Amount" * (MissionServicePrice."Service %" / 100) * lPriceFactor;
-                  TempAccesBuffer."Decimal 6" := "Reference Amount" * (MissionServicePrice."Service %" / 100) * lPriceFactor;
-                  TempAccesBuffer.INSERT;
-                  "Service %" := MissionServicePrice."Service %";
-                END;
-                MissionServicePrice."Calculation Type"::"Commission Scale" : BEGIN
-                 "Calculation Type" := "Calculation Type"::"Commission Scale";
-                  GetTariffScaleAmount("Reference Amount",MissionServicePrice."Tariff Scale",TempAccesBuffer);
-                  lTempAmount := 0;
-                  IF TempAccesBuffer.FINDFIRST THEN BEGIN
-                    REPEAT
-                      lTempAmount += TempAccesBuffer."Decimal 5";
-                    UNTIL TempAccesBuffer.NEXT = 0;
-                  END;
-                  VALIDATE("Unit Price",lTempAmount * lPriceFactor);
-                  "Service %" := 0; //ap07 isat.zw
-                END;
-              END; // CASE Calculation type
-              "Estimated Value" := pEstimated;
-              CheckAmount(pMissionServiceLine, MissionServicePrice, Item); //AP15.ST
-              VATConvert(Item, pMissionServiceLine); //AP16.ST
-            END ELSE BEGIN // lTariffFound AND NOT lUseJudicialTariff
-              IF NOT ReferenceAmountCalcOk THEN BEGIN
-                GetLotAmount(pMissionServiceLine."Mission No.",pMissionServiceLine."Lot No.");
-              END;
-              IF IsApplyOnBidPrice THEN BEGIN
-                CASE Item."Base Calc. After Auction" OF
-                  Item."Base Calc. After Auction"::"Bid Price" : BaseAmount := BidReferenceAmount; //AP23.st
-                  Item."Base Calc. After Auction"::"BidPrice Incl.VAT" : BaseAmount := BidPriceInclVAT; //AP23.st
-                  Item."Base Calc. After Auction"::"Bid Price Excl. VAT" : BaseAmount := BidPrice;
-                  Item."Base Calc. After Auction"::"Reserve Price" : BaseAmount := ReserveAmount;
-                END; //CASE
-              END ELSE BEGIN
-                CASE Item."Base Calc. Before Auction" OF
-                  Item."Base Calc. Before Auction"::"Reserve Price" : BaseAmount := ReserveAmount;
-                  Item."Base Calc. Before Auction"::"Estimated Value Min" : BaseAmount := EstimatedMinAmount;
-                  Item."Base Calc. Before Auction"::"Estimated Value Max" : BaseAmount := EstimatedMaxAmount;
-                  Item."Base Calc. Before Auction"::MissionValue, Item."Base Calc. Before Auction"::MissionAdjust,
-                  Item."Base Calc. Before Auction"::MissionInitValue :
-                    BaseAmount := MissionValue; //AP14.ST
-                  //<< AP19 isat.sf
-                  Item."Base Calc. Before Auction"::"Popular Lines On Operating" : BEGIN
-                    lJudInvCalculated := FALSE;
-                    BaseAmount := 0 ;
-                    "Service %" := 0;
-                    MissionMgt.CalcJudInvService(pMissionServiceLine);
-                    lJudInvCalculated := TRUE;
-                  END;
-                  Item."Base Calc. Before Auction"::"Popular Lines Mid Operating Realization" : BEGIN
-                    lJudInvCalculated := FALSE;
-                    BaseAmount := 0 ;
-                    "Service %" := 0;
-                    MissionMgt.CalcJudInvService(pMissionServiceLine);
-                    lJudInvCalculated := TRUE;
-                  END;
-                  //>> AP19 isat.sf
-                  //<< AP20 isat.sf
-                  Item."Base Calc. Before Auction"::"Popular Lines On Realization" : BEGIN
-                    lJudInvCalculated := FALSE;
-                    BaseAmount := 0 ;
-                    "Service %" := 0;
-                    MissionMgt.CalcJudInvService(pMissionServiceLine);
-                    lJudInvCalculated := TRUE;
-                  END;
-                  //>> AP20 isat.sf
-                  //<< AP21 isat.sf
-                  Item."Base Calc. Before Auction"::"Popular Lines Mid 2" : BEGIN
-                    lJudInvCalculated := FALSE;
-                    BaseAmount := 0 ;
-                    "Service %" := 0;
-                    MissionMgt.CalcJudInvService(pMissionServiceLine);
-                    lJudInvCalculated := TRUE;
-                  END;
-                  Item."Base Calc. Before Auction"::"Popular Lines On Realization 2" : BEGIN
-                    lJudInvCalculated := FALSE;
-                    BaseAmount := 0 ;
-                    "Service %" := 0;
-                    MissionMgt.CalcJudInvService(pMissionServiceLine);
-                    lJudInvCalculated := TRUE;
-                  END;
-                  //>> AP21 isat.sf
-                END; //CASE
-              END;
-
-              BaseAmount := ABS(BaseAmount); //AP01.ISAT.ST
-              "Reference Amount" := BaseAmount*lBaseFactor;
-
-              // Calcul prix sur article
-              IF lJudInvCalculated = FALSE THEN // AP19 isat.sf
-               "Price Includes VAT" := Item."Price Includes VAT";  //AP03
-
-              CASE TRUE OF
-                Item."Unit Price" <> 0 : BEGIN
+             IF lTariffFound AND NOT lUseJudicialTariff THEN BEGIN
+               "Price Includes VAT" := MissionServicePrice."Price Includes VAT"; //AP03
+               CASE MissionServicePrice."Calculation Type" OF
+                 MissionServicePrice."Calculation Type"::UnitPrice : BEGIN
                   "Calculation Type" := "Calculation Type"::UnitPrice;
-                  VALIDATE("Unit Price",Item."Unit Price" * lPriceFactor);
-                  TempAccesBuffer.DELETEALL;
-                  TempAccesBuffer.INIT;
-                  TempAccesBuffer.Code := Text8011400;
-                  TempAccesBuffer."Decimal 1" := 0;
-                  TempAccesBuffer."Decimal 2" := 0;
-                  TempAccesBuffer."Decimal 3" := "Reference Amount";
-                  TempAccesBuffer."Decimal 4" := 0;
-                  TempAccesBuffer."Decimal 5" := "Unit Price";
-                  TempAccesBuffer."Decimal 6" := "Unit Price";
-                  TempAccesBuffer.INSERT;
-                  //"Service %" := MissionServicePrice."Service %";
-                  "Service %" := 0; //ap07 isat.zw
-                END;
-                Item."Service %" <> 0 : BEGIN
+                   VALIDATE("Unit Price",MissionServicePrice."Unit Price" * lPriceFactor);
+                   TempAccesBuffer.DELETEALL;
+                   TempAccesBuffer.INIT;
+                   TempAccesBuffer.Code := Text8011400;
+                   TempAccesBuffer."Decimal 1" := 0;
+                   TempAccesBuffer."Decimal 2" := 0;
+                   TempAccesBuffer."Decimal 3" := "Reference Amount";
+                   TempAccesBuffer."Decimal 5" := "Unit Price";
+                   TempAccesBuffer."Decimal 6" := "Unit Price";
+                   TempAccesBuffer."Decimal 4" := 0;
+                   TempAccesBuffer.INSERT;
+                   "Service %" := 0; //ap07 isat.zw
+                 END;
+                 MissionServicePrice."Calculation Type"::"Service%" : BEGIN
                   "Calculation Type" := "Calculation Type"::"Service%";
-                  VALIDATE("Unit Price","Reference Amount" * (Item."Service %" / 100) * lPriceFactor);
-                  pMissionServiceLine."Service %" := Item."Service %" * lPriceFactor;
-                  TempAccesBuffer.DELETEALL;
-                  TempAccesBuffer.INIT;
-                  TempAccesBuffer.Code := Text8011401;
-                  TempAccesBuffer."Decimal 1" := 0;
-                  TempAccesBuffer."Decimal 2" := 0;
-                  TempAccesBuffer."Decimal 3" := "Reference Amount";
-                  TempAccesBuffer."Decimal 4" := Item."Service %" * lPriceFactor;
-                  TempAccesBuffer."Decimal 5" := "Reference Amount" * (Item."Service %" / 100)* lPriceFactor;
-                  TempAccesBuffer."Decimal 6" := "Reference Amount" * (Item."Service %" / 100) * lPriceFactor;
-                  TempAccesBuffer.INSERT;
-                END;
-                Item."Tariff Scale" <> '' : BEGIN
-                  IF lJudInvCalculated = FALSE THEN BEGIN  // AP19 isat.sf
-                    "Calculation Type" := "Calculation Type"::"Commission Scale";
-                     GetTariffScaleAmount("Reference Amount",Item."Tariff Scale",TempAccesBuffer);
-                     lTempAmount := 0;
-                     IF TempAccesBuffer.FINDFIRST THEN BEGIN
-                       REPEAT
-                         lTempAmount += TempAccesBuffer."Decimal 5";
-                       UNTIL TempAccesBuffer.NEXT = 0;
-                     END;
-                     VALIDATE("Unit Price",lTempAmount * lPriceFactor);
-                     "Service %" := 0; //ap07 isat.zw
+                   VALIDATE("Unit Price", "Reference Amount" * (MissionServicePrice."Service %" / 100) * lPriceFactor);
+                   TempAccesBuffer.DELETEALL;
+                   TempAccesBuffer.INIT;
+                   TempAccesBuffer.Code := Text8011401;
+                   TempAccesBuffer."Decimal 1" := 0;
+                   TempAccesBuffer."Decimal 2" := 0;
+                   TempAccesBuffer."Decimal 3" := "Reference Amount" ;
+                   TempAccesBuffer."Decimal 4" := MissionServicePrice."Service %" * lPriceFactor;
+                   TempAccesBuffer."Decimal 5" := "Reference Amount" * (MissionServicePrice."Service %" / 100) * lPriceFactor;
+                   TempAccesBuffer."Decimal 6" := "Reference Amount" * (MissionServicePrice."Service %" / 100) * lPriceFactor;
+                   TempAccesBuffer.INSERT;
+                   "Service %" := MissionServicePrice."Service %";
+                 END;
+                 MissionServicePrice."Calculation Type"::"Commission Scale" : BEGIN
+                  "Calculation Type" := "Calculation Type"::"Commission Scale";
+                   GetTariffScaleAmount("Reference Amount",MissionServicePrice."Tariff Scale",TempAccesBuffer);
+                   lTempAmount := 0;
+                   IF TempAccesBuffer.FINDFIRST THEN BEGIN
+                     REPEAT
+                       lTempAmount += TempAccesBuffer."Decimal 5";
+                     UNTIL TempAccesBuffer.NEXT = 0;
                    END;
-                END;
-                ELSE BEGIN
-                  VALIDATE("Unit Price",0);   //AP12.ZW
-                  "Service %" := 0; //AP12.ZW
-                END;
-              END;
-              "Estimated Value" := pEstimated;
-              CheckAmount(pMissionServiceLine, MissionServicePrice, Item); //AP15.ST
-              VATConvert(Item,pMissionServiceLine);
-            END;
-          END;
-          Type::Resource : BEGIN
-          END;
-        END;
-      END;
-    END;
+                   VALIDATE("Unit Price",lTempAmount * lPriceFactor);
+                   "Service %" := 0; //ap07 isat.zw
+                 END;
+               END; // CASE Calculation type
+               "Estimated Value" := pEstimated;
+               CheckAmount(pMissionServiceLine, MissionServicePrice, Item); //AP15.ST
+               VATConvert(Item, pMissionServiceLine); //AP16.ST
+             END ELSE BEGIN // lTariffFound AND NOT lUseJudicialTariff
+               IF NOT ReferenceAmountCalcOk THEN BEGIN
+                 GetLotAmount(pMissionServiceLine."Mission No.",pMissionServiceLine."Lot No.");
+               END;
+               IF IsApplyOnBidPrice THEN BEGIN
+                 CASE Item."Base Calc. After Auction" OF
+                   Item."Base Calc. After Auction"::"Bid Price" : BaseAmount := BidReferenceAmount; //AP23.st
+                   Item."Base Calc. After Auction"::"BidPrice Incl.VAT" : BaseAmount := BidPriceInclVAT; //AP23.st
+                   Item."Base Calc. After Auction"::"Bid Price Excl. VAT" : BaseAmount := BidPrice;
+                   Item."Base Calc. After Auction"::"Reserve Price" : BaseAmount := ReserveAmount;
+                 END; //CASE
+               END ELSE BEGIN
+                 CASE Item."Base Calc. Before Auction" OF
+                   Item."Base Calc. Before Auction"::"Reserve Price" : BaseAmount := ReserveAmount;
+                   Item."Base Calc. Before Auction"::"Estimated Value Min" : BaseAmount := EstimatedMinAmount;
+                   Item."Base Calc. Before Auction"::"Estimated Value Max" : BaseAmount := EstimatedMaxAmount;
+                   Item."Base Calc. Before Auction"::MissionValue, Item."Base Calc. Before Auction"::MissionAdjust,
+                   Item."Base Calc. Before Auction"::MissionInitValue :
+                     BaseAmount := MissionValue; //AP14.ST
+                   //<< AP19 isat.sf
+                   Item."Base Calc. Before Auction"::"Popular Lines On Operating" : BEGIN
+                     lJudInvCalculated := FALSE;
+                     BaseAmount := 0 ;
+                     "Service %" := 0;
+                     MissionMgt.CalcJudInvService(pMissionServiceLine);
+                     lJudInvCalculated := TRUE;
+                   END;
+                   Item."Base Calc. Before Auction"::"Popular Lines Mid Operating Realization" : BEGIN
+                     lJudInvCalculated := FALSE;
+                     BaseAmount := 0 ;
+                     "Service %" := 0;
+                     MissionMgt.CalcJudInvService(pMissionServiceLine);
+                     lJudInvCalculated := TRUE;
+                   END;
+                   //>> AP19 isat.sf
+                   //<< AP20 isat.sf
+                   Item."Base Calc. Before Auction"::"Popular Lines On Realization" : BEGIN
+                     lJudInvCalculated := FALSE;
+                     BaseAmount := 0 ;
+                     "Service %" := 0;
+                     MissionMgt.CalcJudInvService(pMissionServiceLine);
+                     lJudInvCalculated := TRUE;
+                   END;
+                   //>> AP20 isat.sf
+                   //<< AP21 isat.sf
+                   Item."Base Calc. Before Auction"::"Popular Lines Mid 2" : BEGIN
+                     lJudInvCalculated := FALSE;
+                     BaseAmount := 0 ;
+                     "Service %" := 0;
+                     MissionMgt.CalcJudInvService(pMissionServiceLine);
+                     lJudInvCalculated := TRUE;
+                   END;
+                   Item."Base Calc. Before Auction"::"Popular Lines On Realization 2" : BEGIN
+                     lJudInvCalculated := FALSE;
+                     BaseAmount := 0 ;
+                     "Service %" := 0;
+                     MissionMgt.CalcJudInvService(pMissionServiceLine);
+                     lJudInvCalculated := TRUE;
+                   END;
+                   //>> AP21 isat.sf
+                 END; //CASE
+               END;
 
- */
-   @Override
+               BaseAmount := ABS(BaseAmount); //AP01.ISAT.ST
+               "Reference Amount" := BaseAmount*lBaseFactor;
+
+               // Calcul prix sur article
+               IF lJudInvCalculated = FALSE THEN // AP19 isat.sf
+                "Price Includes VAT" := Item."Price Includes VAT";  //AP03
+
+               CASE TRUE OF
+                 Item."Unit Price" <> 0 : BEGIN
+                   "Calculation Type" := "Calculation Type"::UnitPrice;
+                   VALIDATE("Unit Price",Item."Unit Price" * lPriceFactor);
+                   TempAccesBuffer.DELETEALL;
+                   TempAccesBuffer.INIT;
+                   TempAccesBuffer.Code := Text8011400;
+                   TempAccesBuffer."Decimal 1" := 0;
+                   TempAccesBuffer."Decimal 2" := 0;
+                   TempAccesBuffer."Decimal 3" := "Reference Amount";
+                   TempAccesBuffer."Decimal 4" := 0;
+                   TempAccesBuffer."Decimal 5" := "Unit Price";
+                   TempAccesBuffer."Decimal 6" := "Unit Price";
+                   TempAccesBuffer.INSERT;
+                   //"Service %" := MissionServicePrice."Service %";
+                   "Service %" := 0; //ap07 isat.zw
+                 END;
+                 Item."Service %" <> 0 : BEGIN
+                   "Calculation Type" := "Calculation Type"::"Service%";
+                   VALIDATE("Unit Price","Reference Amount" * (Item."Service %" / 100) * lPriceFactor);
+                   pMissionServiceLine."Service %" := Item."Service %" * lPriceFactor;
+                   TempAccesBuffer.DELETEALL;
+                   TempAccesBuffer.INIT;
+                   TempAccesBuffer.Code := Text8011401;
+                   TempAccesBuffer."Decimal 1" := 0;
+                   TempAccesBuffer."Decimal 2" := 0;
+                   TempAccesBuffer."Decimal 3" := "Reference Amount";
+                   TempAccesBuffer."Decimal 4" := Item."Service %" * lPriceFactor;
+                   TempAccesBuffer."Decimal 5" := "Reference Amount" * (Item."Service %" / 100)* lPriceFactor;
+                   TempAccesBuffer."Decimal 6" := "Reference Amount" * (Item."Service %" / 100) * lPriceFactor;
+                   TempAccesBuffer.INSERT;
+                 END;
+                 Item."Tariff Scale" <> '' : BEGIN
+                   IF lJudInvCalculated = FALSE THEN BEGIN  // AP19 isat.sf
+                     "Calculation Type" := "Calculation Type"::"Commission Scale";
+                      GetTariffScaleAmount("Reference Amount",Item."Tariff Scale",TempAccesBuffer);
+                      lTempAmount := 0;
+                      IF TempAccesBuffer.FINDFIRST THEN BEGIN
+                        REPEAT
+                          lTempAmount += TempAccesBuffer."Decimal 5";
+                        UNTIL TempAccesBuffer.NEXT = 0;
+                      END;
+                      VALIDATE("Unit Price",lTempAmount * lPriceFactor);
+                      "Service %" := 0; //ap07 isat.zw
+                    END;
+                 END;
+                 ELSE BEGIN
+                   VALIDATE("Unit Price",0);   //AP12.ZW
+                   "Service %" := 0; //AP12.ZW
+                 END;
+               END;
+               "Estimated Value" := pEstimated;
+               CheckAmount(pMissionServiceLine, MissionServicePrice, Item); //AP15.ST
+               VATConvert(Item,pMissionServiceLine);
+             END;
+           END;
+           Type::Resource : BEGIN
+           END;
+         END;
+       END;
+     END;
+
+  */
+  @Override
   public MissionServiceLine findMissionServicePrice(
       MissionServiceLine pMissionServiceLine, Boolean pEstimated) throws AxelorException {
-    
+
     if (pMissionServiceLine.getType() == MissionServiceLineRepository.TYPE_SERVICE) {
       if (pMissionServiceLine.getFixedAmount()) {
         return pMissionServiceLine;
@@ -355,29 +352,30 @@ public class MissionServicePriceManagementImpl implements MissionServicePriceMan
       if (product == null) {
         product = pMissionServiceLine.getProductNo();
       }
-      if(tariffScale == null && product.getTariffScale() != null) {
+      if (tariffScale == null && product.getTariffScale() != null) {
         tariffScale = product.getTariffScale();
       }
       findPriceAndBaseFactor(pMissionServiceLine);
       lTariffFound = findServicePrice(pMissionServiceLine);
       pMissionServiceLine.setReferenceAmount(baseAmount.multiply(lBaseFactor));
-      if(lTariffFound && !lUseJudicialTariff) {
+      if (lTariffFound && !lUseJudicialTariff) {
         pMissionServiceLine = applyTariff(pMissionServiceLine, pEstimated);
-      }
-      else {
-        pMissionServiceLine = calcWhenNoTariff(pMissionServiceLine);        
+      } else {
+        pMissionServiceLine = calcWhenNoTariff(pMissionServiceLine);
       }
       baseAmount = baseAmount.abs();
       pMissionServiceLine.setReferenceAmount(baseAmount.multiply(lBaseFactor));
-      if(!lJudInvCalculated) {
-        //TODO pMissionServiceLine.setPriceIncludesVat(product.getPriceIncludesVat());
+      if (!lJudInvCalculated) {
+        // TODO pMissionServiceLine.setPriceIncludesVat(product.getPriceIncludesVat());
       }
 
-      if(product.getSalePrice() != BigDecimal.ZERO)
-      {
-        pMissionServiceLine.setCalculationType(MissionServicePriceRepository.CALCULATIONTYPE_UNITPRICE);
-        pMissionServiceLine = missionServiceLineValidate.validateUnitPrice(pMissionServiceLine, product.getSalePrice().multiply(lPriceFactor));
-        
+      if (product.getSalePrice() != BigDecimal.ZERO) {
+        pMissionServiceLine.setCalculationType(
+            MissionServicePriceRepository.CALCULATIONTYPE_UNITPRICE);
+        pMissionServiceLine =
+            missionServiceLineValidate.validateUnitPrice(
+                pMissionServiceLine, product.getSalePrice().multiply(lPriceFactor));
+
         tempAccesBuffer = new AccesBuffer();
         tempAccesBuffer.setCode("Prix unitaire");
         tempAccesBuffer.setDecimal1(BigDecimal.ZERO);
@@ -388,11 +386,16 @@ public class MissionServicePriceManagementImpl implements MissionServicePriceMan
         tempAccesBuffer.setDecimal6(pMissionServiceLine.getUnitPrice());
         tempAccesBufferList.add(tempAccesBuffer);
         pMissionServiceLine.setServicePercent(BigDecimal.ZERO);
-      }
-      else if(product.getServicePercent() != BigDecimal.ZERO)
-      {
-        pMissionServiceLine.setCalculationType(MissionServicePriceRepository.CALCULATIONTYPE_SERVICE);
-        pMissionServiceLine = missionServiceLineValidate.validateUnitPrice(pMissionServiceLine, pMissionServiceLine.getReferenceAmount().multiply(product.getServicePercent().divide(new BigDecimal(100))).multiply(lPriceFactor));
+      } else if (product.getServicePercent() != BigDecimal.ZERO) {
+        pMissionServiceLine.setCalculationType(
+            MissionServicePriceRepository.CALCULATIONTYPE_SERVICE);
+        pMissionServiceLine =
+            missionServiceLineValidate.validateUnitPrice(
+                pMissionServiceLine,
+                pMissionServiceLine
+                    .getReferenceAmount()
+                    .multiply(product.getServicePercent().divide(new BigDecimal(100)))
+                    .multiply(lPriceFactor));
         pMissionServiceLine.setServicePercent(product.getServicePercent().multiply(lPriceFactor));
         tempAccesBuffer = new AccesBuffer();
         tempAccesBuffer.setCode("Commission");
@@ -400,28 +403,38 @@ public class MissionServicePriceManagementImpl implements MissionServicePriceMan
         tempAccesBuffer.setDecimal2(BigDecimal.ZERO);
         tempAccesBuffer.setDecimal3(pMissionServiceLine.getReferenceAmount());
         tempAccesBuffer.setDecimal4(product.getServicePercent().multiply(lPriceFactor));
-        tempAccesBuffer.setDecimal5(pMissionServiceLine.getReferenceAmount().multiply(product.getServicePercent().divide(new BigDecimal(100))).multiply(lPriceFactor));
-        tempAccesBuffer.setDecimal6(pMissionServiceLine.getReferenceAmount().multiply(product.getServicePercent().divide(new BigDecimal(100))).multiply(lPriceFactor));
+        tempAccesBuffer.setDecimal5(
+            pMissionServiceLine
+                .getReferenceAmount()
+                .multiply(product.getServicePercent().divide(new BigDecimal(100)))
+                .multiply(lPriceFactor));
+        tempAccesBuffer.setDecimal6(
+            pMissionServiceLine
+                .getReferenceAmount()
+                .multiply(product.getServicePercent().divide(new BigDecimal(100)))
+                .multiply(lPriceFactor));
         tempAccesBufferList.add(tempAccesBuffer);
-      }
-      else if (product.getTariffScale()!= null)
-      {
-        if(!lJudInvCalculated) {
-          pMissionServiceLine.setCalculationType(MissionServicePriceRepository.CALCULATIONTYPE_COMMISSIONSCALE);
+      } else if (product.getTariffScale() != null) {
+        if (!lJudInvCalculated) {
+          pMissionServiceLine.setCalculationType(
+              MissionServicePriceRepository.CALCULATIONTYPE_COMMISSIONSCALE);
           tariffScale = product.getTariffScale();
-          List<AccesBuffer> accesBuffersList = getTariffScaleAmount(pMissionServiceLine.getReferenceAmount(), tariffScale);
+          List<AccesBuffer> accesBuffersList =
+              getTariffScaleAmount(pMissionServiceLine.getReferenceAmount(), tariffScale);
           BigDecimal lTempAmount = BigDecimal.ZERO;
           for (AccesBuffer lAccesBuffer : accesBuffersList) {
-            if(accesBuffersList != null) {
+            if (accesBuffersList != null) {
               lTempAmount = lTempAmount.add(lAccesBuffer.getDecimal5());
             }
-          }     
-          pMissionServiceLine = missionServiceLineValidate.validateUnitPrice(pMissionServiceLine, lTempAmount.multiply(lPriceFactor));
+          }
+          pMissionServiceLine =
+              missionServiceLineValidate.validateUnitPrice(
+                  pMissionServiceLine, lTempAmount.multiply(lPriceFactor));
           pMissionServiceLine.setServicePercent(BigDecimal.ZERO);
         }
-      }
-      else {
-        pMissionServiceLine = missionServiceLineValidate.validateUnitPrice(pMissionServiceLine, BigDecimal.ZERO);
+      } else {
+        pMissionServiceLine =
+            missionServiceLineValidate.validateUnitPrice(pMissionServiceLine, BigDecimal.ZERO);
         pMissionServiceLine.setServicePercent(BigDecimal.ZERO);
       }
       pMissionServiceLine.setEstimatedValue(pEstimated);
@@ -431,101 +444,118 @@ public class MissionServicePriceManagementImpl implements MissionServicePriceMan
     return pMissionServiceLine;
   }
   /*
-   * PROCEDURE UPDATE_SERVICE_PRICE
-   * "Price Includes VAT" := MissionServicePrice."Price Includes VAT"; //AP03
-              CASE MissionServicePrice."Calculation Type" OF
-                MissionServicePrice."Calculation Type"::UnitPrice : BEGIN
-                 "Calculation Type" := "Calculation Type"::UnitPrice;
-                  VALIDATE("Unit Price",MissionServicePrice."Unit Price" * lPriceFactor);
-                  TempAccesBuffer.DELETEALL;
-                  TempAccesBuffer.INIT;
-                  TempAccesBuffer.Code := Text8011400;
-                  TempAccesBuffer."Decimal 1" := 0;
-                  TempAccesBuffer."Decimal 2" := 0;
-                  TempAccesBuffer."Decimal 3" := "Reference Amount";
-                  TempAccesBuffer."Decimal 5" := "Unit Price";
-                  TempAccesBuffer."Decimal 6" := "Unit Price";
-                  TempAccesBuffer."Decimal 4" := 0;
-                  TempAccesBuffer.INSERT;
-                  "Service %" := 0; 
-                END;
-                MissionServicePrice."Calculation Type"::"Service%" : BEGIN
-                 "Calculation Type" := "Calculation Type"::"Service%";
-                  VALIDATE("Unit Price", "Reference Amount" * (MissionServicePrice."Service %" / 100) * lPriceFactor);
-                  TempAccesBuffer.DELETEALL;
-                  TempAccesBuffer.INIT;
-                  TempAccesBuffer.Code := Text8011401;
-                  TempAccesBuffer."Decimal 1" := 0;
-                  TempAccesBuffer."Decimal 2" := 0;
-                  TempAccesBuffer."Decimal 3" := "Reference Amount" ;
-                  TempAccesBuffer."Decimal 4" := MissionServicePrice."Service %" * lPriceFactor;
-                  TempAccesBuffer."Decimal 5" := "Reference Amount" * (MissionServicePrice."Service %" / 100) * lPriceFactor;
-                  TempAccesBuffer."Decimal 6" := "Reference Amount" * (MissionServicePrice."Service %" / 100) * lPriceFactor;
-                  TempAccesBuffer.INSERT;
-                  "Service %" := MissionServicePrice."Service %";
-                END;
-                MissionServicePrice."Calculation Type"::"Commission Scale" : BEGIN
-                 "Calculation Type" := "Calculation Type"::"Commission Scale";
-                  GetTariffScaleAmount("Reference Amount",MissionServicePrice."Tariff Scale",TempAccesBuffer);
-                  lTempAmount := 0;
-                  IF TempAccesBuffer.FINDFIRST THEN BEGIN
-                    REPEAT
-                      lTempAmount += TempAccesBuffer."Decimal 5";
-                    UNTIL TempAccesBuffer.NEXT = 0;
-                  END;
-                  VALIDATE("Unit Price",lTempAmount * lPriceFactor);
-                  "Service %" := 0; 
-                END;
-              END; 
-              "Estimated Value" := pEstimated;
-              CheckAmount(pMissionServiceLine, MissionServicePrice, Item); //AP15.ST
-              VATConvert(Item, pMissionServiceLine); //AP16.ST
-   */
-  private MissionServiceLine applyTariff(MissionServiceLine pMissionServiceLine, Boolean pEstimated)
-  {
+  * PROCEDURE UPDATE_SERVICE_PRICE
+  * "Price Includes VAT" := MissionServicePrice."Price Includes VAT"; //AP03
+             CASE MissionServicePrice."Calculation Type" OF
+               MissionServicePrice."Calculation Type"::UnitPrice : BEGIN
+                "Calculation Type" := "Calculation Type"::UnitPrice;
+                 VALIDATE("Unit Price",MissionServicePrice."Unit Price" * lPriceFactor);
+                 TempAccesBuffer.DELETEALL;
+                 TempAccesBuffer.INIT;
+                 TempAccesBuffer.Code := Text8011400;
+                 TempAccesBuffer."Decimal 1" := 0;
+                 TempAccesBuffer."Decimal 2" := 0;
+                 TempAccesBuffer."Decimal 3" := "Reference Amount";
+                 TempAccesBuffer."Decimal 5" := "Unit Price";
+                 TempAccesBuffer."Decimal 6" := "Unit Price";
+                 TempAccesBuffer."Decimal 4" := 0;
+                 TempAccesBuffer.INSERT;
+                 "Service %" := 0;
+               END;
+               MissionServicePrice."Calculation Type"::"Service%" : BEGIN
+                "Calculation Type" := "Calculation Type"::"Service%";
+                 VALIDATE("Unit Price", "Reference Amount" * (MissionServicePrice."Service %" / 100) * lPriceFactor);
+                 TempAccesBuffer.DELETEALL;
+                 TempAccesBuffer.INIT;
+                 TempAccesBuffer.Code := Text8011401;
+                 TempAccesBuffer."Decimal 1" := 0;
+                 TempAccesBuffer."Decimal 2" := 0;
+                 TempAccesBuffer."Decimal 3" := "Reference Amount" ;
+                 TempAccesBuffer."Decimal 4" := MissionServicePrice."Service %" * lPriceFactor;
+                 TempAccesBuffer."Decimal 5" := "Reference Amount" * (MissionServicePrice."Service %" / 100) * lPriceFactor;
+                 TempAccesBuffer."Decimal 6" := "Reference Amount" * (MissionServicePrice."Service %" / 100) * lPriceFactor;
+                 TempAccesBuffer.INSERT;
+                 "Service %" := MissionServicePrice."Service %";
+               END;
+               MissionServicePrice."Calculation Type"::"Commission Scale" : BEGIN
+                "Calculation Type" := "Calculation Type"::"Commission Scale";
+                 GetTariffScaleAmount("Reference Amount",MissionServicePrice."Tariff Scale",TempAccesBuffer);
+                 lTempAmount := 0;
+                 IF TempAccesBuffer.FINDFIRST THEN BEGIN
+                   REPEAT
+                     lTempAmount += TempAccesBuffer."Decimal 5";
+                   UNTIL TempAccesBuffer.NEXT = 0;
+                 END;
+                 VALIDATE("Unit Price",lTempAmount * lPriceFactor);
+                 "Service %" := 0;
+               END;
+             END;
+             "Estimated Value" := pEstimated;
+             CheckAmount(pMissionServiceLine, MissionServicePrice, Item); //AP15.ST
+             VATConvert(Item, pMissionServiceLine); //AP16.ST
+  */
+  private MissionServiceLine applyTariff(
+      MissionServiceLine pMissionServiceLine, Boolean pEstimated) {
     pMissionServiceLine.setPriceIncludesVAT(missionServicePrice.getPriceIncludesVAT());
     switch (missionServicePrice.getCalculationType()) {
-        case MissionServicePriceRepository.CALCULATIONTYPE_UNITPRICE:
-          pMissionServiceLine.setCalculationType(MissionServicePriceRepository.CALCULATIONTYPE_UNITPRICE);
-          pMissionServiceLine.setUnitPrice(missionServicePrice.getUnitPrice().multiply(lPriceFactor));
-          tempAccesBuffer = new AccesBuffer();
-          tempAccesBuffer.setCode("Prix unitaire");
-          tempAccesBuffer.setDecimal1(BigDecimal.ZERO);
-          tempAccesBuffer.setDecimal2(BigDecimal.ZERO);
-          tempAccesBuffer.setDecimal3(pMissionServiceLine.getReferenceAmount());
-          tempAccesBuffer.setDecimal5(pMissionServiceLine.getUnitPrice());
-          tempAccesBuffer.setDecimal6(pMissionServiceLine.getUnitPrice());
-          tempAccesBuffer.setDecimal4(BigDecimal.ZERO);
-          tempAccesBufferList.add(tempAccesBuffer);
-          pMissionServiceLine.setServicePercent(BigDecimal.ZERO);
-          break;
-        case MissionServicePriceRepository.CALCULATIONTYPE_SERVICE:
-          pMissionServiceLine.setCalculationType(MissionServicePriceRepository.CALCULATIONTYPE_SERVICE);
-          pMissionServiceLine.setUnitPrice(pMissionServiceLine.getReferenceAmount().multiply(missionServicePrice.getServicePercent().divide(new BigDecimal(100))).multiply(lPriceFactor));
-          tempAccesBuffer = new AccesBuffer();
-          tempAccesBuffer.setCode("Commission");
-          tempAccesBuffer.setDecimal1(BigDecimal.ZERO);
-          tempAccesBuffer.setDecimal2(BigDecimal.ZERO);
-          tempAccesBuffer.setDecimal3(pMissionServiceLine.getReferenceAmount());
-          tempAccesBuffer.setDecimal4(missionServicePrice.getServicePercent().multiply(lPriceFactor));
-          tempAccesBuffer.setDecimal5(pMissionServiceLine.getReferenceAmount().multiply(missionServicePrice.getServicePercent().divide(new BigDecimal(100))).multiply(lPriceFactor));
-          tempAccesBuffer.setDecimal6(pMissionServiceLine.getReferenceAmount().multiply(missionServicePrice.getServicePercent().divide(new BigDecimal(100))).multiply(lPriceFactor));
-          tempAccesBufferList.add(tempAccesBuffer);
-          pMissionServiceLine.setServicePercent(missionServicePrice.getServicePercent());
-          break;
-        case MissionServicePriceRepository.CALCULATIONTYPE_COMMISSIONSCALE:
-          pMissionServiceLine.setCalculationType(MissionServicePriceRepository.CALCULATIONTYPE_COMMISSIONSCALE);
-          List<AccesBuffer> tempAccesBufferList = getTariffScaleAmount(pMissionServiceLine.getReferenceAmount(), missionServicePrice.getTariffScale());
-          
-          BigDecimal lTempAmount = BigDecimal.ZERO;
-          if (tempAccesBuffer != null) {
-            for (AccesBuffer accesBuffer : tempAccesBufferList) {
-              lTempAmount = lTempAmount.add(accesBuffer.getDecimal5());
-            }
+      case MissionServicePriceRepository.CALCULATIONTYPE_UNITPRICE:
+        pMissionServiceLine.setCalculationType(
+            MissionServicePriceRepository.CALCULATIONTYPE_UNITPRICE);
+        pMissionServiceLine.setUnitPrice(missionServicePrice.getUnitPrice().multiply(lPriceFactor));
+        tempAccesBuffer = new AccesBuffer();
+        tempAccesBuffer.setCode("Prix unitaire");
+        tempAccesBuffer.setDecimal1(BigDecimal.ZERO);
+        tempAccesBuffer.setDecimal2(BigDecimal.ZERO);
+        tempAccesBuffer.setDecimal3(pMissionServiceLine.getReferenceAmount());
+        tempAccesBuffer.setDecimal5(pMissionServiceLine.getUnitPrice());
+        tempAccesBuffer.setDecimal6(pMissionServiceLine.getUnitPrice());
+        tempAccesBuffer.setDecimal4(BigDecimal.ZERO);
+        tempAccesBufferList.add(tempAccesBuffer);
+        pMissionServiceLine.setServicePercent(BigDecimal.ZERO);
+        break;
+      case MissionServicePriceRepository.CALCULATIONTYPE_SERVICE:
+        pMissionServiceLine.setCalculationType(
+            MissionServicePriceRepository.CALCULATIONTYPE_SERVICE);
+        pMissionServiceLine.setUnitPrice(
+            pMissionServiceLine
+                .getReferenceAmount()
+                .multiply(missionServicePrice.getServicePercent().divide(new BigDecimal(100)))
+                .multiply(lPriceFactor));
+        tempAccesBuffer = new AccesBuffer();
+        tempAccesBuffer.setCode("Commission");
+        tempAccesBuffer.setDecimal1(BigDecimal.ZERO);
+        tempAccesBuffer.setDecimal2(BigDecimal.ZERO);
+        tempAccesBuffer.setDecimal3(pMissionServiceLine.getReferenceAmount());
+        tempAccesBuffer.setDecimal4(missionServicePrice.getServicePercent().multiply(lPriceFactor));
+        tempAccesBuffer.setDecimal5(
+            pMissionServiceLine
+                .getReferenceAmount()
+                .multiply(missionServicePrice.getServicePercent().divide(new BigDecimal(100)))
+                .multiply(lPriceFactor));
+        tempAccesBuffer.setDecimal6(
+            pMissionServiceLine
+                .getReferenceAmount()
+                .multiply(missionServicePrice.getServicePercent().divide(new BigDecimal(100)))
+                .multiply(lPriceFactor));
+        tempAccesBufferList.add(tempAccesBuffer);
+        pMissionServiceLine.setServicePercent(missionServicePrice.getServicePercent());
+        break;
+      case MissionServicePriceRepository.CALCULATIONTYPE_COMMISSIONSCALE:
+        pMissionServiceLine.setCalculationType(
+            MissionServicePriceRepository.CALCULATIONTYPE_COMMISSIONSCALE);
+        List<AccesBuffer> tempAccesBufferList =
+            getTariffScaleAmount(
+                pMissionServiceLine.getReferenceAmount(), missionServicePrice.getTariffScale());
+
+        BigDecimal lTempAmount = BigDecimal.ZERO;
+        if (tempAccesBuffer != null) {
+          for (AccesBuffer accesBuffer : tempAccesBufferList) {
+            lTempAmount = lTempAmount.add(accesBuffer.getDecimal5());
           }
-          pMissionServiceLine.setUnitPrice(lTempAmount.multiply(lPriceFactor));
-          pMissionServiceLine.setServicePercent(BigDecimal.ZERO);
-          break;
+        }
+        pMissionServiceLine.setUnitPrice(lTempAmount.multiply(lPriceFactor));
+        pMissionServiceLine.setServicePercent(BigDecimal.ZERO);
+        break;
     }
     pMissionServiceLine.setEstimatedValue(pEstimated);
     checkAmount(pMissionServiceLine, missionServicePrice, product);
@@ -535,77 +565,73 @@ public class MissionServicePriceManagementImpl implements MissionServicePriceMan
   }
 
   /*
-   * IF NOT ReferenceAmountCalcOk THEN BEGIN
-                GetLotAmount(pMissionServiceLine."Mission No.",pMissionServiceLine."Lot No.");
-              END;
-              IF IsApplyOnBidPrice THEN BEGIN
-                CASE Item."Base Calc. After Auction" OF
-                  Item."Base Calc. After Auction"::"Bid Price" : BaseAmount := BidReferenceAmount; //AP23.st
-                  Item."Base Calc. After Auction"::"BidPrice Incl.VAT" : BaseAmount := BidPriceInclVAT; //AP23.st
-                  Item."Base Calc. After Auction"::"Bid Price Excl. VAT" : BaseAmount := BidPrice;
-                  Item."Base Calc. After Auction"::"Reserve Price" : BaseAmount := ReserveAmount;
-                END; //CASE
-              END ELSE BEGIN
-                CASE Item."Base Calc. Before Auction" OF
-                  Item."Base Calc. Before Auction"::"Reserve Price" : BaseAmount := ReserveAmount;
-                  Item."Base Calc. Before Auction"::"Estimated Value Min" : BaseAmount := EstimatedMinAmount;
-                  Item."Base Calc. Before Auction"::"Estimated Value Max" : BaseAmount := EstimatedMaxAmount;
-                  Item."Base Calc. Before Auction"::MissionValue, Item."Base Calc. Before Auction"::MissionAdjust,
-                  Item."Base Calc. Before Auction"::MissionInitValue :
-                    BaseAmount := MissionValue; //AP14.ST
-                  //<< AP19 isat.sf
-                  Item."Base Calc. Before Auction"::"Popular Lines On Operating" : BEGIN
-                    lJudInvCalculated := FALSE;
-                    BaseAmount := 0 ;
-                    "Service %" := 0;
-                    MissionMgt.CalcJudInvService(pMissionServiceLine);
-                    lJudInvCalculated := TRUE;
-                  END;
-                  Item."Base Calc. Before Auction"::"Popular Lines Mid Operating Realization" : BEGIN
-                    lJudInvCalculated := FALSE;
-                    BaseAmount := 0 ;
-                    "Service %" := 0;
-                    MissionMgt.CalcJudInvService(pMissionServiceLine);
-                    lJudInvCalculated := TRUE;
-                  END;
-                  //>> AP19 isat.sf
-                  //<< AP20 isat.sf
-                  Item."Base Calc. Before Auction"::"Popular Lines On Realization" : BEGIN
-                    lJudInvCalculated := FALSE;
-                    BaseAmount := 0 ;
-                    "Service %" := 0;
-                    MissionMgt.CalcJudInvService(pMissionServiceLine);
-                    lJudInvCalculated := TRUE;
-                  END;
-                  //>> AP20 isat.sf
-                  //<< AP21 isat.sf
-                  Item."Base Calc. Before Auction"::"Popular Lines Mid 2" : BEGIN
-                    lJudInvCalculated := FALSE;
-                    BaseAmount := 0 ;
-                    "Service %" := 0;
-                    MissionMgt.CalcJudInvService(pMissionServiceLine);
-                    lJudInvCalculated := TRUE;
-                  END;
-                  Item."Base Calc. Before Auction"::"Popular Lines On Realization 2" : BEGIN
-                    lJudInvCalculated := FALSE;
-                    BaseAmount := 0 ;
-                    "Service %" := 0;
-                    MissionMgt.CalcJudInvService(pMissionServiceLine);
-                    lJudInvCalculated := TRUE;
-                  END;
-                  //>> AP21 isat.sf
-                END; //CASE
-   */
-  private MissionServiceLine calcWhenNoTariff(MissionServiceLine pMissionServiceLine)
-  {
-    if(!referenceCalcAmountOk)
-    {
+  * IF NOT ReferenceAmountCalcOk THEN BEGIN
+               GetLotAmount(pMissionServiceLine."Mission No.",pMissionServiceLine."Lot No.");
+             END;
+             IF IsApplyOnBidPrice THEN BEGIN
+               CASE Item."Base Calc. After Auction" OF
+                 Item."Base Calc. After Auction"::"Bid Price" : BaseAmount := BidReferenceAmount; //AP23.st
+                 Item."Base Calc. After Auction"::"BidPrice Incl.VAT" : BaseAmount := BidPriceInclVAT; //AP23.st
+                 Item."Base Calc. After Auction"::"Bid Price Excl. VAT" : BaseAmount := BidPrice;
+                 Item."Base Calc. After Auction"::"Reserve Price" : BaseAmount := ReserveAmount;
+               END; //CASE
+             END ELSE BEGIN
+               CASE Item."Base Calc. Before Auction" OF
+                 Item."Base Calc. Before Auction"::"Reserve Price" : BaseAmount := ReserveAmount;
+                 Item."Base Calc. Before Auction"::"Estimated Value Min" : BaseAmount := EstimatedMinAmount;
+                 Item."Base Calc. Before Auction"::"Estimated Value Max" : BaseAmount := EstimatedMaxAmount;
+                 Item."Base Calc. Before Auction"::MissionValue, Item."Base Calc. Before Auction"::MissionAdjust,
+                 Item."Base Calc. Before Auction"::MissionInitValue :
+                   BaseAmount := MissionValue; //AP14.ST
+                 //<< AP19 isat.sf
+                 Item."Base Calc. Before Auction"::"Popular Lines On Operating" : BEGIN
+                   lJudInvCalculated := FALSE;
+                   BaseAmount := 0 ;
+                   "Service %" := 0;
+                   MissionMgt.CalcJudInvService(pMissionServiceLine);
+                   lJudInvCalculated := TRUE;
+                 END;
+                 Item."Base Calc. Before Auction"::"Popular Lines Mid Operating Realization" : BEGIN
+                   lJudInvCalculated := FALSE;
+                   BaseAmount := 0 ;
+                   "Service %" := 0;
+                   MissionMgt.CalcJudInvService(pMissionServiceLine);
+                   lJudInvCalculated := TRUE;
+                 END;
+                 //>> AP19 isat.sf
+                 //<< AP20 isat.sf
+                 Item."Base Calc. Before Auction"::"Popular Lines On Realization" : BEGIN
+                   lJudInvCalculated := FALSE;
+                   BaseAmount := 0 ;
+                   "Service %" := 0;
+                   MissionMgt.CalcJudInvService(pMissionServiceLine);
+                   lJudInvCalculated := TRUE;
+                 END;
+                 //>> AP20 isat.sf
+                 //<< AP21 isat.sf
+                 Item."Base Calc. Before Auction"::"Popular Lines Mid 2" : BEGIN
+                   lJudInvCalculated := FALSE;
+                   BaseAmount := 0 ;
+                   "Service %" := 0;
+                   MissionMgt.CalcJudInvService(pMissionServiceLine);
+                   lJudInvCalculated := TRUE;
+                 END;
+                 Item."Base Calc. Before Auction"::"Popular Lines On Realization 2" : BEGIN
+                   lJudInvCalculated := FALSE;
+                   BaseAmount := 0 ;
+                   "Service %" := 0;
+                   MissionMgt.CalcJudInvService(pMissionServiceLine);
+                   lJudInvCalculated := TRUE;
+                 END;
+                 //>> AP21 isat.sf
+               END; //CASE
+  */
+  private MissionServiceLine calcWhenNoTariff(MissionServiceLine pMissionServiceLine) {
+    if (!referenceCalcAmountOk) {
       getLotAmount(pMissionServiceLine.getMissionNo(), pMissionServiceLine.getLotNo());
     }
-    if(isApplyOnBidPrice)
-    {
-      switch (product.getBaseCalcAfterAuction())
-      {
+    if (isApplyOnBidPrice) {
+      switch (product.getBaseCalcAfterAuction()) {
         case ProductRepository.BASECALCAFTERAUCTION_BIDPRICE:
           baseAmount = bidReferenceAmount;
           break;
@@ -619,13 +645,10 @@ public class MissionServicePriceManagementImpl implements MissionServicePriceMan
           baseAmount = reserveAmount;
           break;
       }
-    }
-    else
-    {
-      switch (product.getBaseCalcBeforeAuction())
-      {
+    } else {
+      switch (product.getBaseCalcBeforeAuction()) {
         case ProductRepository.BASECALCBEFOREAUCTION_RESERVEPRICE:
-          baseAmount = reserveAmount;          
+          baseAmount = reserveAmount;
           break;
         case ProductRepository.BASECALCBEFOREAUCTION_ESTIMATEDVALUEMIN:
           baseAmount = estimatedMinAmount;
@@ -641,7 +664,7 @@ public class MissionServicePriceManagementImpl implements MissionServicePriceMan
         case ProductRepository.BASECALCBEFOREAUCTION_POPULARLINESONOPERATING:
         case ProductRepository.BASECALCBEFOREAUCTION_POPULARLINESMIDOPERATINGREALIZATION:
         case ProductRepository.BASECALCBEFOREAUCTION_POPULARLINESONREALIZATION:
-        case ProductRepository.BASECALCBEFOREAUCTION_POPULARLINESMID2:          
+        case ProductRepository.BASECALCBEFOREAUCTION_POPULARLINESMID2:
         case ProductRepository.BASECALCBEFOREAUCTION_POPULARLINESONREALIZATION2:
           lJudInvCalculated = false;
           baseAmount = BigDecimal.ZERO;
@@ -649,194 +672,237 @@ public class MissionServicePriceManagementImpl implements MissionServicePriceMan
           pMissionServiceLine = missionMgt.calcJudInvService(pMissionServiceLine);
           lJudInvCalculated = true;
           break;
-        
       }
     }
 
     return pMissionServiceLine;
   }
 
-
-
-  private void checkAmount(MissionServiceLine pMissionServiceLine, MissionServicePrice missionServicePrice2,
-      Product product2) {
-  }
+  private void checkAmount(
+      MissionServiceLine pMissionServiceLine,
+      MissionServicePrice missionServicePrice2,
+      Product product2) {}
   /*
-   * lPriceFactor := 1;
-            lBaseFactor := 1;
-            IF "Resale Right" THEN BEGIN
-              lLotResaleRights.INIT;
-              IF lLotResaleRights.GET(pMissionServiceLine."Lot No.",pMissionServiceLine."Organization Contact") THEN BEGIN
-                lPriceFactor := lLotResaleRights."Organization Distribution"/100;
-                lBaseFactor := lLotResaleRights."Auction Bid Percentage"/100;
-              END;
-            END;
-   */
+  * lPriceFactor := 1;
+           lBaseFactor := 1;
+           IF "Resale Right" THEN BEGIN
+             lLotResaleRights.INIT;
+             IF lLotResaleRights.GET(pMissionServiceLine."Lot No.",pMissionServiceLine."Organization Contact") THEN BEGIN
+               lPriceFactor := lLotResaleRights."Organization Distribution"/100;
+               lBaseFactor := lLotResaleRights."Auction Bid Percentage"/100;
+             END;
+           END;
+  */
   private void findPriceAndBaseFactor(MissionServiceLine pMissionServiceLine) {
     lPriceFactor = BigDecimal.ONE;
     lBaseFactor = BigDecimal.ONE;
     if (pMissionServiceLine.getResaleRight()) {
-      lLotResaleRights = Beans.get(LotResaleRightsRepository.class)
-        .all()
-        .filter("self.lot = ?1 AND self.organizationContact = ?2", 
-        pMissionServiceLine.getLotNo(), pMissionServiceLine.getOrganizationContact())
-        .fetchOne();
+      lLotResaleRights =
+          Beans.get(LotResaleRightsRepository.class)
+              .all()
+              .filter(
+                  "self.lot = ?1 AND self.organizationContact = ?2",
+                  pMissionServiceLine.getLotNo(),
+                  pMissionServiceLine.getOrganizationContact())
+              .fetchOne();
       if (lLotResaleRights != null) {
-        lPriceFactor = lLotResaleRights.getOrganizationDistribution().divide(BigDecimal.valueOf(100));
+        lPriceFactor =
+            lLotResaleRights.getOrganizationDistribution().divide(BigDecimal.valueOf(100));
         lBaseFactor = lLotResaleRights.getAuctionBidPercentage().divide(BigDecimal.valueOf(100));
       }
     }
   }
 
   /*
-   * IF NOT lUseJudicialTariff THEN BEGIN
-              lTariffFound :=
-                FindServicePrice(
-                   "No.","Mission Template Code","Mission No.",
-                   "Lot Price Group","Lot No.",
-                   "Contact Price Group","Chargeable Contact No.",
-                   GetPriceDate(pMissionServiceLine),
-                   "Responsibility Center");
-            END;
-   */
+  * IF NOT lUseJudicialTariff THEN BEGIN
+             lTariffFound :=
+               FindServicePrice(
+                  "No.","Mission Template Code","Mission No.",
+                  "Lot Price Group","Lot No.",
+                  "Contact Price Group","Chargeable Contact No.",
+                  GetPriceDate(pMissionServiceLine),
+                  "Responsibility Center");
+           END;
+  */
   private Boolean findServicePrice(MissionServiceLine pMissionServiceLine) {
     if (!lUseJudicialTariff) {
       return findServicePrice(
-        pMissionServiceLine.getProductNo(),
-        pMissionServiceLine.getMissionTemplateCode(),
-        pMissionServiceLine.getMissionNo(),
-        pMissionServiceLine.getLotPriceGroup(),
-        pMissionServiceLine.getLotNo(),
-        pMissionServiceLine.getContactPriceGroup(),
-        pMissionServiceLine.getChargeableContactNo(),
-        getPriceDate(pMissionServiceLine),
-        pMissionServiceLine.getResponsibilityCenter());
+          pMissionServiceLine.getProductNo(),
+          pMissionServiceLine.getMissionTemplateCode(),
+          pMissionServiceLine.getMissionNo(),
+          pMissionServiceLine.getLotPriceGroup(),
+          pMissionServiceLine.getLotNo(),
+          pMissionServiceLine.getContactPriceGroup(),
+          pMissionServiceLine.getChargeableContactNo(),
+          getPriceDate(pMissionServiceLine),
+          pMissionServiceLine.getResponsibilityCenter());
     }
     return false;
   }
 
-/*
- * LOCAL PROCEDURE FindServicePrice@1000000003(pItemNo@1000000007 : Code[20];pDocTemplate@1000000001 : Code[20];pDocNo@1000000002 : Code[20];pLotGroup@1000000003 : Code[10];pLotCode@1000000004 : Code[20];pContactGroup@1000000005 : Code[10];pContactCode@1000000006 : Code[20];pPriceDate@1000000009 : Date;pResponsibilityCenter@1000000011 : Code[10]) rFound : Boolean;
-    VAR
-      lMissionServicePrice@1000000008 : Record 8011469;
-      lFound2@1100481000 : Boolean;
-    BEGIN
-      WITH lMissionServicePrice DO BEGIN
-        SETCURRENTKEY("Item No.","Price Priority");
-        ASCENDING(TRUE);
-        SETRANGE("Item No.",pItemNo);
-        SETRANGE("Starting Date",0D,pPriceDate);
-        SETFILTER("Ending Date",'%1|>=%2',0D,pPriceDate);
-        SETFILTER("Responsibility Center",'%1|=%2','',pResponsibilityCenter); //ap11 isat.zw
-                                                                                //replacer par 2 findfirst
-        //SETRANGE("Responsibility Center", pResponsibilityCenter); //ap11 isat.zw
+  /*
+  * LOCAL PROCEDURE FindServicePrice@1000000003(pItemNo@1000000007 : Code[20];pDocTemplate@1000000001 : Code[20];pDocNo@1000000002 : Code[20];pLotGroup@1000000003 : Code[10];pLotCode@1000000004 : Code[20];pContactGroup@1000000005 : Code[10];pContactCode@1000000006 : Code[20];pPriceDate@1000000009 : Date;pResponsibilityCenter@1000000011 : Code[10]) rFound : Boolean;
+     VAR
+       lMissionServicePrice@1000000008 : Record 8011469;
+       lFound2@1100481000 : Boolean;
+     BEGIN
+       WITH lMissionServicePrice DO BEGIN
+         SETCURRENTKEY("Item No.","Price Priority");
+         ASCENDING(TRUE);
+         SETRANGE("Item No.",pItemNo);
+         SETRANGE("Starting Date",0D,pPriceDate);
+         SETFILTER("Ending Date",'%1|>=%2',0D,pPriceDate);
+         SETFILTER("Responsibility Center",'%1|=%2','',pResponsibilityCenter); //ap11 isat.zw
+                                                                                 //replacer par 2 findfirst
+         //SETRANGE("Responsibility Center", pResponsibilityCenter); //ap11 isat.zw
 
-        IF pDocTemplate = '' THEN BEGIN
-          SETFILTER("Mission Type",'<>%1',"Mission Type"::"Mission Template");
-        END;
-        SETFILTER("Mission Code",'=%1|=%2|=%3','',pDocTemplate,pDocNo); //AP05.ST
-        IF pLotGroup = '' THEN BEGIN
-          SETFILTER("Lot Type",'<>%1',"Lot Type"::"Lot Price Group");
-        END;
-        SETFILTER("Lot Code",'=%1|=%2|=%3','',pLotGroup,pLotCode); //AP05.ST
-        IF pContactGroup = '' THEN BEGIN
-          SETFILTER("Contact Type",'<>%1',"Contact Type"::"Contact Price Group");
-        END;
-        SETFILTER("Contact Code",'=%1|=%2|=%3','',pContactGroup,pContactCode); //AP05.ST
+         IF pDocTemplate = '' THEN BEGIN
+           SETFILTER("Mission Type",'<>%1',"Mission Type"::"Mission Template");
+         END;
+         SETFILTER("Mission Code",'=%1|=%2|=%3','',pDocTemplate,pDocNo); //AP05.ST
+         IF pLotGroup = '' THEN BEGIN
+           SETFILTER("Lot Type",'<>%1',"Lot Type"::"Lot Price Group");
+         END;
+         SETFILTER("Lot Code",'=%1|=%2|=%3','',pLotGroup,pLotCode); //AP05.ST
+         IF pContactGroup = '' THEN BEGIN
+           SETFILTER("Contact Type",'<>%1',"Contact Type"::"Contact Price Group");
+         END;
+         SETFILTER("Contact Code",'=%1|=%2|=%3','',pContactGroup,pContactCode); //AP05.ST
 
-        GetLotAmount(pDocNo,pLotCode);
+         GetLotAmount(pDocNo,pLotCode);
 
-        SETFILTER("Minimum Base Amount",STRSUBSTNO('=0|<=%1',BaseAmount));
+         SETFILTER("Minimum Base Amount",STRSUBSTNO('=0|<=%1',BaseAmount));
 
-        IF FINDSET(FALSE,FALSE) THEN BEGIN
-          REPEAT
-            rFound := TestPrice(lMissionServicePrice,pDocTemplate,pDocNo,pLotGroup,pLotCode,pContactGroup,pContactCode);
-            IF rFound THEN BEGIN
-              SETRANGE("Price Priority", "Price Priority");
-              IF FINDLAST THEN BEGIN
-                MissionServicePrice := lMissionServicePrice;
-      //<<AP16.ST
-                IF "Responsibility Center" = '' THEN BEGIN
-                  SETRANGE("Responsibility Center", pResponsibilityCenter);
-                  IF FINDLAST THEN
-                    MissionServicePrice := lMissionServicePrice;
-                END
-      //>>AP16.ST
-              END;
-              EXIT; //AP18.ST évite le NEXT
-            END;
-          UNTIL (NEXT = 0) OR rFound;
-        END;
-      END;
-    END;
+         IF FINDSET(FALSE,FALSE) THEN BEGIN
+           REPEAT
+             rFound := TestPrice(lMissionServicePrice,pDocTemplate,pDocNo,pLotGroup,pLotCode,pContactGroup,pContactCode);
+             IF rFound THEN BEGIN
+               SETRANGE("Price Priority", "Price Priority");
+               IF FINDLAST THEN BEGIN
+                 MissionServicePrice := lMissionServicePrice;
+       //<<AP16.ST
+                 IF "Responsibility Center" = '' THEN BEGIN
+                   SETRANGE("Responsibility Center", pResponsibilityCenter);
+                   IF FINDLAST THEN
+                     MissionServicePrice := lMissionServicePrice;
+                 END
+       //>>AP16.ST
+               END;
+               EXIT; //AP18.ST évite le NEXT
+             END;
+           UNTIL (NEXT = 0) OR rFound;
+         END;
+       END;
+     END;
 
- */
-  private Boolean findServicePrice(Product productNo, MissionTemplate missionTemplateCode, MissionHeader missionNo,
-      MissionLotPriceGroup lotPriceGroup, Lot lotNo, MissionContactPriceGroup contactPriceGroup,
-      Partner contact, Date priceDate, TradingName responsibilityCenter) {
-       if(!findServicePriceWithRespCenter(productNo, missionTemplateCode, missionNo, lotPriceGroup, 
-       lotNo, contactPriceGroup, contact, priceDate, responsibilityCenter, true))
-       {
-         findServicePriceWithRespCenter(productNo, missionTemplateCode, missionNo, lotPriceGroup, 
-         lotNo, contactPriceGroup, contact, priceDate, responsibilityCenter, false);
-       }
-       return missionServicePrice != null;
+  */
+  private Boolean findServicePrice(
+      Product productNo,
+      MissionTemplate missionTemplateCode,
+      MissionHeader missionNo,
+      MissionLotPriceGroup lotPriceGroup,
+      Lot lotNo,
+      MissionContactPriceGroup contactPriceGroup,
+      Partner contact,
+      Date priceDate,
+      TradingName responsibilityCenter) {
+    if (!findServicePriceWithRespCenter(
+        productNo,
+        missionTemplateCode,
+        missionNo,
+        lotPriceGroup,
+        lotNo,
+        contactPriceGroup,
+        contact,
+        priceDate,
+        responsibilityCenter,
+        true)) {
+      findServicePriceWithRespCenter(
+          productNo,
+          missionTemplateCode,
+          missionNo,
+          lotPriceGroup,
+          lotNo,
+          contactPriceGroup,
+          contact,
+          priceDate,
+          responsibilityCenter,
+          false);
+    }
+    return missionServicePrice != null;
   }
 
-  private Boolean findServicePriceWithRespCenter(Product productNo, MissionTemplate missionTemplateCode, MissionHeader missionNo,
-  MissionLotPriceGroup lotPriceGroup, Lot lotNo, MissionContactPriceGroup contactPriceGroup,
-  Partner contact, Date priceDate, TradingName responsibilityCenter,Boolean checkRespCenter)
-  {
-    MissionServicePriceRepository missionServicePriceRepo = Beans.get(MissionServicePriceRepository.class);
+  private Boolean findServicePriceWithRespCenter(
+      Product productNo,
+      MissionTemplate missionTemplateCode,
+      MissionHeader missionNo,
+      MissionLotPriceGroup lotPriceGroup,
+      Lot lotNo,
+      MissionContactPriceGroup contactPriceGroup,
+      Partner contact,
+      Date priceDate,
+      TradingName responsibilityCenter,
+      Boolean checkRespCenter) {
+    MissionServicePriceRepository missionServicePriceRepo =
+        Beans.get(MissionServicePriceRepository.class);
     String filter = "self.product = :product ";
     filter += " AND self.startingDate <= :priceDate";
     filter += " AND ( self.endingDate is null OR self.endingDate >= :priceDate )";
-    if(checkRespCenter)
-    {
+    if (checkRespCenter) {
       filter += " AND self.responsibilityCenter = :responsibilityCenter";
+    } else {
+      filter +=
+          " AND ( self.responsibilityCenter is null OR self.responsibilityCenter = :responsibilityCenter)";
     }
-    else
-    {
-      filter += " AND ( self.responsibilityCenter is null OR self.responsibilityCenter = :responsibilityCenter)";
-    }    
-    if(missionTemplateCode == null) {
+    if (missionTemplateCode == null) {
       filter += " AND self.missionType <> :missionType ";
     }
-    filter += " AND ( (self.missionHeader is null AND self.missionTemplate is null ) OR self.missionHeader = :missionNo OR self.missionTemplate = :missionTemplateCode ) ";
-    if(lotPriceGroup == null) {
+    filter +=
+        " AND ( (self.missionHeader is null AND self.missionTemplate is null ) OR self.missionHeader = :missionNo OR self.missionTemplate = :missionTemplateCode ) ";
+    if (lotPriceGroup == null) {
       filter += " AND self.lotType <> :lotType ";
     }
-    filter += " AND ((self.lot is null AND self.lotPriceGroup is null) OR self.lot = :lotCode OR self.lotPriceGroup = :lotPriceGroup) ";
-    if(contactPriceGroup == null) {
+    filter +=
+        " AND ((self.lot is null AND self.lotPriceGroup is null) OR self.lot = :lotCode OR self.lotPriceGroup = :lotPriceGroup) ";
+    if (contactPriceGroup == null) {
       filter += " AND self.contactType <> :contactType ";
     }
-    filter += " AND ((self.contact is null AND self.contactPriceGroup is null) OR self.contact = :contactCode OR self.contactPriceGroup = :contactPriceGroup) ";
+    filter +=
+        " AND ((self.contact is null AND self.contactPriceGroup is null) OR self.contact = :contactCode OR self.contactPriceGroup = :contactPriceGroup) ";
     filter += " AND self.minimumBaseAmount <= :baseAmount ";
 
+    List<MissionServicePrice> missionServicePriceList =
+        missionServicePriceRepo
+            .all()
+            .filter(filter)
+            .bind("product", productNo)
+            .bind("priceDate", priceDate)
+            .bind("priceDate", priceDate)
+            .bind("missionNo", missionNo)
+            .bind("responsibilityCenter", responsibilityCenter)
+            .bind("missionType", MissionServicePriceRepository.MISSIONTYPE_MISSIONTEMPLATE)
+            .bind("missionTemplateCode", missionTemplateCode)
+            .bind("lotType", MissionServicePriceRepository.LOTTYPE_LOTPRICEGROUP)
+            .bind("lotPriceGroup", lotPriceGroup)
+            .bind("lotCode", lotNo)
+            .bind("contactType", MissionServicePriceRepository.CONTACTTYPE_CONTACTPRICEGROUP)
+            .bind("contactPriceGroup", contactPriceGroup)
+            .bind("contactCode", contact)
+            .bind("baseAmount", getLotAmount(missionNo, lotNo))
+            .order("self.pricePriority")
+            .fetch();
 
-    List<MissionServicePrice> missionServicePriceList = missionServicePriceRepo.all()
-      .filter(filter)
-      .bind("product", productNo)
-      .bind("priceDate", priceDate)
-      .bind("priceDate", priceDate)
-      .bind("missionNo", missionNo)
-      .bind("responsibilityCenter", responsibilityCenter)
-      .bind("missionType", MissionServicePriceRepository.MISSIONTYPE_MISSIONTEMPLATE)
-      .bind("missionTemplateCode", missionTemplateCode)
-      .bind("lotType", MissionServicePriceRepository.LOTTYPE_LOTPRICEGROUP)
-      .bind("lotPriceGroup", lotPriceGroup)
-      .bind("lotCode", lotNo)
-      .bind("contactType", MissionServicePriceRepository.CONTACTTYPE_CONTACTPRICEGROUP)
-      .bind("contactPriceGroup", contactPriceGroup)
-      .bind("contactCode", contact)
-      .bind("baseAmount", getLotAmount(missionNo, lotNo))
-
-      .order("self.pricePriority").fetch();
-
-    for(MissionServicePrice lMissionServicePrice : missionServicePriceList) {
-      if(testPrice(lMissionServicePrice, missionTemplateCode, missionNo, lotPriceGroup, lotNo, contactPriceGroup, contact)) {
+    for (MissionServicePrice lMissionServicePrice : missionServicePriceList) {
+      if (testPrice(
+          lMissionServicePrice,
+          missionTemplateCode,
+          missionNo,
+          lotPriceGroup,
+          lotNo,
+          contactPriceGroup,
+          contact)) {
         missionServicePrice = lMissionServicePrice;
-        
+
         return true;
       }
     }
@@ -851,47 +917,47 @@ public class MissionServicePriceManagementImpl implements MissionServicePriceMan
   }
 
   /*PROCEDURE TestPrice@1000000008(VAR pServiceMissionPrice@1000000008 : Record 8011469;DocTemplate@1000000006 : Code[20];DocNo@1000000005 : Code[20];LotGroup@1000000004 : Code[10];LotCode@1000000003 : Code[20];ContactGroup@1000000002 : Code[10];ContactCode@1000000001 : Code[20]) : Boolean;
-    BEGIN
-      WITH pServiceMissionPrice DO BEGIN
-        CASE "Mission Type" OF
-          "Mission Type"::"Mission Template" : BEGIN
-            IF "Mission Code" <> DocTemplate THEN BEGIN
-              EXIT(FALSE);
-            END;
+  BEGIN
+    WITH pServiceMissionPrice DO BEGIN
+      CASE "Mission Type" OF
+        "Mission Type"::"Mission Template" : BEGIN
+          IF "Mission Code" <> DocTemplate THEN BEGIN
+            EXIT(FALSE);
           END;
-          "Mission Type"::"Mission No." : BEGIN
-            IF "Mission Code" <> DocNo THEN BEGIN
-              EXIT(FALSE);
-            END;
+        END;
+        "Mission Type"::"Mission No." : BEGIN
+          IF "Mission Code" <> DocNo THEN BEGIN
+            EXIT(FALSE);
           END;
-        END; // CASE
-        CASE "Lot Type" OF
-          "Lot Type"::"Lot Price Group" : BEGIN
-            IF "Lot Code" <> LotGroup THEN BEGIN
-              EXIT(FALSE);
-            END;
+        END;
+      END; // CASE
+      CASE "Lot Type" OF
+        "Lot Type"::"Lot Price Group" : BEGIN
+          IF "Lot Code" <> LotGroup THEN BEGIN
+            EXIT(FALSE);
           END;
-          "Lot Type"::Lot : BEGIN
-            IF "Lot Code" <> LotCode THEN BEGIN
-              EXIT(FALSE);
-            END;
+        END;
+        "Lot Type"::Lot : BEGIN
+          IF "Lot Code" <> LotCode THEN BEGIN
+            EXIT(FALSE);
           END;
-        END; // CASE
-        CASE "Contact Type" OF
-          "Contact Type"::"Contact Price Group" : BEGIN
-            IF "Contact Code" <> ContactGroup THEN BEGIN
-              EXIT(FALSE);
-            END;
+        END;
+      END; // CASE
+      CASE "Contact Type" OF
+        "Contact Type"::"Contact Price Group" : BEGIN
+          IF "Contact Code" <> ContactGroup THEN BEGIN
+            EXIT(FALSE);
           END;
-          "Contact Type"::Contact : BEGIN
-            IF "Contact Code" <> ContactCode THEN BEGIN
-              EXIT(FALSE);
-            END;
+        END;
+        "Contact Type"::Contact : BEGIN
+          IF "Contact Code" <> ContactCode THEN BEGIN
+            EXIT(FALSE);
           END;
-        END; // CASE
-      END; // WITH pServicePrice
-      EXIT(TRUE);
-    END; */
+        END;
+      END; // CASE
+    END; // WITH pServicePrice
+    EXIT(TRUE);
+  END; */
   @Override
   public Boolean testPrice(
       MissionServicePrice pServiceMissionPrice,

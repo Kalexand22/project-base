@@ -116,7 +116,8 @@ public class LotValidate {
   ////>>AP52.ST//
     */
   @Transactional
-  public Lot validateLotMissionPriceGroup(Lot lot, MissionLotPriceGroup lotMissionPriceGroup) {
+  public Lot validateLotMissionPriceGroup(Lot lot, MissionLotPriceGroup lotMissionPriceGroup)
+      throws AxelorException {
     lot.setLotMissionPriceGroup(lotMissionPriceGroup);
     List<MissionServiceLine> missionServiceLineList;
     MissionServiceLineValidate missionServiceLineValidate = new MissionServiceLineValidate();
@@ -163,7 +164,8 @@ public class LotValidate {
   ////>>AP52.ST//
     */
   @Transactional
-  public Lot validateLotAuctionPriceGroup(Lot lot, AuctionLotPriceGroup lotAuctionPriceGroup) {
+  public Lot validateLotAuctionPriceGroup(Lot lot, AuctionLotPriceGroup lotAuctionPriceGroup)
+      throws AxelorException {
     lot.setLotAuctionPriceGroup(lotAuctionPriceGroup);
     List<MissionServiceLine> missionServiceLineList;
     MissionServiceLineValidate missionServiceLineValidate = new MissionServiceLineValidate();
