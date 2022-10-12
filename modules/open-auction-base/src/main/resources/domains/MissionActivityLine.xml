@@ -27,5 +27,19 @@
     <integer name="activityLineNo" title="N° ligne activité"/>
     <many-to-one name="previousMissionNo" title="N° mission précédente"
       ref="com.axelor.apps.openauction.db.MissionHeader"/>
+      <extra-code>
+        <![CDATA[
+
+        <selection name="openauction.type.select.missionactivityline">
+          <option value="Todo">Action</option>
+          <option value="Service">Prestation</option>
+          <option value="Interaction">Interaction</option>
+        </selection>
+        //openauction.type.select.missionactivityline
+        public static final String TYPE_TODO = "Todo";
+        public static final String TYPE_SERVICE = "Service";
+        public static final String TYPE_INTERACTION = "Interaction";
+        ]]>
+      </extra-code>
   </entity>
 </domain-models>

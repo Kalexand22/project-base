@@ -67,6 +67,11 @@
     <option value="Ressource1">Ressource</option>
     <option value="Empty2"></option>
   </selection>
+  <selection name="openauction.type.select.missionactivityline">
+    <option value="Todo">Action</option>
+    <option value="Service">Prestation</option>
+    <option value="Interaction">Interaction</option>
+  </selection>
   <selection name="openauction.costingMethod.select">
     <option value="FIFO0">FIFO</option>
     <option value="LIFO1">LIFO</option>

@@ -7,9 +7,10 @@ import com.axelor.apps.openauction.db.Lot;
 import com.axelor.apps.openauction.db.LotTemplate;
 import com.axelor.apps.openauction.db.MissionHeader;
 import com.axelor.apps.openauction.db.MissionLine;
+import com.axelor.exception.AxelorException;
 
 public interface ActivityManagement {
-  public void CreateActivityLines(
+  public void createActivityLines(
       ActivityHeader pActivityHeader,
       AuctionHeader pAuctionHeader,
       MissionHeader pMissionHeader,
@@ -17,16 +18,16 @@ public interface ActivityManagement {
       LotTemplate pLotTemplate,
       Boolean pIsAuction,
       Boolean pIsActionOnly,
-      Integer pTransactionMineNo);
+      Integer pTransactionMineNo) throws AxelorException;
 
-  public void RemoveActivityLines(
+  public void removeActivityLines(
       ActivityHeader pActivityHeader,
       AuctionHeader pAuctionHeader,
       MissionHeader pMissionHeader,
       Lot pLotNo,
       Integer pTransactionMineNo);
 
-  public void CreateTodo(
+  public void createTodo(
       ActivityHeader pActivityHeader,
       AuctionHeader pAuctionHeader,
       MissionHeader pMissionHeader,
@@ -35,9 +36,9 @@ public interface ActivityManagement {
       Partner pContact,
       Partner pSalesPerson);
 
-  public void CreateActivityLineFromMission(
+  public void createActivityLineFromMission(
       ActivityHeader pActivityHeader,
       MissionHeader pMissionHeader,
       MissionLine pMissionLine,
-      Boolean pActionOnly);
+      Boolean pActionOnly) throws AxelorException;
 }

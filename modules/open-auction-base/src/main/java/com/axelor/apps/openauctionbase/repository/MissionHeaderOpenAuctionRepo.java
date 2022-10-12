@@ -14,6 +14,7 @@ public class MissionHeaderOpenAuctionRepo extends MissionHeaderRepository {
       entity.setNo(
           Beans.get(SequenceService.class)
               .getSequenceNumber(entity.getMissionTemplateCode().getNoSequence()));
+
     }
     return super.save(entity);
   }
