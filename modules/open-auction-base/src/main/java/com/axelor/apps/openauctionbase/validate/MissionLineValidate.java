@@ -2,13 +2,17 @@ package com.axelor.apps.openauctionbase.validate;
 
 import com.axelor.apps.openauction.db.AuctionHeader;
 import com.axelor.apps.openauction.db.Lot;
+import com.axelor.apps.openauction.db.LotValueEntry;
 import com.axelor.apps.openauction.db.MissionLine;
 import com.axelor.apps.openauction.db.repo.LotRepository;
+import com.axelor.apps.openauction.db.repo.LotValueEntryRepository;
+import com.axelor.apps.openauction.db.repo.LotValueJournalRepository;
 import com.axelor.apps.openauction.db.repo.MissionLineRepository;
 import com.axelor.apps.openauctionbase.service.MissionLineManagement;
 import com.axelor.exception.AxelorException;
 import com.axelor.exception.db.repo.TraceBackRepository;
 import com.axelor.inject.Beans;
+import java.math.BigDecimal;
 
 public class MissionLineValidate {
   /*
@@ -156,6 +160,56 @@ public class MissionLineValidate {
     }
     missionLine.setResponsibilityCenter(missionLine.getMissionNo().getResponsibilityCenter());
     missionLine.setTemplateMissionCode(missionLine.getMissionNo().getMissionTemplateCode());
+    return missionLine;
+  }
+
+  public MissionLine calcFields(MissionLine missionLine) {
+
+    LotValueEntryRepository lotValueEntryRepository = Beans.get(LotValueEntryRepository.class);
+
+    LotValueEntry lotValueEntry =
+        lotValueEntryRepository
+            .all()
+            .filter(
+                "self.lot = ?1 AND ( self.entryType = ?2 OR  self.entryType = ?3 ) AND self.replaced = false",
+                missionLine.getNoLot(),
+                LotValueJournalRepository.ENTRYTYPE_ESTIMATE0,
+                LotValueJournalRepository.ENTRYTYPE_APPRAISAL2)
+            .fetchOne();
+
+    missionLine.setEstimateMinValue(BigDecimal.ZERO);
+    missionLine.setEstimateMaxValue(BigDecimal.ZERO);
+    if (lotValueEntry != null) {
+
+      missionLine.setEstimateMinValue(lotValueEntry.getMinAmount());
+      missionLine.setEstimateMaxValue(lotValueEntry.getMaxAmount());
+    }
+
+    lotValueEntry =
+        lotValueEntryRepository
+            .all()
+            .filter(
+                "self.lot = ?1 AND ( self.entryType = ?2 ) AND self.replaced = false",
+                missionLine.getNoLot(),
+                LotValueJournalRepository.ENTRYTYPE_RESERVEPRICE5)
+            .fetchOne();
+    missionLine.setReservePrice(BigDecimal.ZERO);
+    if (lotValueEntry != null) {
+      missionLine.setReservePrice(lotValueEntry.getAmount());
+    }
+
+    lotValueEntry =
+        lotValueEntryRepository
+            .all()
+            .filter(
+                "self.lot = ?1 AND ( self.entryType = ?2 ) AND self.replaced = false",
+                missionLine.getNoLot(),
+                LotValueJournalRepository.ENTRYTYPE_RESERVEPRICE5)
+            .fetchOne();
+    missionLine.setNetReservePrice(BigDecimal.ZERO);
+    if (lotValueEntry != null) {
+      missionLine.setNetReservePrice(lotValueEntry.getMinAmount());
+    }
     return missionLine;
   }
 }

@@ -120,6 +120,14 @@
     <string name="lotReferenceNo" title="N° référence lot"/>
     <string name="invOpInterface" title="Exploitation"/>
     <string name="invRealInterface" title="Réalisation"/>
+
+    <decimal name="netReservePrice" title="Prix net de réserve" transient="true"
+      readonly="true"></decimal>
+    <decimal name="reservePrice" title="Prix de réserve" transient="true" readonly="true"></decimal>
+    <decimal name="estimateMinValue" title="Valeur estimée min" transient="true"
+      readonly="true"></decimal>
+    <decimal name="estimateMaxValue" title="Valeur estimée max" transient="true"
+      readonly="true"></decimal>
     <extra-code>
       <![CDATA[
 

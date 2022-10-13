@@ -9,17 +9,24 @@ import com.axelor.apps.openauction.db.Lot;
 import com.axelor.apps.openauction.db.LotResaleRights;
 import com.axelor.apps.openauction.db.MissionContactPriceGroup;
 import com.axelor.apps.openauction.db.MissionHeader;
+import com.axelor.apps.openauction.db.MissionLine;
 import com.axelor.apps.openauction.db.MissionLotPriceGroup;
 import com.axelor.apps.openauction.db.MissionServiceLine;
 import com.axelor.apps.openauction.db.MissionServicePrice;
 import com.axelor.apps.openauction.db.MissionTemplate;
 import com.axelor.apps.openauction.db.TariffScale;
 import com.axelor.apps.openauction.db.repo.LotResaleRightsRepository;
+import com.axelor.apps.openauction.db.repo.MissionHeaderRepository;
+import com.axelor.apps.openauction.db.repo.MissionLineRepository;
 import com.axelor.apps.openauction.db.repo.MissionServiceLineRepository;
 import com.axelor.apps.openauction.db.repo.MissionServicePriceRepository;
+import com.axelor.apps.openauctionbase.validate.MissionHeaderValidate;
+import com.axelor.apps.openauctionbase.validate.MissionLineValidate;
 import com.axelor.apps.openauctionbase.validate.MissionServiceLineValidate;
 import com.axelor.exception.AxelorException;
+import com.axelor.exception.db.repo.TraceBackRepository;
 import com.axelor.inject.Beans;
+import com.google.inject.Inject;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -74,7 +81,7 @@ public class MissionServicePriceManagementImpl implements MissionServicePriceMan
   List<AccesBuffer> tempAccesBufferList;
   Boolean lTariffFound;
   LotResaleRights lLotResaleRights;
-  Boolean referenceCalcAmountOk;
+  Boolean referenceAmountCalcOk;
   BigDecimal bidReferenceAmount;
   BigDecimal bidPriceInclVAT;
   BigDecimal bidPrice;
@@ -87,10 +94,17 @@ public class MissionServicePriceManagementImpl implements MissionServicePriceMan
   Boolean lJudInvCalculated;
   MissionManagement missionMgt;
   MissionServiceLineValidate missionServiceLineValidate;
+  MissionLineRepository missionLineRepository;
+  MissionServiceLineRepository missionServiceLineRepository;
 
-  public MissionServicePriceManagementImpl() {
+  @Inject
+  public MissionServicePriceManagementImpl(
+      MissionLineRepository missionLineRepository,
+      MissionServiceLineRepository missionServiceLineRepository) {
     missionMgt = Beans.get(MissionManagement.class);
     missionServiceLineValidate = Beans.get(MissionServiceLineValidate.class);
+    this.missionLineRepository = missionLineRepository;
+    this.missionServiceLineRepository = missionServiceLineRepository;
   }
 
   /*
@@ -626,8 +640,9 @@ public class MissionServicePriceManagementImpl implements MissionServicePriceMan
                  //>> AP21 isat.sf
                END; //CASE
   */
-  private MissionServiceLine calcWhenNoTariff(MissionServiceLine pMissionServiceLine) {
-    if (!referenceCalcAmountOk) {
+  private MissionServiceLine calcWhenNoTariff(MissionServiceLine pMissionServiceLine)
+      throws AxelorException {
+    if (!referenceAmountCalcOk) {
       getLotAmount(pMissionServiceLine.getMissionNo(), pMissionServiceLine.getLotNo());
     }
     if (isApplyOnBidPrice) {
@@ -813,7 +828,7 @@ public class MissionServicePriceManagementImpl implements MissionServicePriceMan
                   "Responsibility Center");
            END;
   */
-  private Boolean findServicePrice(MissionServiceLine pMissionServiceLine) {
+  private Boolean findServicePrice(MissionServiceLine pMissionServiceLine) throws AxelorException {
     if (!lUseJudicialTariff) {
       return findServicePrice(
           pMissionServiceLine.getProductNo(),
@@ -894,7 +909,8 @@ public class MissionServicePriceManagementImpl implements MissionServicePriceMan
       MissionContactPriceGroup contactPriceGroup,
       Partner contact,
       Date priceDate,
-      TradingName responsibilityCenter) {
+      TradingName responsibilityCenter)
+      throws AxelorException {
     if (!findServicePriceWithRespCenter(
         productNo,
         missionTemplateCode,
@@ -931,7 +947,8 @@ public class MissionServicePriceManagementImpl implements MissionServicePriceMan
       Partner contact,
       Date priceDate,
       TradingName responsibilityCenter,
-      Boolean checkRespCenter) {
+      Boolean checkRespCenter)
+      throws AxelorException {
     MissionServicePriceRepository missionServicePriceRepo =
         Beans.get(MissionServicePriceRepository.class);
     String filter = "self.product = :product ";
@@ -960,6 +977,7 @@ public class MissionServicePriceManagementImpl implements MissionServicePriceMan
         " AND ((self.contact is null AND self.contactPriceGroup is null) OR self.contact = :contactCode OR self.contactPriceGroup = :contactPriceGroup) ";
     filter += " AND self.minimumBaseAmount <= :baseAmount ";
 
+    getLotAmount(missionNo, lotNo);
     List<MissionServicePrice> missionServicePriceList =
         missionServicePriceRepo
             .all()
@@ -977,7 +995,7 @@ public class MissionServicePriceManagementImpl implements MissionServicePriceMan
             .bind("contactType", MissionServicePriceRepository.CONTACTTYPE_CONTACTPRICEGROUP)
             .bind("contactPriceGroup", contactPriceGroup)
             .bind("contactCode", contact)
-            .bind("baseAmount", getLotAmount(missionNo, lotNo))
+            .bind("baseAmount", baseAmount)
             .order("self.pricePriority")
             .fetch();
 
@@ -1095,16 +1113,234 @@ public class MissionServicePriceManagementImpl implements MissionServicePriceMan
     return true;
   }
 
+  /*
+  *
+   PROCEDURE GetLotAmount@1000000005(pMissionHeaderNo@1000000001 : Code[20];pLotNo@1000000000 : Code[20]);
+   VAR
+     lMissionLine@1000000002 : Record 8011403;
+     lMissionServiceLine@1000000003 : Record 8011449;
+   BEGIN
+     ReserveAmount := 0;
+     EstimatedMinAmount := 0;
+     EstimatedMaxAmount := 0;
+     BidReferenceAmount := 0; //AP23.ST
+     BidPriceInclVAT := 0;
+     BidPrice := 0;
+     MissionValue := 0; //AP14.ST
+
+     IF pLotNo = '' THEN BEGIN
+     //<<AP14.ST
+       IF Item."Base Calc. Before Auction" IN [Item."Base Calc. Before Auction"::MissionValue,
+                                               Item."Base Calc. Before Auction"::MissionAdjust,
+                                               Item."Base Calc. Before Auction"::MissionInitValue
+                                               ]  THEN BEGIN
+         GetMissionAmount(pMissionHeaderNo);
+         BaseAmount := MissionValue;
+       END;
+     //>>AP14.ST
+       EXIT;
+     END;
+
+     lMissionLine.SETCURRENTKEY("Mission No.",Type,"No.");
+     lMissionLine.SETRANGE("Mission No.",pMissionHeaderNo);
+     lMissionLine.SETRANGE(Type,lMissionLine.Type::Lot);
+     lMissionLine.SETRANGE("No.",pLotNo);
+     IF lMissionLine.FINDFIRST THEN BEGIN
+       SearchBidLine(pMissionHeaderNo,pLotNo,lMissionServiceLine);
+       lMissionLine.CALCFIELDS("Reserve Price","Net Reserve Price", "Estimate Value Min","Estimate Value Max");
+       //<<ap17 isat.zw
+       IF lMissionLine."Reserve Price" = 0 THEN
+         ReserveAmount := lMissionLine."Net Reserve Price"
+       ELSE
+       //>>ap17 isat.zw
+         ReserveAmount := lMissionLine."Reserve Price";
+       EstimatedMinAmount := lMissionLine."Estimate Value Min";
+       EstimatedMaxAmount := lMissionLine."Estimate Value Max";
+       BidPriceInclVAT := lMissionServiceLine."Amount Incl. VAT";
+       BidPrice := lMissionServiceLine.Amount;
+       BidReferenceAmount := lMissionServiceLine."Reference Amount"; //AP23.st
+     END;
+
+     IF IsApplyOnBidPrice THEN BEGIN
+       CASE Item."Base Calc. After Auction" OF
+         Item."Base Calc. After Auction"::"Bid Price" : BaseAmount := BidReferenceAmount; //AP23.St
+         Item."Base Calc. After Auction"::"Bid Price Excl. VAT" : BaseAmount := BidPrice;
+         Item."Base Calc. After Auction"::"Reserve Price" : BaseAmount := ReserveAmount;
+         Item."Base Calc. After Auction"::"BidPrice Incl.VAT" : BaseAmount := BidPriceInclVAT; //AP23.st
+       END;
+     END ELSE BEGIN
+       CASE Item."Base Calc. Before Auction" OF
+         Item."Base Calc. Before Auction"::"Reserve Price" : BaseAmount := ReserveAmount;
+         Item."Base Calc. Before Auction"::"Estimated Value Min" : BaseAmount := EstimatedMinAmount;
+         Item."Base Calc. Before Auction"::"Estimated Value Max" : BaseAmount := EstimatedMaxAmount;
+         //<<AP14.ST
+         Item."Base Calc. Before Auction"::MissionValue, Item."Base Calc. Before Auction"::MissionAdjust,
+         Item."Base Calc. Before Auction"::MissionInitValue : BEGIN
+           GetMissionAmount(pMissionHeaderNo);
+           BaseAmount := MissionValue; //AP14.ST
+         END;
+         //>>AP14.ST
+       END;
+     END;
+     BaseAmount := ABS(BaseAmount); //AP01.ISAT.ST
+     ReferenceAmountCalcOk := TRUE;
+   END;
+  */
   @Override
-  public Double getLotAmount(MissionHeader pMissionHeaderNo, Lot pLotNo) {
-    // TODO Auto-generated method stub
-    return null;
+  public void getLotAmount(MissionHeader pMissionHeaderNo, Lot pLotNo) throws AxelorException {
+    reserveAmount = BigDecimal.ZERO;
+    estimatedMinAmount = BigDecimal.ZERO;
+    estimatedMaxAmount = BigDecimal.ZERO;
+    bidReferenceAmount = BigDecimal.ZERO;
+    bidPriceInclVAT = BigDecimal.ZERO;
+    bidPrice = BigDecimal.ZERO;
+    missionValue = BigDecimal.ZERO;
+    if (pLotNo == null) {
+      if (product.getBaseCalcBeforeAuction() == ProductRepository.BASECALCBEFOREAUCTION_MISSIONVALUE
+          || product.getBaseCalcBeforeAuction()
+              == ProductRepository.BASECALCBEFOREAUCTION_MISSIONADJUST
+          || product.getBaseCalcBeforeAuction()
+              == ProductRepository.BASECALCBEFOREAUCTION_MISSIONINITVALUE) {
+        getMissionAmount(pMissionHeaderNo);
+        baseAmount = missionValue;
+      }
+      return;
+    }
+    MissionLine lMissionLine =
+        missionLineRepository
+            .all()
+            .filter(
+                "self.missionHeader = ?1 AND self.type = ?2 AND self.lot = ?3",
+                pMissionHeaderNo,
+                MissionLineRepository.TYPE_LOT,
+                pLotNo)
+            .fetchOne();
+    if (lMissionLine != null) {
+      MissionServiceLine lMissionServiceLine = searchBidLine(pMissionHeaderNo, pLotNo);
+
+      MissionLineValidate lMissionLineValidate = new MissionLineValidate();
+      lMissionLine = lMissionLineValidate.calcFields(lMissionLine);
+
+      if (lMissionLine.getReservePrice().compareTo(BigDecimal.ZERO) == 0) {
+        reserveAmount = lMissionLine.getNetReservePrice();
+      } else {
+        reserveAmount = lMissionLine.getReservePrice();
+      }
+      estimatedMinAmount = lMissionLine.getEstimateMinValue();
+      estimatedMaxAmount = lMissionLine.getEstimateMaxValue();
+
+      bidPriceInclVAT = lMissionServiceLine.getAmountInclVAT();
+      bidPrice = lMissionServiceLine.getAmount();
+      bidReferenceAmount = lMissionServiceLine.getReferenceAmount();
+    }
+    if (isApplyOnBidPrice) {
+      switch (product.getBaseCalcAfterAuction()) {
+        case ProductRepository.BASECALCAFTERAUCTION_BIDPRICE:
+          baseAmount = bidReferenceAmount;
+          break;
+        case ProductRepository.BASECALCAFTERAUCTION_BIDPRICEEXCLVAT:
+          baseAmount = bidPrice;
+          break;
+        case ProductRepository.BASECALCAFTERAUCTION_RESERVEPRICE:
+          baseAmount = reserveAmount;
+          break;
+        case ProductRepository.BASECALCAFTERAUCTION_BIDPRICEINCLVAT:
+          baseAmount = bidPriceInclVAT;
+          break;
+      }
+    } else {
+      switch (product.getBaseCalcBeforeAuction()) {
+        case ProductRepository.BASECALCBEFOREAUCTION_RESERVEPRICE:
+          baseAmount = reserveAmount;
+          break;
+        case ProductRepository.BASECALCBEFOREAUCTION_ESTIMATEDVALUEMIN:
+          baseAmount = estimatedMinAmount;
+          break;
+        case ProductRepository.BASECALCBEFOREAUCTION_ESTIMATEDVALUEMAX:
+          baseAmount = estimatedMaxAmount;
+          break;
+        case ProductRepository.BASECALCBEFOREAUCTION_MISSIONVALUE:
+        case ProductRepository.BASECALCBEFOREAUCTION_MISSIONADJUST:
+        case ProductRepository.BASECALCBEFOREAUCTION_MISSIONINITVALUE:
+          getMissionAmount(pMissionHeaderNo);
+          baseAmount = missionValue;
+          break;
+      }
+    }
+    baseAmount = baseAmount.abs();
+    referenceAmountCalcOk = true;
   }
 
+  /*PROCEDURE GetMissionAmount@1100481008(pMissionHeaderNo@1100481000 : Code[20]);
+  VAR
+    lMissionHeader@1100481001 : Record 8011402;
+  BEGIN
+    //AP14.ST
+    MissionValue := 0;
+    IF pMissionHeaderNo = '' THEN
+      EXIT;
+    IF NOT (Item."Base Calc. Before Auction" IN [Item."Base Calc. Before Auction"::MissionValue,
+                                                 Item."Base Calc. Before Auction"::MissionAdjust,
+                                                 Item."Base Calc. Before Auction"::MissionInitValue]) THEN
+     EXIT;
+    WITH lMissionHeader DO BEGIN
+      GET(pMissionHeaderNo);
+      IF lMissionHeader."Process Type" = "Process Type"::Recovery THEN BEGIN
+        CASE Item."Base Calc. Before Auction" OF
+          Item."Base Calc. Before Auction"::MissionValue : BEGIN
+            CALCFIELDS("Adjusted Debt");
+            MissionValue := "Adjusted Debt";
+          END;
+          Item."Base Calc. Before Auction"::MissionAdjust : BEGIN
+            CALCFIELDS("Adjustment Amount");
+            MissionValue := "Adjustment Amount";
+          END;
+          Item."Base Calc. Before Auction"::MissionInitValue : BEGIN
+            CALCFIELDS("Main Debt");
+            MissionValue := "Main Debt";
+          END;
+        END; // CASE
+      END
+      ELSE
+        ERROR(Text8011402);
+    END; // WITH
+  END; */
   @Override
-  public Double getMissionAmount(MissionHeader pMissionHeaderNo) {
-    // TODO Auto-generated method stub
-    return null;
+  public void getMissionAmount(MissionHeader pMissionHeaderNo) throws AxelorException {
+    MissionHeader lMissionHeader = pMissionHeaderNo;
+    missionValue = BigDecimal.ZERO;
+    if (pMissionHeaderNo == null) {
+      return;
+    }
+    if (product.getBaseCalcBeforeAuction() != ProductRepository.BASECALCBEFOREAUCTION_MISSIONVALUE
+        && product.getBaseCalcBeforeAuction()
+            != ProductRepository.BASECALCBEFOREAUCTION_MISSIONADJUST
+        && product.getBaseCalcBeforeAuction()
+            != ProductRepository.BASECALCBEFOREAUCTION_MISSIONINITVALUE) {
+      return;
+    }
+    if (lMissionHeader.getProcessType() == MissionHeaderRepository.PROCESSTYPE_RECOVERY) {
+      MissionHeaderValidate lMissionHeaderValidate = new MissionHeaderValidate();
+      switch (product.getBaseCalcBeforeAuction()) {
+        case ProductRepository.BASECALCBEFOREAUCTION_MISSIONVALUE:
+          lMissionHeader = lMissionHeaderValidate.calcFieldAdjustedDebt(lMissionHeader);
+          missionValue = lMissionHeader.getAdjustedDebt();
+          break;
+        case ProductRepository.BASECALCBEFOREAUCTION_MISSIONADJUST:
+          lMissionHeader = lMissionHeaderValidate.calcFieldAdjustedDebt(lMissionHeader);
+          missionValue = lMissionHeader.getAdjustmentAmount();
+          break;
+        case ProductRepository.BASECALCBEFOREAUCTION_MISSIONINITVALUE:
+          lMissionHeader = lMissionHeaderValidate.calcFieldMainDebt(lMissionHeader);
+          missionValue = lMissionHeader.getMainDebt();
+          break;
+      }
+    } else {
+      throw new AxelorException(
+          lMissionHeader,
+          TraceBackRepository.CATEGORY_INCONSISTENCY,
+          "Le montant mission n'est pas défini pour ce type de mission");
+    }
   }
 
   @Override
@@ -1130,11 +1366,57 @@ public class MissionServicePriceManagementImpl implements MissionServicePriceMan
     return null;
   }
 
-  @Override
-  public void searchBidLine(
-      MissionHeader pMissionHeaderNo, Lot pLotNo, MissionServiceLine pBidMissionServiceLine) {
-    // TODO Auto-generated method stub
+  /*
+  *
+   PROCEDURE SearchBidLine@1000000007(pMissionHeaderNo@1000000002 : Code[20];pLotNo@1000000000 : Code[20];VAR pBidMissionServiceLine@1000000001 : Record 8011449);
+   VAR
+     lMissionServiceLine@1000000003 : Record 8011449;
+   BEGIN
+     //<<AP14.ST
+     IF pLotNo = '' THEN BEGIN
+       CLEAR(pBidMissionServiceLine);
+       pBidMissionServiceLine.RESET;
+       IsApplyOnBidPrice := FALSE;
+     END;
+     //>>AP14.ST
+     lMissionServiceLine.SETCURRENTKEY("Lot No.");
+     lMissionServiceLine.SETRANGE("Mission No.",pMissionHeaderNo);
+     lMissionServiceLine.SETRANGE("Lot No.",pLotNo);
+     lMissionServiceLine.SETRANGE(Chargeable,TRUE);
+     lMissionServiceLine.SETRANGE("Auction Bid",TRUE);
+     IF lMissionServiceLine.FINDFIRST THEN BEGIN
+       pBidMissionServiceLine := lMissionServiceLine;
+       IsApplyOnBidPrice := TRUE;
+     END ELSE BEGIN
+       CLEAR(pBidMissionServiceLine);
+       pBidMissionServiceLine.RESET;
+       IsApplyOnBidPrice := FALSE;
+     END;
+   END;
 
+  */
+  @Override
+  public MissionServiceLine searchBidLine(MissionHeader pMissionHeaderNo, Lot pLotNo) {
+    MissionServiceLine lMissionServiceLine = new MissionServiceLine();
+    MissionServiceLineRepository missionServiceLineRepo =
+        Beans.get(MissionServiceLineRepository.class);
+    lMissionServiceLine =
+        missionServiceLineRepo
+            .all()
+            .filter(
+                "self.missionNo = ?1 AND self.lotNo = ?2 AND self.chargeable = ?3 AND self.auctionBid = ?4",
+                pMissionHeaderNo,
+                pLotNo,
+                true,
+                true)
+            .fetchOne();
+    if (lMissionServiceLine != null) {
+      isApplyOnBidPrice = true;
+      return lMissionServiceLine;
+    } else {
+      isApplyOnBidPrice = false;
+      return null;
+    }
   }
 
   @Override

@@ -181,6 +181,9 @@
     <one-to-many name="lotInputJournalList"
       ref="com.axelor.apps.openauction.db.LotInputJournal" mappedBy="documentNo"/>
     <many-to-many name="contactList" ref="com.axelor.apps.base.db.Partner"/>
+    <decimal name="adjustedDebt" title="Dette réactualisée" transient="true" readonly="true"></decimal>
+    <decimal name="adjustmentAmount" title="Actualisation" transient="true" readonly="true"></decimal>
+    <decimal name="mainDebt" title="Dette principale" transient="true" readonly="true"></decimal>
     <extra-code>
     <![CDATA[
 
@@ -196,6 +199,25 @@
     public static final String MISSIONSTATUS_WAITING = "Waiting3";
     public static final String MISSIONSTATUS_CANCELED = "Canceled4";
     public static final String MISSIONSTATUS_FINISHED = "Finished5";
+
+
+    //openauction.processType.select
+    public static final String PROCESSTYPE_EMPTY = "Empty0";
+    public static final String PROCESSTYPE_PROCEDURERJ = "ProcedureRJ1";
+    public static final String PROCESSTYPE_PROCEDURELJ = "ProcedureLJ2";
+    public static final String PROCESSTYPE_RECOVERY = "Recovery3";
+    public static final String PROCESSTYPE_INHERITANCE = "Inheritance4";
+    public static final String PROCESSTYPE_DISPUTE = "Dispute5";
+    public static final String PROCESSTYPE_ESTIMATE = "Estimate6";
+    public static final String PROCESSTYPE_EXPERTISE = "Expertise7";
+    public static final String PROCESSTYPE_BACKUP = "Backup8";
+    public static final String PROCESSTYPE_VERIFICATION = "Verification9";
+    public static final String PROCESSTYPE_SIMPLELJ = "SimpleLJ10";
+    public static final String PROCESSTYPE_ADDITIONALINVENTORY = "AdditionalInventory11";
+
+
+
+
     ]]>
     </extra-code>
   </entity>

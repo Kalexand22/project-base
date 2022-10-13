@@ -241,4 +241,19 @@ public class MissionHeaderValidate {
 
     return missionHeader;
   }
+
+  public MissionHeader calcFieldAdjustedDebt(MissionHeader missionHeader) {
+    // TODO calcFieldAdjustedDebt
+    return missionHeader;
+  }
+
+  public MissionHeader calcFieldMainDebt(MissionHeader missionHeader) {
+    // TODO calcFieldMainDebt
+    return missionHeader;
+  }
+
+  public MissionHeader calcFieldAdjustementAmount(MissionHeader missionHeader) {
+    // TODO calcFieldAdjustementAmount
+    return missionHeader;
+  }
 }

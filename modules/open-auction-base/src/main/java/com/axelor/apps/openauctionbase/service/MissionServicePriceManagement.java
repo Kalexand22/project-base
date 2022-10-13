@@ -39,9 +39,9 @@ public interface MissionServicePriceManagement {
       Partner ContactCode);
   // PROCEDURE GetLotAmount@1000000005(pMissionHeaderNo@1000000001 : Code[20];pLotNo@1000000000 :
   // Code[20]);
-  public Double getLotAmount(MissionHeader pMissionHeaderNo, Lot pLotNo);
+  public void getLotAmount(MissionHeader pMissionHeaderNo, Lot pLotNo) throws AxelorException;
   // PROCEDURE GetMissionAmount@1100481008(pMissionHeaderNo@1100481000 : Code[20]);
-  public Double getMissionAmount(MissionHeader pMissionHeaderNo);
+  public void getMissionAmount(MissionHeader pMissionHeaderNo) throws AxelorException;
   // PROCEDURE GetTempServiceMissionPrice@1000000006(VAR pMissionServicePrice@1000000000 : Record
   // 8011469);
   public void getTempServiceMissionPrice(MissionServiceLine pMissionServicePrice);
@@ -54,8 +54,7 @@ public interface MissionServicePriceManagement {
   public Double getBaseAMount();
   // PROCEDURE SearchBidLine@1000000007(pMissionHeaderNo@1000000002 : Code[20];pLotNo@1000000000 :
   // Code[20];VAR pBidMissionServiceLine@1000000001 : Record 8011449);
-  public void searchBidLine(
-      MissionHeader pMissionHeaderNo, Lot pLotNo, MissionServiceLine pBidMissionServiceLine);
+  public MissionServiceLine searchBidLine(MissionHeader pMissionHeaderNo, Lot pLotNo);
   // PROCEDURE ModifyPrice@1100481002(VAR pRec@1100481000 : Record 8011469;VAR pXRec@1100481001 :
   // Record 8011469;pAction@1100481002 : 'OnModify,OnInsert,OnDelete,OnRename');
   public void modifyPrice(MissionServiceLine pRec, MissionServiceLine pXRec, String pAction);

@@ -1194,6 +1194,12 @@
     <option value="GuaranteedPrice9">Prix garanti</option>
     <option value="AuctionEstimate10">Estimation vente</option>
   </selection>
+  <selection name="openauction.entryType.select.missionvalueentry">
+    <option value="MainAmount">Montant principal</option>
+    <option value="AmountAdjustement">Actualisation</option>
+    <option value="CorrespondentFee">Frais dus au correspondant</option>
+    <option value="CorrespondentPrepayment">Acomptes versés au correspondant</option>
+  </selection>
   <selection name="openauction.lineType.select">
     <option value="Empty0">
     </option>
