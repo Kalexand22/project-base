@@ -21,6 +21,7 @@
     <string name="calculationType" title="Type calcul"
       selection="openauction.calculationType.select"/>
     <decimal name="unitPrice" title="Prix unitaire"/>
+    
     <decimal name="servicePercent" title="% prestation"/>
     <many-to-one name="tariffScale" title="Barème tarification"
       ref="com.axelor.apps.openauction.db.TariffScale"/>

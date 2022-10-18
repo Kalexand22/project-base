@@ -141,7 +141,7 @@
   <selection name="openauction.contactType.select">
     <option value="Empty0">
     </option>
-    <option value="Companies1">Sociétés</option>
+    <option value="Companies1">Sociétés</option> 
     <option value="People2">Personnes</option>
   </selection>
 

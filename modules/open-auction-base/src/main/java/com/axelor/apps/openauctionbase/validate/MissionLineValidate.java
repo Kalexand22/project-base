@@ -180,7 +180,6 @@ public class MissionLineValidate {
     missionLine.setEstimateMinValue(BigDecimal.ZERO);
     missionLine.setEstimateMaxValue(BigDecimal.ZERO);
     if (lotValueEntry != null) {
-
       missionLine.setEstimateMinValue(lotValueEntry.getMinAmount());
       missionLine.setEstimateMaxValue(lotValueEntry.getMaxAmount());
     }

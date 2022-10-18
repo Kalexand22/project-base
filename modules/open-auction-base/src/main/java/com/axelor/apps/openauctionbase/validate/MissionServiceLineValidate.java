@@ -58,10 +58,11 @@ public class MissionServiceLineValidate {
       MissionServiceLine missionServiceLine, MissionHeader missionNo) throws AxelorException {
     missionServiceLine.setMissionNo(missionNo);
     missionServiceLine.setMissionTemplateCode(missionNo.getMissionTemplateCode());
+    /*
     if (missionNo.getFiscalPosition() == null) {
       throw new AxelorException(
           TraceBackRepository.CATEGORY_INCONSISTENCY, "La position fiscale est obligatoire");
-    }
+    }*/
     missionServiceLine = this.GetMissVATBus(missionServiceLine);
     if (missionServiceLine.getProductNo() != null) {
       missionServiceLine =
@@ -124,7 +125,9 @@ public class MissionServiceLineValidate {
   //// >> AP19 isat.SF//*/
   public MissionServiceLine validateAuctionNo(
       MissionServiceLine missionServiceLine, AuctionHeader auctionNo) throws AxelorException {
+        
     missionServiceLine.setAuctionNo(auctionNo);
+    if(auctionNo == null)  {return missionServiceLine;}
     missionServiceLine.setAuctionTemplateCode(auctionNo.getAuctionTemplate());
     missionServiceLine.setAuctionInclVAT(auctionNo.getPricesIncludingVAT());
     if (missionServiceLine
@@ -214,7 +217,9 @@ public class MissionServiceLineValidate {
   // VALIDATE("VAT Prod. Posting Group");//*/
   public MissionServiceLine validateNo(MissionServiceLine missionServiceLine, Product productNo)
       throws AxelorException {
+    
     missionServiceLine.setProductNo(productNo);
+    if (productNo == null)  {return missionServiceLine;}
     missionServiceLine.setDescription(productNo.getDescription());
     if (missionServiceLine.getAuctionBid()) {
       missionServiceLine.setInvoicingType(MissionServiceLineRepository.INVOICINGTYPE_BILLABLEONBID);
@@ -245,15 +250,15 @@ public class MissionServiceLineValidate {
 
   private MissionServiceLine validateSellerFiscalePosition(
       MissionServiceLine missionServiceLine, FiscalPosition fiscalPosition) {
-    return null;
+    return missionServiceLine;
   }
 
   private MissionServiceLine CalcAmounts(MissionServiceLine missionServiceLine) {
-    return null;
+    return missionServiceLine;
   }
 
   private MissionServiceLine InitOutstanding(MissionServiceLine missionServiceLine) {
-    return null;
+    return missionServiceLine;
   }
   /*
   //Quantity Decimal
@@ -351,7 +356,7 @@ public class MissionServiceLineValidate {
 
   private MissionServiceLine validateAcceptToInvoice(
       MissionServiceLine missionServiceLine, boolean b) {
-    return null;
+    return missionServiceLine;
   }
   /*
     * //Outstanding_Quantity Decimal
@@ -404,7 +409,7 @@ public class MissionServiceLineValidate {
 
   private MissionServiceLine validateServiceType(
       MissionServiceLine missionServiceLine, String servicetypeSelectAuctionbid) {
-    return null;
+    return missionServiceLine;
   }
 
   /* //Auction_Bid Boolean
@@ -490,7 +495,7 @@ public class MissionServiceLineValidate {
   }
 
   private MissionServiceLine CheckQuantity(MissionServiceLine missionServiceLine) {
-    return null;
+    return missionServiceLine;
   }
 
   // Lot_Price_Group Code10
@@ -554,12 +559,14 @@ public class MissionServiceLineValidate {
   public MissionServiceLine validateChargeableContactNo(
       MissionServiceLine missionServiceLine, Partner chargeableContactNo) throws AxelorException {
 
-    if (!missionServiceLine.getChargeableContactNo().equals(chargeableContactNo)) {
+    /*if (!missionServiceLine.getChargeableContactNo().equals(chargeableContactNo)) {
       if (!skipChangeCheck) {
         // TODO : MissServLineTools.AllowChargeableContactChange(Rec,TRUE);
       }
-    }
+    }*/
     missionServiceLine.setChargeableContactNo(chargeableContactNo);
+    if (chargeableContactNo == null)
+      return missionServiceLine;
     if (missionServiceLine
         .getTransactionType()
         .equals(MissionServiceLineRepository.TRANSACTIONTYPE_MISSION)) {

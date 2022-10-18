@@ -83,5 +83,12 @@
   </action-view>
 
 
+  <menuitem name="menu-missionserviceprice-all" parent="menu-mission" title="Liste des prix"
+  action="missionserviceprice.all"/>
+<action-view name="missionserviceprice.all" title="Liste des pri"
+  model="com.axelor.apps.openauction.db.MissionServicePrice">
+  <view type="grid" name="mission-service-price-grid"/>
+  <view type="form" name="mission-service-price-form"/>  
+</action-view>
 
 </object-views>

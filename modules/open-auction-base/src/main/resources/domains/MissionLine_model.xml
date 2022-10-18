@@ -135,6 +135,8 @@
       public static final String TYPE_EMPTY = "Empty1";
       public static final String TYPE_LOT = "Lot2";
 
+      
+
       ]]>
     </extra-code>
   </entity>

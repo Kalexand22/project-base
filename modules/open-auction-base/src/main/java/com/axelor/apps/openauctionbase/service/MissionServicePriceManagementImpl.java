@@ -805,7 +805,7 @@ public class MissionServicePriceManagementImpl implements MissionServicePriceMan
           Beans.get(LotResaleRightsRepository.class)
               .all()
               .filter(
-                  "self.lot = ?1 AND self.organizationContact = ?2",
+                  "self.lotNo = ?1 AND self.organizationNo = ?2",
                   pMissionServiceLine.getLotNo(),
                   pMissionServiceLine.getOrganizationContact())
               .fetchOne();
