@@ -14,6 +14,7 @@ import com.axelor.exception.db.repo.TraceBackRepository;
 import com.axelor.inject.Beans;
 import java.math.BigDecimal;
 
+
 public class MissionLineValidate {
   /*
    * OnValidate=BEGIN
