@@ -81,3 +81,4 @@ node_modules
 
 # Axelor
 src/main/resources/application.properties
+settings.gradle
