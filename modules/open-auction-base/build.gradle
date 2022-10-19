@@ -5,7 +5,7 @@ axelor {
 	title "Open Auction"
 	description "Open Auction"
 } 
-
+/*
 dependencies {
 	api "com.axelor.apps:axelor-base:${aosVersion}"
 	api "com.axelor.apps:axelor-account:${aosVersion}"
@@ -15,3 +15,4 @@ dependencies {
 	api project(":modules:open-auction-referentiel")
 	api project(":modules:open-auction-template")
 }
+*/
