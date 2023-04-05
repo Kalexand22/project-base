@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.4.xsd">
+
+
+  <form name="test-custo-form" title="Test" model="com.axelor.apps.monmdule.db.Test"
+    width="large">
+    <panel name="mainPanel" title="Test" colSpan="12">
+      <field name="code" colSpan="12"/>
+      <field name="textCode" colSpan="12"/>
+
+
+
+    </panel>
+  </form>
+</object-views>

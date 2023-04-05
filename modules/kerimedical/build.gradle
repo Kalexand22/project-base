@@ -2,17 +2,18 @@ apply plugin: "com.axelor.app-module"
 
 
 axelor {
-	title "Open Auction"
-	description "Open Auction"
+	title "Kérimédical"
+	description "Kérimédical"
 } 
-/*
+
 dependencies {
 	api "com.axelor.apps:axelor-base:${aosVersion}"
 	api "com.axelor.apps:axelor-account:${aosVersion}"
 	api "com.axelor.apps:axelor-stock:${aosVersion}"	
 	api "com.axelor.apps:axelor-sale:${aosVersion}"	
 	api "com.axelor.apps:axelor-purchase:${aosVersion}"	
-	api project(":modules:open-auction-referentiel")
-	api project(":modules:open-auction-template")
+	api "com.axelor.apps:axelor-production:${aosVersion}"	
+	api "com.axelor.apps:axelor-business-production:${aosVersion}"
+	api "com.axelor.apps:axelor-bpm:${aosVersion}"
+	api "com.axelor.apps:axelor-studio:${aosVersion}"
 }
-*/
